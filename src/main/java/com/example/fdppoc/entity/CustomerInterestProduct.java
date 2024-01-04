@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class CustomerInterestProduct {
     @Id
+    @GeneratedValue
     private Long id;
     @ManyToOne
     @JoinColumns(value = {
@@ -20,3 +21,4 @@ public class CustomerInterestProduct {
     @ManyToOne
     private MemberInfo memberInfo;
 }
+

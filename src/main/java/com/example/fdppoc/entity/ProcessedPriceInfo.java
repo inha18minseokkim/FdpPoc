@@ -2,6 +2,7 @@ package com.example.fdppoc.entity;
 
 import com.example.fdppoc.code.BaseRange;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.Data;
 @Data
 public class ProcessedPriceInfo {
     @Id
+    @GeneratedValue
     private Long id;
     private String baseDate;
     @ManyToOne

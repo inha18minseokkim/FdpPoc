@@ -17,7 +17,7 @@ public class InnerProduct {
             @JoinColumn(referencedColumnName="classCode"),
             @JoinColumn(referencedColumnName="rankCode")},
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
-    )
+    ) //joinColumn 쓰는 이유 : baseProduct는 실제 운영환경에서 안쓸거임. + 원본 코드 보존이 필요함(이력도 마찬가지)
     private BaseProduct baseProduct;
 
     private Boolean isMainMaterial;
