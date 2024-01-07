@@ -2,12 +2,14 @@ package com.example.fdppoc.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.apache.ibatis.javassist.runtime.Inner;
 
 import java.util.List;
 
 @Entity
 @Data
+@ToString
 @Table(uniqueConstraints = {@UniqueConstraint(name="productUnique",columnNames = {"categoryCode","itemCode","kindCode","classCode","rankCode"})})
 public class BaseProduct {
     @Id

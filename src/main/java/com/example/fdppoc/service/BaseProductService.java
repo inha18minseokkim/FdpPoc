@@ -8,12 +8,14 @@ import com.example.fdppoc.service.dto.GetBaseCodesOut;
 import com.example.fdppoc.service.dto.SetBaseCodesIn;
 import com.example.fdppoc.service.mapper.BaseProductServiceMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class BaseProductService {
     private final BaseProductRepositoryCustom baseProductRepositoryCustom;
@@ -29,6 +31,7 @@ public class BaseProductService {
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .map((element) -> mapper.toEntity(element))
                 .forEach((element) -> {
+                    log.debug("save 시도 : {}",element);
                     baseProductRepository.save(element);
                 });
     }

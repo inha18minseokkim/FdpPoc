@@ -9,9 +9,7 @@ import com.example.fdppoc.service.BaseProductService;
 import com.example.fdppoc.service.InnerProductService;
 import com.example.fdppoc.service.dto.GetBaseCodesOut;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +29,8 @@ public class ProductCodeAdminController {
                 .list(baseCodes.stream().map((element) -> mapper.from(element)).collect(Collectors.toList()))
                 .build();
     }
-    @GetMapping("/setBaseCodes")
-    public SetBaseCodesResponse setBaseCodes(SetBaseCodesRequest request){
+    @PostMapping("/setBaseCodes")
+    public SetBaseCodesResponse setBaseCodes(@RequestBody SetBaseCodesRequest request){
         baseProductService.setBaseCodes(request.getLists().stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList()));
         return SetBaseCodesResponse.builder().responseCode("001").build();
