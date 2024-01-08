@@ -15,15 +15,15 @@ public class BaseProduct {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(length = 3)
+    @Column(name = "category_code",length = 3)
     private String categoryCode;    //pd_ctgr_cd
-    @Column(length= 4)
+    @Column(name="item_code",length= 4)
     private String itemCode;            //pd_lsar_cd
-    @Column(length= 3)
+    @Column(name="kind_code",length= 3)
     private String kindCode;            //pd_knd_cd
-    @Column(length=2)
+    @Column(name="class_code",length=2)
     private String classCode;           //whls_rtl_dcd
-    @Column(length=2)
+    @Column(name="rank_code",length=2)
     private String rankCode;            //pd_grade_cd
     private String unitName;            //snog_unit_nm
     private Float unitValue;            //snog_unit_val
@@ -32,6 +32,6 @@ public class BaseProduct {
     private String itemName;
     private String kindName;
     private String gradeName;
-    @OneToMany(mappedBy = "baseProduct",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "b    aseProduct",fetch = FetchType.LAZY)
     private List<InnerProduct> innerProducts;
 }
