@@ -1,15 +1,15 @@
-package com.example.fdppoc.service.dto;
+package com.example.fdppoc.controller.dto;
 
 import com.example.fdppoc.entity.BaseProduct;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.ToString;
 
-@Data
 @ToString
 @Builder
-public class SetInnerProductsIn {
+@Getter
+public class GetInnerProductsResponseElement {
     private Long id;
     private Long baseProductId;
     private Boolean isMainMaterial;
@@ -20,5 +20,4 @@ public class SetInnerProductsIn {
     private Boolean isSeasonal;
     private String seasonStartDate;
     private String seasonEndDate;
-    private String rowStatus;
 }

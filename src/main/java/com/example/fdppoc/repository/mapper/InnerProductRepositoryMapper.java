@@ -12,5 +12,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface InnerProductRepositoryMapper {
+
     FindInnerProductWithFilterOut from(InnerProduct element);
 }

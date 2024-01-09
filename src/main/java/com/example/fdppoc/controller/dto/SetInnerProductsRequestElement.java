@@ -1,15 +1,14 @@
-package com.example.fdppoc.service.dto;
+package com.example.fdppoc.controller.dto;
 
 import com.example.fdppoc.entity.BaseProduct;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+@Builder
 @Data
 @ToString
-@Builder
-public class SetInnerProductsIn {
+public class SetInnerProductsRequestElement {
     private Long id;
     private Long baseProductId;
     private Boolean isMainMaterial;

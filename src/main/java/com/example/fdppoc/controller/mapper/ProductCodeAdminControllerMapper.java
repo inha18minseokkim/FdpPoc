@@ -1,11 +1,7 @@
 package com.example.fdppoc.controller.mapper;
 
-import com.example.fdppoc.controller.dto.GetBaseCodesRequest;
-import com.example.fdppoc.controller.dto.GetBaseCodesResponseElement;
-import com.example.fdppoc.controller.dto.SetBaseCodesRequestElement;
-import com.example.fdppoc.service.dto.GetBaseCodesIn;
-import com.example.fdppoc.service.dto.GetBaseCodesOut;
-import com.example.fdppoc.service.dto.SetBaseCodesIn;
+import com.example.fdppoc.controller.dto.*;
+import com.example.fdppoc.service.dto.*;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -19,4 +15,9 @@ public interface ProductCodeAdminControllerMapper {
     GetBaseCodesIn from(GetBaseCodesRequest request);
     GetBaseCodesResponseElement from(GetBaseCodesOut element);
     SetBaseCodesIn from(SetBaseCodesRequestElement element);
+    GetInnerProductsWithFilterIn from(GetInnerProductsRequest request);
+
+    GetInnerProductsResponseElement from(GetInnerProductsWithFilterOut element);
+
+    SetInnerProductsIn from(SetInnerProductsRequestElement element);
 }

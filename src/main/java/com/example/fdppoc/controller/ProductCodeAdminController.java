@@ -1,13 +1,12 @@
 package com.example.fdppoc.controller;
 
-import com.example.fdppoc.controller.dto.GetBaseCodesRequest;
-import com.example.fdppoc.controller.dto.GetBaseCodesResponse;
-import com.example.fdppoc.controller.dto.SetBaseCodesResponse;
-import com.example.fdppoc.controller.dto.SetBaseCodesRequest;
+import com.example.fdppoc.code.ControllerResponse;
+import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.ProductCodeAdminControllerMapper;
 import com.example.fdppoc.service.BaseProductService;
 import com.example.fdppoc.service.InnerProductService;
 import com.example.fdppoc.service.dto.GetBaseCodesOut;
+import com.example.fdppoc.service.dto.GetInnerProductsWithFilterOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +32,21 @@ public class ProductCodeAdminController {
     public SetBaseCodesResponse setBaseCodes(@RequestBody SetBaseCodesRequest request){
         baseProductService.setBaseCodes(request.getLists().stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList()));
-        return SetBaseCodesResponse.builder().responseCode("001").build();
+        return SetBaseCodesResponse.builder().responseCode(ControllerResponse.OK).build();
     }
+    @GetMapping("/getInnerProducts")
+    public GetInnerProductsResponse getInnerProducts(GetInnerProductsRequest request){
+        List<GetInnerProductsWithFilterOut> results = innerProductService.getInnerProductsWithFilter(mapper.from(request));
+        return GetInnerProductsResponse.builder()
+                .responseCode("001")
+                .lists(results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList()))
+                .build();
+    }
+    @PostMapping("/setInnerProducts")
+    public SetInnerProductsResponse setInnerProducts(@RequestBody SetInnerProductsRequest request) {
+        innerProductService.setInnerProducts(request.getLists().stream()
+                .map((element) -> mapper.from(element)).collect(Collectors.toList()));
+        return SetInnerProductsResponse.builder().responseCode(ControllerResponse.OK).build();
+    }
+
 }

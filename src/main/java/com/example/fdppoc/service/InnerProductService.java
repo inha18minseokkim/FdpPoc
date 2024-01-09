@@ -35,8 +35,9 @@ public class InnerProductService {
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .map((element) -> {
                     InnerProduct entity = mapper.toEntity(element);
-                    Optional<BaseProduct> result = baseProductRepository.findByCategoryCodeAndItemCodeAndKindCodeAndClassCodeAndGradeCode
-                            (element.getCategoryCode(), element.getItemCode(), element.getKindCode(), element.getClassCode(), element.getGradeCode());
+//                    Optional<BaseProduct> result = baseProductRepository.findByCategoryCodeAndItemCodeAndKindCodeAndClassCodeAndGradeCode
+//                            (element.getCategoryCode(), element.getItemCode(), element.getKindCode(), element.getClassCode(), element.getGradeCode());
+                    Optional<BaseProduct> result = baseProductRepository.findById(element.getBaseProductId());
                     entity.setBaseProduct(result.orElseThrow());
                     return entity;
                 }).forEach((element) -> innerProductRepository.save(element));

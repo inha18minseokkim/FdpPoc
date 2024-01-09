@@ -19,6 +19,7 @@ import org.mapstruct.ReportingPolicy;
 public interface InnerProductServiceMapper {
     FindInnerProductsWithFilterIn from(GetInnerProductsWithFilterIn in);
 
+    @Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())")
     GetInnerProductsWithFilterOut from(FindInnerProductWithFilterOut element);
 
     @Mapping(target="baseProduct",ignore = true)
