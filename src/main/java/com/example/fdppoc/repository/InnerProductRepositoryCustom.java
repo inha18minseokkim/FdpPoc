@@ -30,9 +30,10 @@ public class InnerProductRepositoryCustom {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if(in.getCategoryCode() != null)
             booleanBuilder.and(baseProduct.categoryCode.eq(in.getCategoryCode()));
-
+        if(in.getClassificationCode() != null)
+            booleanBuilder.and(innerProduct.classificationCode.eq(in.getClassificationCode()));
         List<InnerProduct> results = query.select(innerProduct)
-                .from(innerProduct).join(baseProduct)
+                .from(innerProduct).innerJoin(innerProduct.baseProduct,baseProduct)
                 .where(booleanBuilder)
                 .fetch();
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());

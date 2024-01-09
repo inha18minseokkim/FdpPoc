@@ -8,5 +8,6 @@ import lombok.ToString;
 @ToString
 @Builder
 public class FindInnerProductsWithFilterIn {
+    private String classificationCode;
     private String categoryCode;    //pd_ctgr_cd
 }

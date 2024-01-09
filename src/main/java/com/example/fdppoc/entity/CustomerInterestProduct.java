@@ -15,7 +15,7 @@ public class CustomerInterestProduct {
             @JoinColumn(referencedColumnName="itemCode"),
             @JoinColumn(referencedColumnName="kindCode"),
             @JoinColumn(referencedColumnName="classCode"),
-            @JoinColumn(referencedColumnName="rankCode")},
+            @JoinColumn(referencedColumnName="gradeCode")},
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private BaseProduct baseProduct;
     @ManyToOne
