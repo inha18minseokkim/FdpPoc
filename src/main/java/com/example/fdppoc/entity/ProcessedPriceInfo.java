@@ -20,7 +20,7 @@ public class ProcessedPriceInfo {
     private String baseDate;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserGroupCode regionInfo;
+    private UserCode regionInfo;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private BaseProduct baseProduct;
