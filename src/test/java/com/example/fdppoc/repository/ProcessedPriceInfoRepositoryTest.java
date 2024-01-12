@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Slf4j
 class ProcessedPriceInfoRepositoryTest {
@@ -34,7 +33,8 @@ class ProcessedPriceInfoRepositoryTest {
         log.info("다음 지역 조회 : {}",gyeongki.get());
         FindPriceListByGroupRegionCodeIn in = FindPriceListByGroupRegionCodeIn.builder()
                 .baseDate("20240110")
-                .findRange(BaseRange.Week)
+                .rangeForLength(BaseRange.WEEK)
+                .rangeForTag(BaseRange.DAY)
                 .targetProduct(rice.get())
                 .regionGroup(gyeongki.get())
                 .build();

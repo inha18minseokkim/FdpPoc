@@ -29,7 +29,7 @@ public class ProcessedPriceInfoRepositoryCustom {
         QUserCode userCode2 = new QUserCode("b");
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
         String startDate = LocalDate.parse(in.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
-                .minusDays(in.getFindRange().getGapDay()-1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                .minusDays(in.getRangeForLength().getGapDay()-1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         List<Tuple> results = query.select(
                 processedPriceInfo.baseDate,
@@ -40,7 +40,7 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .innerJoin(processedPriceInfo.baseProduct, baseProduct)
                 .innerJoin(processedPriceInfo.regionInfo, userCode1)
                 .where(
-                        processedPriceInfo.baseRange.eq(BaseRange.Day)
+                        processedPriceInfo.baseRange.eq(in.getRangeForTag())
                                 .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
                                 .and(userGroupCode.id.eq(in.getRegionGroup().getId()))
                                 .and(userCode1.id.eq(userCode2.codeDetailName.castToNum(Long.class)))
@@ -54,7 +54,7 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .price(element.get(processedPriceInfo.price.avg()).longValue())
                 .regionGroupInfo(in.getRegionGroup())
                 .baseProduct(in.getTargetProduct())
-                .baseRange(in.getFindRange())
+                .baseRange(in.getRangeForLength())
                 .build()
         ).collect(Collectors.toList());
     }

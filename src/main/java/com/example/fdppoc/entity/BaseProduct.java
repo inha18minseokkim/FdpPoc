@@ -2,8 +2,7 @@ package com.example.fdppoc.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.apache.ibatis.javassist.runtime.Inner;
 
 import java.util.List;
@@ -11,6 +10,9 @@ import java.util.List;
 @Entity
 @Data
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"categoryCode","itemCode","kindCode","classCode","gradeCode"})})
 public class BaseProduct {
     @Id

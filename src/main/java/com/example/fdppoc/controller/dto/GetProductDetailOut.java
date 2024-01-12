@@ -1,4 +1,4 @@
-package com.example.fdppoc.service.dto;
+package com.example.fdppoc.controller.dto;
 
 import com.example.fdppoc.code.BaseRange;
 import lombok.Builder;
@@ -8,9 +8,9 @@ import lombok.ToString;
 import java.util.List;
 
 @Builder
-@Data
 @ToString
-public class GetProductPriceOut {
+@Data
+public class GetProductDetailOut {
     private Long meanPrice;
     private Long minimumPrice;
     private Long maximumPrice;

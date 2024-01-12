@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,13 +19,18 @@ import java.util.stream.Collectors;
 public class ProductDetailService {
     private final ProcessedPriceInfoRepositoryCustom processedPriceInfoRepositoryCustom;
     private final ProductDetailServiceMapper mapper;
-    public GetProductPriceOut getProductPriceOut(GetProductPriceIn in){
-        List<FindPriceListByGroupRegionCodeOut> results = processedPriceInfoRepositoryCustom.findPriceListByGroupRegionCode(mapper.from(in));
+    public GetProductPriceOut getProductPrice(GetProductPriceIn in){
+        List<FindPriceListByGroupRegionCodeOut> dailyPrices = processedPriceInfoRepositoryCustom.findPriceListByGroupRegionCode(mapper.from(in));
+
+        LongSummaryStatistics summary = dailyPrices.stream()
+                .map(element -> element.getPrice()).mapToLong(Long::longValue).summaryStatistics();
 
         return GetProductPriceOut.builder()
-           //     .meanPrice() 구현중 집가서
-                .priceList(results.stream().map(element->element.getPrice()).collect(Collectors.toList()))
-                .baseRange(in.getFindRange())
+                .meanPrice(Math.round(summary.getAverage()))
+                .maximumPrice(summary.getMax())
+                .minimumPrice(summary.getMin())
+                .priceList(dailyPrices.stream().map(element->element.getPrice()).collect(Collectors.toList()))
+                .baseRange(in.getRangeForLength())
                 .build();
     }
 }

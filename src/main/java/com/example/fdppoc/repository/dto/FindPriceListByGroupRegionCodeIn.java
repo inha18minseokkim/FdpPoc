@@ -13,6 +13,7 @@ import lombok.*;
 public class FindPriceListByGroupRegionCodeIn {
     private String baseDate;
     private BaseProduct targetProduct;
-    private BaseRange findRange;
+    private BaseRange rangeForLength;
+    private BaseRange rangeForTag;
     private UserGroupCode regionGroup;
 }
