@@ -5,15 +5,13 @@ import com.example.fdppoc.controller.dto.GetProductDetailIn;
 import com.example.fdppoc.controller.dto.GetProductDetailOut;
 import com.example.fdppoc.controller.mapper.ProductDetailControllerMapper;
 import com.example.fdppoc.entity.BaseProduct;
+import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.entity.UserGroupCode;
 import com.example.fdppoc.service.ProductDetailService;
 import com.example.fdppoc.service.dto.GetProductPriceIn;
 import com.example.fdppoc.service.dto.GetProductPriceOut;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/productDetail")
@@ -25,6 +23,7 @@ public class ProductDetailController {
     @GetMapping("/{targetProductId}/{regionGroupId}/getProductDetail")
     public GetProductDetailOut getProductDetail(@PathVariable("targetProductId") BaseProduct baseProduct,
                                                 @PathVariable("regionGroupId") UserGroupCode userGroupCode,
+                                                @RequestParam("memberInfoId") MemberInfo memberInfo,
                                                 GetProductDetailIn in
                                                 ){
         GetProductPriceOut productPrice = productDetailService.getProductPrice(
@@ -34,6 +33,7 @@ public class ProductDetailController {
                         .rangeForLength(in.getRangeForLength())
                         .rangeForTag(BaseRange.DAY)
                         .regionGroup(userGroupCode)
+                        .memberInfo(memberInfo)
                         .build()
         );
         return mapper.from(productPrice);

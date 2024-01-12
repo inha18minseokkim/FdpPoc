@@ -7,6 +7,7 @@ import com.example.fdppoc.service.dto.GetBaseCodesIn;
 import com.example.fdppoc.service.dto.GetBaseCodesOut;
 import com.example.fdppoc.service.dto.SetBaseCodesIn;
 import com.example.fdppoc.service.mapper.BaseProductServiceMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class BaseProductService {
         return results.stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
+    @Transactional
     public void setBaseCodes(List<SetBaseCodesIn> in){
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .map((element) -> mapper.toEntity(element))

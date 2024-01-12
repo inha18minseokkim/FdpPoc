@@ -1,6 +1,5 @@
 package com.example.fdppoc.service.dto;
 
-import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.entity.BaseProduct;
 import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.entity.UserGroupCode;
@@ -8,14 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
+@Builder
 @ToString
-public class GetProductPriceIn {
-    private String baseDate;
-    private BaseProduct targetProduct;
-    private BaseRange rangeForLength;
-    private BaseRange rangeForTag;
-    private UserGroupCode regionGroup;
+public class InsertProductHistoryIn {
+    private BaseProduct baseProduct;
     private MemberInfo memberInfo;
+    private UserGroupCode regionGroup;
 }

@@ -28,6 +28,7 @@ public class InnerProduct {
     private BaseProduct baseProduct;
 
     private Boolean isMainMaterial;
+    private Boolean isAvailable;
     private String classificationCode;
     private Long orderSequence;
     private String productName;

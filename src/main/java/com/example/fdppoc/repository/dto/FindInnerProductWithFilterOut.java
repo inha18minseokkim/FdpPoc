@@ -12,6 +12,7 @@ public class FindInnerProductWithFilterOut {
     private Long id;
     private BaseProduct baseProduct;
     private Boolean isMainMaterial;
+    private Boolean isAvailable;
     private String classificationCode;
     private Long orderSequence;
     private String productName;

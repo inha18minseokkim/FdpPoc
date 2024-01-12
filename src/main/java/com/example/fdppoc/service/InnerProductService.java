@@ -10,6 +10,7 @@ import com.example.fdppoc.service.dto.GetInnerProductsWithFilterIn;
 import com.example.fdppoc.service.dto.GetInnerProductsWithFilterOut;
 import com.example.fdppoc.service.dto.SetInnerProductsIn;
 import com.example.fdppoc.service.mapper.InnerProductServiceMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class InnerProductService {
         List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(mapper.from(in));
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
+    @Transactional
     public void setInnerProducts(List<SetInnerProductsIn> in){
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .map((element) -> {
