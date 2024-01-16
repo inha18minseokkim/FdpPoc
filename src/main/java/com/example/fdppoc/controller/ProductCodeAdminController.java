@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/ProductCodeAdmin")
+@RequestMapping("/productCodeAdmin")
 @RequiredArgsConstructor
 public class ProductCodeAdminController {
     private final BaseProductService baseProductService;

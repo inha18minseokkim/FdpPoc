@@ -1,0 +1,12 @@
+
+### 20160860
+GET http://localhost:8887/productDetail/getProductDetail/1/52?customerId=20160860&businessCode=001&baseDate=20240110&rangeForLength=WEEK
+Accept: application/json
+
+### 20170860
+GET http://localhost:8887/productDetail/getProductDetail/1/52?customerId=20170860&businessCode=001&baseDate=20240110&rangeForLength=MONTH
+Accept: application/json
+
+### 20180860
+GET http://localhost:8887/productDetail/getProductDetail/1/52?customerId=20230860&businessCode=001&baseDate=20240110&rangeForLength=WEEK
+Accept: application/json

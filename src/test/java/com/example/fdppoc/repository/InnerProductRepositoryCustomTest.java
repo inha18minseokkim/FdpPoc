@@ -53,7 +53,7 @@ class InnerProductRepositoryCustomTest {
     @Transactional
     void 동적쿼리_조회테스트(){
         FindInnerProductsWithFilterIn testInput = FindInnerProductsWithFilterIn
-                .builder().categoryCode("100").build();
+                .builder().categoryCode("100").classificationCode("001").build();
         List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(testInput);
         log.info("실행 결과 : {}",results);
         Assertions.assertThat(results.get(0).getBaseProduct().getCategoryCode()).isEqualTo("100");

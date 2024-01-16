@@ -21,11 +21,11 @@ class MemberInfoRepositoryTest {
     @Rollback(value = true)
     void 멤버삽입조회테스트() {
         memberInfoRepository.save(MemberInfo.builder()
-                        .id(20160860L)
+                        .customerId("99990860")
                         .businessCode("001")
                         .isAgree(true)
                 .build());
-        Assertions.assertThat(memberInfoRepository.findMemberInfoByIdAndBusinessCode(20160860L,"001").get().getIsAgree()).isEqualTo(true);
+        Assertions.assertThat(memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode("99990860","001").get().getIsAgree()).isEqualTo(true);
     }
 
 }

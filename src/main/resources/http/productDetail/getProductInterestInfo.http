@@ -1,0 +1,2 @@
+GET http://localhost:8887/productDetail/getProductInterestInfo/1?customerId=20170860&businessCode=001
+Accept: application/json

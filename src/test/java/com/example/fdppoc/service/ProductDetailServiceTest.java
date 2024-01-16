@@ -33,7 +33,7 @@ class ProductDetailServiceTest {
                 .rangeForLength(BaseRange.WEEK)
                 .rangeForTag(BaseRange.DAY)
                 .regionGroup(UserGroupCode.builder().id(52L).build())
-                .memberInfo(MemberInfo.builder().id(20160860L).businessCode("001").build())
+                .memberInfo(MemberInfo.builder().customerId("20160860").businessCode("001").build())
                 .build();
         GetProductPriceOut result = productDetailService.getProductPrice(input);
         log.info("실행결과 : {}",result);
