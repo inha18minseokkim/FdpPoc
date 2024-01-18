@@ -80,4 +80,9 @@ class InnerProductRepositoryCustomTest {
                 .isEqualTo("003");
 
     }
+    @Test
+    void 내부상품대고객리스트조회() {
+        List<InnerProduct> singleRice = innerProductRepository.findAllByIsAvailableAndClassificationCodeAndProductNameMatchesRegex(true, "001", "쌀");
+        log.info("출력 : {}",singleRice);
+    }
 }

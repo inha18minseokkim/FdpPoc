@@ -6,9 +6,7 @@ import com.example.fdppoc.repository.BaseProductRepository;
 import com.example.fdppoc.repository.InnerProductRepository;
 import com.example.fdppoc.repository.InnerProductRepositoryCustom;
 import com.example.fdppoc.repository.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.service.dto.GetInnerProductsWithFilterIn;
-import com.example.fdppoc.service.dto.GetInnerProductsWithFilterOut;
-import com.example.fdppoc.service.dto.SetInnerProductsIn;
+import com.example.fdppoc.service.dto.*;
 import com.example.fdppoc.service.mapper.InnerProductServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +42,11 @@ public class InnerProductService {
                     return entity;
                 }).forEach((element) -> innerProductRepository.save(element));
 
+    }
+
+    //내부상품리스트조회
+    public GetInnerProductListOut getInnerProductList(GetInnerProductListIn in){
+     //   innerProductRepository.f
+        return null;
     }
 }
