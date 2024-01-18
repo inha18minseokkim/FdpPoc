@@ -1,12 +1,12 @@
-package com.example.fdppoc.service.dto;
+package com.example.fdppoc.controller.dto;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
+@Builder
 @ToString
-public class GetMemberPushInfoOut {
+public class GetMemberPushInfoResponse {
     private Boolean isAgree;
 }

@@ -1,0 +1,8 @@
+
+POST http://localhost:8887/productDetail/setProductInterestInfo
+Content-Type: application/json
+{
+  "baseProductId" : 1,
+  "customerId" : "20170860",
+  "isAvailable" : "true"
+}

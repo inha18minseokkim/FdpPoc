@@ -74,7 +74,10 @@ public class ProductDetailController {
         return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).build();
     }
     @PostMapping("/setProductInterestInfo/{targetProductId}")
-    public SetProductInterestResponse setProductInterest(SetProductInterestRequest in){
+    public SetProductInterestResponse setProductInterest(
+            @PathVariable("targetProductId")BaseProduct baseProduct
+            ,@RequestBody SetProductInterestRequest in){
+        log.info("받음 : {}",in);
         //여기가 맞나? 사용자 없으면 저장 다른 서비스로 분리해야할듯
         Optional<MemberInfo> memberInfoOp = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(in.getCustomerId(), "001");
         if(memberInfoOp.isEmpty())
@@ -85,7 +88,7 @@ public class ProductDetailController {
         //이런 코드가 있는 이유 : asis의 요구사항이 TOBE Spring JPA 사상과 맞지 않다
         customerInterestProductService.setProductInterest(SetProductInterestIn.builder()
                         .memberInfo(memberInfo)
-                        .targetProduct(in.getBaseProduct())
+                        .targetProduct(baseProduct)
                         .isAvailable(in.getIsAvailable())
                 .build());
         return SetProductInterestResponse.builder().responseCode(ControllerResponse.OK).build();

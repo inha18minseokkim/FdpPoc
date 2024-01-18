@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.ToString;
 
 @Builder
-@ToString
 @Data
-public class GetMemberPushInfoIn {
+@ToString
+public class GetMemberIn {
     private String customerId;
     private String businessCode;
 }
