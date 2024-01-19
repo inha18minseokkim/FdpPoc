@@ -4,10 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+@Data
 @ToString
 @Builder
-@Data
-public class GetInnerProductsRequest {
-    private Long innerCategoryId;
-    private String categoryCode;    //pd_ctgr_cd
+public class SearchAllInnerProductsRequest {
+    private String baseDate;
+    private String customerId;
 }

@@ -3,6 +3,7 @@ package com.example.fdppoc.repository;
 import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.entity.QBaseProduct;
 import com.example.fdppoc.entity.QInnerProduct;
+import com.example.fdppoc.repository.dto.FindInnerProductListIn;
 import com.example.fdppoc.repository.dto.FindInnerProductWithFilterOut;
 import com.example.fdppoc.repository.dto.FindInnerProductsWithFilterIn;
 import com.example.fdppoc.repository.mapper.InnerProductRepositoryMapper;
@@ -30,12 +31,29 @@ public class InnerProductRepositoryCustom {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         if(in.getCategoryCode() != null)
             booleanBuilder.and(baseProduct.categoryCode.eq(in.getCategoryCode()));
-        if(in.getClassificationCode() != null)
-            booleanBuilder.and(innerProduct.classificationCode.eq(in.getClassificationCode()));
+        if(in.getInnerCategoryId() != null)
+            booleanBuilder.and(innerProduct.innerCategory.id.eq(in.getInnerCategoryId()));
         List<InnerProduct> results = query.select(innerProduct)
                 .from(innerProduct).innerJoin(innerProduct.baseProduct,baseProduct)
                 .where(booleanBuilder)
                 .fetch();
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
+    }
+    public List<InnerProduct> findInnerProductList(FindInnerProductListIn in){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if(in.getInnerCategoryId() != null)
+            booleanBuilder.and(innerProduct.innerCategory.id.eq(in.getInnerCategoryId()));
+        if(in.getSearchKeyword() != null)
+            booleanBuilder.and(innerProduct.productName.like("%"+in.getSearchKeyword()+"%"));
+        List<InnerProduct> results = query.select(innerProduct)
+                .from(innerProduct)
+                .where(
+                        innerProduct.isAvailable.eq(in.getIsAvailable())
+                                .and(booleanBuilder)
+                )
+                .fetch();
+        return results;
     }
 }

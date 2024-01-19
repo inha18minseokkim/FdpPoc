@@ -1,8 +1,6 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.service.dto.GetInnerProductsWithFilterIn;
-import com.example.fdppoc.service.dto.GetInnerProductsWithFilterOut;
-import com.example.fdppoc.service.dto.SetInnerProductsIn;
+import com.example.fdppoc.service.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -40,11 +38,12 @@ class InnerProductServiceTest {
                         .orderSequence(1L)
                         .rowStatus("C")
                         .isMainMaterial(false)
+                        .isAvailable(true)
                         .isSeasonal(true)
                         .additionalDescription("국산콩")
                         .seasonStartDate("01")
                         .seasonEndDate("12")
-                        .classificationCode("0001")
+                        .innerCategoryId(1L)
                 .build());
         innerProductService.setInnerProducts(in);
         GetInnerProductsWithFilterIn input = GetInnerProductsWithFilterIn.builder().categoryCode("100").build();
@@ -53,6 +52,13 @@ class InnerProductServiceTest {
         Assertions.assertThat(results.stream().map((element) -> element.getAdditionalDescription()))
                 .contains("국산콩");
 
+    }
+    @Test
+    void 내부상품리스트조회() {
+        GetInnerProductListIn in = GetInnerProductListIn.builder().isAvailable(true).searchKeyword("구").build();
+        List<GetInnerProductListOut> innerProductList = innerProductService.getInnerProductList(in);
+        log.info("실행 결과 : {}", innerProductList);
+        Assertions.assertThat(innerProductList.get(0).getProductName()).isEqualTo("고구마");
     }
 
 }

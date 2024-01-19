@@ -1,7 +1,9 @@
 package com.example.fdppoc.repository;
 
 import com.example.fdppoc.entity.BaseProduct;
+import com.example.fdppoc.entity.InnerCategory;
 import com.example.fdppoc.entity.InnerProduct;
+import com.example.fdppoc.repository.dto.FindInnerProductListIn;
 import com.example.fdppoc.repository.dto.FindInnerProductWithFilterOut;
 import com.example.fdppoc.repository.dto.FindInnerProductsWithFilterIn;
 import jakarta.transaction.Transactional;
@@ -15,8 +17,6 @@ import org.springframework.test.annotation.Rollback;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Slf4j
 class InnerProductRepositoryCustomTest {
@@ -26,6 +26,8 @@ class InnerProductRepositoryCustomTest {
     InnerProductRepository innerProductRepository;
     @Autowired
     BaseProductRepository baseProductRepository;
+    @Autowired
+    InnerCategoryRepository innerCategoryRepository;
 
     @Test
     @Transactional
@@ -35,7 +37,7 @@ class InnerProductRepositoryCustomTest {
         InnerProduct innerProduct = InnerProduct.builder()
                 .baseProduct(rice.orElseThrow())
                 .isMainMaterial(true)
-                .classificationCode("003")
+                .innerCategory(innerCategoryRepository.findById(2L).get())
                 .orderSequence(1L)
                 .additionalDescription("내부상품노출고구마")
                 .productName("고구마")
@@ -53,7 +55,7 @@ class InnerProductRepositoryCustomTest {
     @Transactional
     void 동적쿼리_조회테스트(){
         FindInnerProductsWithFilterIn testInput = FindInnerProductsWithFilterIn
-                .builder().categoryCode("100").classificationCode("001").build();
+                .builder().categoryCode("100").innerCategoryId(1L).build();
         List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(testInput);
         log.info("실행 결과 : {}",results);
         Assertions.assertThat(results.get(0).getBaseProduct().getCategoryCode()).isEqualTo("100");
@@ -62,27 +64,24 @@ class InnerProductRepositoryCustomTest {
     @Transactional
     @Rollback(value = true)
     void 수정_테스트() {
-        Optional<BaseProduct> rice = baseProductRepository.findById(52L);
-        InnerProduct innerProduct = InnerProduct.builder()
-                .baseProduct(rice.orElseThrow())
-                .isMainMaterial(true)
-                .classificationCode("003")
-                .orderSequence(1L)
-                .additionalDescription("내부상품노출고구마")
-                .productName("고구마")
-                .isSeasonal(false)
-                .build();
-        log.info("BaseProduct 출력: {}",rice.get());
-        log.info("InnerProduct 출력: {}",innerProduct);
-        InnerProduct result = innerProductRepository.save(innerProduct);
 
-        Assertions.assertThat(result.getClassificationCode())
-                .isEqualTo("003");
+        InnerProduct innerProduct = innerProductRepository.findById(2L).get();
+
+        log.info("InnerProduct 출력: {}",innerProduct);
+        InnerCategory tobeCategory = innerCategoryRepository.findById(2L).get();
+        innerProduct.setInnerCategory(tobeCategory);
+        InnerProduct result = innerProductRepository.save(innerProduct);
+        log.info("InnerProduct 출력: {}",result);
+        Assertions.assertThat(result.getInnerCategory())
+                .isEqualTo(tobeCategory);
 
     }
     @Test
+    @Transactional
     void 내부상품대고객리스트조회() {
-        List<InnerProduct> singleRice = innerProductRepository.findAllByIsAvailableAndClassificationCodeAndProductNameMatchesRegex(true, "001", "쌀");
-        log.info("출력 : {}",singleRice);
+        List<InnerProduct> singleList = innerProductRepositoryCustom.findInnerProductList(
+                FindInnerProductListIn.builder().searchKeyword("구").isAvailable(true).build());
+        log.info("출력 : {}",singleList);
+        Assertions.assertThat(singleList.get(0).getProductName()).isEqualTo("고구마");
     }
 }

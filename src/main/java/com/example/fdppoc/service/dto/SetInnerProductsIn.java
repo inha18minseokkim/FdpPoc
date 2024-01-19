@@ -1,6 +1,7 @@
 package com.example.fdppoc.service.dto;
 
 import com.example.fdppoc.entity.BaseProduct;
+import com.example.fdppoc.entity.InnerCategory;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ public class SetInnerProductsIn {
     private Long baseProductId;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
-    private String classificationCode;
+    private Long innerCategoryId;
     private Long orderSequence;
     private String productName;
     private String additionalDescription;

@@ -29,7 +29,12 @@ public class InnerProduct {
 
     private Boolean isMainMaterial;
     private Boolean isAvailable;
-    private String classificationCode;
+    @ManyToOne
+    @JoinColumns(
+            value = @JoinColumn(name="innerCategoryId",referencedColumnName = "id"),
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private InnerCategory innerCategory;
     private Long orderSequence;
     private String productName;
     private String additionalDescription;

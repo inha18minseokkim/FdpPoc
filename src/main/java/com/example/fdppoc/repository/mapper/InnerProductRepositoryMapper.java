@@ -4,6 +4,7 @@ import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.repository.dto.FindInnerProductWithFilterOut;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -13,5 +14,6 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface InnerProductRepositoryMapper {
 
+    @Mapping(target="innerCategoryId",expression = "java(element.getInnerCategory().getId())")
     FindInnerProductWithFilterOut from(InnerProduct element);
 }

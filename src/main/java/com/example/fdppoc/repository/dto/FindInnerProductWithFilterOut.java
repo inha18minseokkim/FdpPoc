@@ -1,6 +1,7 @@
 package com.example.fdppoc.repository.dto;
 
 import com.example.fdppoc.entity.BaseProduct;
+import com.example.fdppoc.entity.InnerCategory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -13,7 +14,7 @@ public class FindInnerProductWithFilterOut {
     private BaseProduct baseProduct;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
-    private String classificationCode;
+    private Long innerCategoryId;
     private Long orderSequence;
     private String productName;
     private String additionalDescription;
