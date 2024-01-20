@@ -14,5 +14,5 @@ public class SearchAllInnerProductsResponseElement {
     private Long id;
     private String innerCategoryName;
     private String additionalDescription;
-    private List<SearchAllInnerProductsResponseSubElement> subList;
+    private List<SearchAllInnerProductsResponseSubElement> innerProducts;
 }

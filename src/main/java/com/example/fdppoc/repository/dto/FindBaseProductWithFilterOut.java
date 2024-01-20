@@ -1,6 +1,7 @@
 package com.example.fdppoc.repository.dto;
 
 
+import com.example.fdppoc.entity.InnerProduct;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -22,4 +23,5 @@ public class FindBaseProductWithFilterOut {
     private String itemName;
     private String kindName;
     private String gradeName;
+    private InnerProduct innerProduct;
 }

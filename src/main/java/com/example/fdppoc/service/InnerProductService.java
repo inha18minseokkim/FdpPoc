@@ -43,7 +43,7 @@ public class InnerProductService {
 //                            (element.getCategoryCode(), element.getItemCode(), element.getKindCode(), element.getClassCode(), element.getGradeCode());
                     Optional<BaseProduct> resultBaseProduct = baseProductRepository.findById(element.getBaseProductId());
                     Optional<InnerCategory> resultInnerCategory = innerCategoryRepository.findById(element.getInnerCategoryId());
-                    entity.setBaseProduct(resultBaseProduct.orElseThrow());
+//                    entity.setBaseProduct(resultBaseProduct.orElseThrow());
                     entity.setInnerCategory(resultInnerCategory.orElseThrow());
                     return entity;
                 }).forEach((element) -> innerProductRepository.save(element));

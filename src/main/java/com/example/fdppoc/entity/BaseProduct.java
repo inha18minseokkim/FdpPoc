@@ -35,7 +35,7 @@ public class BaseProduct {
     private String itemName;
     private String kindName;
     private String gradeName;
-    @OneToMany(mappedBy = "baseProduct",fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @ToString.Exclude
-    private List<InnerProduct> innerProducts;
+    private InnerProduct innerProduct;
 }

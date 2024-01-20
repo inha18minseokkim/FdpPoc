@@ -7,12 +7,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
 @ToString
 @Builder
 @Getter
 public class GetInnerProductsResponseElement {
     private Long id;
-    private Long baseProductId;
+    private List<Long> baseProductId;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;

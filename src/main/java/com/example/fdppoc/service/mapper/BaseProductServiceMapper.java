@@ -19,6 +19,6 @@ import org.mapstruct.ReportingPolicy;
 public interface BaseProductServiceMapper {
     FindBaseProductWithFilterIn from(GetBaseCodesIn in);
     GetBaseCodesOut from(FindBaseProductWithFilterOut in);
-    @Mapping(target="innerProducts",ignore = true)
+    @Mapping(target="innerProduct",ignore = true)
     BaseProduct toEntity(SetBaseCodesIn element);
 }

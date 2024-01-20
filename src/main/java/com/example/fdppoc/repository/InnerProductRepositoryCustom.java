@@ -34,7 +34,7 @@ public class InnerProductRepositoryCustom {
         if(in.getInnerCategoryId() != null)
             booleanBuilder.and(innerProduct.innerCategory.id.eq(in.getInnerCategoryId()));
         List<InnerProduct> results = query.select(innerProduct)
-                .from(innerProduct).innerJoin(innerProduct.baseProduct,baseProduct)
+                .from(innerProduct).innerJoin(innerProduct.baseProducts,baseProduct)
                 .where(booleanBuilder)
                 .fetch();
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());

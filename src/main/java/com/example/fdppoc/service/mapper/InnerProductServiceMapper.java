@@ -15,11 +15,11 @@ import org.mapstruct.*;
 public interface InnerProductServiceMapper {
     FindInnerProductsWithFilterIn from(GetInnerProductsWithFilterIn in);
 
-    @Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())")
+    @Mapping(target="baseProductId",expression = "java(element.getBaseProducts().stream().map(ele->ele.getId()).collect(java.util.stream.Collectors.toList()))")
     GetInnerProductsWithFilterOut from(FindInnerProductWithFilterOut element);
 
     @Mappings({
-            @Mapping(target = "baseProduct", ignore = true),
+            @Mapping(target = "baseProducts", ignore = true),
             @Mapping(target = "innerCategory",ignore = true)
     }
     )
@@ -27,7 +27,8 @@ public interface InnerProductServiceMapper {
 
     FindInnerProductListIn from(GetInnerProductListIn in);
     @Mappings({
-        @Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())"),
+        //@Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())"),
+        @Mapping(target="baseProductId", ignore = true),
         @Mapping(target="innerCategoryId",expression = "java(element.getInnerCategory().getId())")
     })
     GetInnerProductListOut from(InnerProduct element);

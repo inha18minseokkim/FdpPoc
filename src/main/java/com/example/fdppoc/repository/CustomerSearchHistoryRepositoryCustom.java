@@ -22,19 +22,19 @@ public class CustomerSearchHistoryRepositoryCustom {
     List<InnerProduct> getTopViewedInnerProduct(LocalDateTime currentTime,Integer rangeHour){
         LocalDateTime startTime = currentTime.minusHours(rangeHour);
 
-        QInnerProduct innerProduct = QInnerProduct.innerProduct;
-        QCustomerSearchHistory customerSearchHistory = QCustomerSearchHistory.customerSearchHistory;
-        QBaseProduct baseProduct = QBaseProduct.baseProduct;
-        JPAQueryFactory query = new JPAQueryFactory(entityManager);
-        query.select(innerProduct,innerProduct.count())
-                .from(customerSearchHistory)
-                .join(customerSearchHistory.baseProduct,innerProduct.baseProduct)
-                .where(
-                        customerSearchHistory.submitTime.between(startTime,currentTime)
-                                .and(innerProduct.baseProduct.isAvailable.eq(true))
-                )
-                .groupBy(innerProduct)
-                .fetch();
+//        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+//        QCustomerSearchHistory customerSearchHistory = QCustomerSearchHistory.customerSearchHistory;
+//        QBaseProduct baseProduct = QBaseProduct.baseProduct;
+//        JPAQueryFactory query = new JPAQueryFactory(entityManager);
+//        query.select(innerProduct,innerProduct.count())
+//                .from(customerSearchHistory)
+//                .join(customerSearchHistory.baseProduct,innerProduct.baseProduct)
+//                .where(
+//                        customerSearchHistory.submitTime.between(startTime,currentTime)
+//                                .and(innerProduct.baseProduct.isAvailable.eq(true))
+//                )
+//                .groupBy(innerProduct)
+//                .fetch();
         return null;
     }
 }

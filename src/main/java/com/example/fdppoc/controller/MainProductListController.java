@@ -8,6 +8,8 @@ import com.example.fdppoc.controller.dto.SearchInnerProductsResponse;
 import com.example.fdppoc.controller.mapper.MainProductListControllerMapper;
 import com.example.fdppoc.service.InnerCategoryService;
 import com.example.fdppoc.service.InnerProductService;
+import com.example.fdppoc.service.dto.GetAllInnerProductsIn;
+import com.example.fdppoc.service.dto.GetAllInnerProductsOut;
 import com.example.fdppoc.service.dto.GetInnerProductListIn;
 import com.example.fdppoc.service.dto.GetInnerProductListOut;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,11 @@ public class MainProductListController {
     }
     @GetMapping("/searchAllInnerProducts")
     public SearchAllInnerProductsResponse searchAllInnerProducts(SearchAllInnerProductsRequest request){
-        return null;
+        List<GetAllInnerProductsOut> allInnerProducts = innerCategoryService.getAllInnerProducts(GetAllInnerProductsIn.builder().build());
+        return SearchAllInnerProductsResponse.builder()
+                .baseDate(request.getBaseDate())
+                .innerCategories(allInnerProducts.stream().map(element -> mapper.from2(element)).collect(Collectors.toList()))
+                .build();
 
     }
 }

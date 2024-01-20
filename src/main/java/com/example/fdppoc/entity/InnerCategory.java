@@ -3,10 +3,7 @@ package com.example.fdppoc.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -23,6 +20,7 @@ public class InnerCategory {
     private String additionalDescription;
     private Boolean isAvailable;
     @OneToMany
+    @ToString.Exclude
     private List<InnerProduct> subProducts;
 
 }

@@ -1,7 +1,9 @@
 package com.example.fdppoc.controller.mapper;
 
+import com.example.fdppoc.controller.dto.SearchAllInnerProductsResponseElement;
 import com.example.fdppoc.controller.dto.SearchInnerProductsRequest;
 import com.example.fdppoc.controller.dto.SearchInnerProductsResponseElement;
+import com.example.fdppoc.service.dto.GetAllInnerProductsOut;
 import com.example.fdppoc.service.dto.GetInnerProductListIn;
 import com.example.fdppoc.service.dto.GetInnerProductListOut;
 import org.mapstruct.InjectionStrategy;
@@ -17,4 +19,6 @@ import org.mapstruct.ReportingPolicy;
 public interface MainProductListControllerMapper {
 
     SearchInnerProductsResponseElement from(GetInnerProductListOut element);
+
+    SearchAllInnerProductsResponseElement from2(GetAllInnerProductsOut element);
 }

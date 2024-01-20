@@ -35,7 +35,7 @@ class InnerProductRepositoryCustomTest {
     void 삽입_테스트() {
         Optional<BaseProduct> rice = baseProductRepository.findById(52L);
         InnerProduct innerProduct = InnerProduct.builder()
-                .baseProduct(rice.orElseThrow())
+                .baseProducts(List.of(rice.orElseThrow()))
                 .isMainMaterial(true)
                 .innerCategory(innerCategoryRepository.findById(2L).get())
                 .orderSequence(1L)
@@ -47,7 +47,7 @@ class InnerProductRepositoryCustomTest {
         log.info("InnerProduct 출력: {}",innerProduct);
         InnerProduct result = innerProductRepository.save(innerProduct);
 
-        Assertions.assertThat(result.getBaseProduct())
+        Assertions.assertThat(result.getBaseProducts().get(0))
                 .isEqualTo(rice.get());
 
     }
@@ -58,7 +58,7 @@ class InnerProductRepositoryCustomTest {
                 .builder().categoryCode("100").innerCategoryId(1L).build();
         List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(testInput);
         log.info("실행 결과 : {}",results);
-        Assertions.assertThat(results.get(0).getBaseProduct().getCategoryCode()).isEqualTo("100");
+        Assertions.assertThat(results.get(0).getBaseProducts().get(0).getCategoryCode()).isEqualTo("100");
     }
     @Test
     @Transactional
