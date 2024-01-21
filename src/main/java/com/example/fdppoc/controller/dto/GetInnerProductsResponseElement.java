@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 public class GetInnerProductsResponseElement {
     private Long id;
-    private List<Long> baseProductId;
+    private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;

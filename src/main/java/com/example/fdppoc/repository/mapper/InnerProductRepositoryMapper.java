@@ -12,10 +12,7 @@ import org.mapstruct.*;
 public interface InnerProductRepositoryMapper {
 
     @Mappings({
-            @Mapping(target="innerCategoryId",expression = "java(element.getInnerCategory().getId())"),
-            @Mapping(target="baseProducts",ignore=true)
+            @Mapping(target="innerCategoryId",expression = "java(element.getInnerCategory().getId())")
     })
-
-
     FindInnerProductWithFilterOut from(InnerProduct element);
 }

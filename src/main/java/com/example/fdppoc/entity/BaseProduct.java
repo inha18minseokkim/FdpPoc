@@ -35,7 +35,8 @@ public class BaseProduct {
     private String itemName;
     private String kindName;
     private String gradeName;
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @JoinColumn(name="innerProductId",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @ToString.Exclude
     private InnerProduct innerProduct;
 }

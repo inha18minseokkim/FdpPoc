@@ -20,4 +20,8 @@ public interface ProductCodeAdminControllerMapper {
     GetInnerProductsResponseElement from(GetInnerProductsWithFilterOut element);
 
     SetInnerProductsIn from(SetInnerProductsRequestElement element);
+
+    GetAllInnerCategoryIn from(GetInnerCategoryRequest request);
+
+    GetInnerCategoryResponseElement from(GetAllInnerCategoryOut element);
 }

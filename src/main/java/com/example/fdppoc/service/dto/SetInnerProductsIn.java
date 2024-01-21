@@ -1,18 +1,17 @@
 package com.example.fdppoc.service.dto;
 
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.entity.InnerCategory;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+
+import java.util.List;
 
 @Data
 @ToString
 @Builder
 public class SetInnerProductsIn {
     private Long id;
-    private Long baseProductId;
+    private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;

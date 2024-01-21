@@ -3,9 +3,7 @@ package com.example.fdppoc.service;
 import com.example.fdppoc.entity.InnerCategory;
 import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.repository.InnerCategoryRepository;
-import com.example.fdppoc.service.dto.GetAllInnerProductsIn;
-import com.example.fdppoc.service.dto.GetAllInnerProductsOut;
-import com.example.fdppoc.service.dto.GetAllInnerProductsOutElement;
+import com.example.fdppoc.service.dto.*;
 import com.example.fdppoc.service.mapper.InnerCategoryServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,5 +40,25 @@ public class InnerCategoryService {
 
                 }).collect(Collectors.toList());
         return result;
+    }
+    public List<GetAllInnerCategoryOut> getAllInnerCategory(GetAllInnerCategoryIn in){
+        List<InnerCategory> all = innerCategoryRepository.findAll();
+        return all.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
+    }
+    public void setInnerCategory(List<SetInnerCategoryIn> in){
+        in.stream().filter(element -> !element.getRowStatus().equals("R")).forEach(
+                element -> {
+                    if(element.getId() == null || innerCategoryRepository.findById(element.getId()).isEmpty())
+                        innerCategoryRepository.save(mapper.from(element));
+                    else {
+                        InnerCategory targetInnerCategory = innerCategoryRepository.findById(element.getId()).get();
+                        targetInnerCategory.setInnerCategoryName(element.getInnerCategoryName());
+                        targetInnerCategory.setIsAvailable(element.getIsAvailable());
+                        targetInnerCategory.setAdditionalDescription(element.getAdditionalDescription());
+                        targetInnerCategory.setOrderSequence(element.getOrderSequence());
+                        innerCategoryRepository.save(targetInnerCategory);
+                    }
+                }
+        );
     }
 }

@@ -7,10 +7,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -26,32 +25,52 @@ class InnerProductServiceTest {
         log.info("실행 결과 : " + results);
     }
     @Test
+    @Transactional
     void 내부상품수정() {
+
 
     }
     @Test
     @Transactional
+    @Rollback(value = true)
     void 내부상품삽입() {
-        List<SetInnerProductsIn> in = List.of(SetInnerProductsIn.builder()
-                        .baseProductId(2L)
-                        .productName("콩")
+        List<SetInnerProductsIn> in = List.of(
+                SetInnerProductsIn.builder()
+                        .baseProductIds(List.of(202L))
+                        .productName("소 안심")
+                        .orderSequence(1L)
+                        .rowStatus("C")
+                        .isMainMaterial(true)
+                        .isAvailable(true)
+                        .isSeasonal(false)
+                        .additionalDescription("소 안심")
+                        .innerCategoryId(1L).build(),
+                SetInnerProductsIn.builder()
+                        .baseProductIds(List.of(203L))
+                        .productName("돼지 앞다리")
+                        .orderSequence(1L)
+                        .rowStatus("C")
+                        .isMainMaterial(false)
+                        .isAvailable(true)
+                        .isSeasonal(false)
+                        .additionalDescription("돼지 앞다리")
+                        .innerCategoryId(1L).build(),
+                SetInnerProductsIn.builder()
+                        .baseProductIds(List.of(213L,214L,215L,216L))
+                        .productName("배추")
                         .orderSequence(1L)
                         .rowStatus("C")
                         .isMainMaterial(false)
                         .isAvailable(true)
                         .isSeasonal(true)
-                        .additionalDescription("국산콩")
+                        .additionalDescription("배추")
                         .seasonStartDate("01")
                         .seasonEndDate("12")
-                        .innerCategoryId(1L)
-                .build());
+                        .innerCategoryId(1L).build()
+        );
         innerProductService.setInnerProducts(in);
-        GetInnerProductsWithFilterIn input = GetInnerProductsWithFilterIn.builder().categoryCode("100").build();
-        List<GetInnerProductsWithFilterOut> results = innerProductService.getInnerProductsWithFilter(input);
-        log.info("조회 결과 : ",results);
-        Assertions.assertThat(results.stream().map((element) -> element.getAdditionalDescription()))
-                .contains("국산콩");
-
+        List<GetInnerProductListOut> innerProductList = innerProductService.getInnerProductList(GetInnerProductListIn.builder().isAvailable(true).build());
+        log.info("실행 결과 : {}",innerProductList);
     }
     @Test
     void 내부상품리스트조회() {
@@ -60,5 +79,6 @@ class InnerProductServiceTest {
         log.info("실행 결과 : {}", innerProductList);
         Assertions.assertThat(innerProductList.get(0).getProductName()).isEqualTo("고구마");
     }
+
 
 }

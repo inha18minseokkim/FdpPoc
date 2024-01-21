@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class GetInnerProductsWithFilterOut {
     private Long id;
-    private List<Long> baseProductId;
+    private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;

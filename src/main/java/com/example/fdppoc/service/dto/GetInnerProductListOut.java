@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 @Data
 @Builder
 @ToString
 public class GetInnerProductListOut {
     private Long id;
-    private Long baseProductId;
+    private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;

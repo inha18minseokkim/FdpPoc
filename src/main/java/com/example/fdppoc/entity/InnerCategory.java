@@ -1,6 +1,7 @@
 package com.example.fdppoc.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class InnerCategory {
     @Id
+    @GeneratedValue
     private Long id;
     private String innerCategoryName;
     private Long orderSequence;

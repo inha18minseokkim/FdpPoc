@@ -4,7 +4,9 @@ import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.ProductCodeAdminControllerMapper;
 import com.example.fdppoc.service.BaseProductService;
+import com.example.fdppoc.service.InnerCategoryService;
 import com.example.fdppoc.service.InnerProductService;
+import com.example.fdppoc.service.dto.GetAllInnerCategoryOut;
 import com.example.fdppoc.service.dto.GetBaseCodesOut;
 import com.example.fdppoc.service.dto.GetInnerProductsWithFilterOut;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class ProductCodeAdminController {
     private final BaseProductService baseProductService;
     private final InnerProductService innerProductService;
+    private final InnerCategoryService innerCategoryService;
     private final ProductCodeAdminControllerMapper mapper;
     @GetMapping("/getBaseCodes")
     public GetBaseCodesResponse getBaseCodes(GetBaseCodesRequest request){
@@ -47,6 +50,11 @@ public class ProductCodeAdminController {
         innerProductService.setInnerProducts(request.getLists().stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList()));
         return SetInnerProductsResponse.builder().responseCode(ControllerResponse.OK).build();
+    }
+    @GetMapping("/getInnerCategory")
+    public GetInnerCategoryResponse getInnerCategory(GetInnerCategoryRequest request){
+        List<GetAllInnerCategoryOut> allInnerCategory = innerCategoryService.getAllInnerCategory(mapper.from(request));
+        return GetInnerCategoryResponse.builder().list(allInnerCategory.stream().map(element -> mapper.from(element)).collect(Collectors.toList())).build();
     }
 
 }

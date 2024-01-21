@@ -6,12 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.List;
+
 @Builder
 @Data
 @ToString
 public class SetInnerProductsRequestElement {
     private Long id;
-    private Long baseProductId;
+    private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;
