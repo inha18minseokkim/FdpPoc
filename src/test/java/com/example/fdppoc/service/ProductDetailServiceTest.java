@@ -29,11 +29,11 @@ class ProductDetailServiceTest {
     void 상품가격리스트조회() {
 
         GetProductPriceIn input = GetProductPriceIn.builder()
-                .baseDate("20240109")
-                .targetProduct(innerProductRepository.findById(2L).get())
-                .rangeForLength(BaseRange.WEEK)
+                .baseDate("20240119")
+                .targetProduct(innerProductRepository.findById(1004L).get())
+                .rangeForLength(BaseRange.MONTH)
                 .rangeForTag(BaseRange.DAY)
-                .regionGroup(UserGroupCode.builder().id(52L).build())
+                .regionGroup(UserGroupCode.builder().id(152L).build())
                 .memberInfo(MemberInfo.builder().customerId("20160860").businessCode("001").build())
                 .build();
         GetProductPriceOut result = productDetailService.getProductPrice(input);

@@ -25,8 +25,7 @@ public class ProcessedPriceInfoRepositoryCustom {
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
-        QUserCode userCode1 = new QUserCode("a");
-        QUserCode userCode2 = new QUserCode("b");
+        QUserCode userCode = QUserCode.userCode;
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
         String startDate = LocalDate.parse(in.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
@@ -35,16 +34,14 @@ public class ProcessedPriceInfoRepositoryCustom {
         List<Tuple> results = query.select(
                 processedPriceInfo.baseDate,
                 processedPriceInfo.price.avg()
-
                 )
-                .from(processedPriceInfo, userGroupCode, userCode2,innerProduct)
-                .innerJoin(processedPriceInfo.regionInfo, userCode1)
+                .from(processedPriceInfo, userGroupCode,innerProduct,userCode)
                 .where(
                         processedPriceInfo.baseRange.eq(in.getRangeForTag())
                                 .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
                                 .and(userGroupCode.id.eq(in.getRegionGroup().getId()))
-                                .and(userCode1.id.eq(userCode2.codeDetailName.castToNum(Long.class)))
-                                .and(userGroupCode.id.eq(userCode2.userGroupCode.id)
+                                .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName.castToNum(Long.class)))
+                                .and(userGroupCode.id.eq(userCode.userGroupCode.id)
                                 .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
                                                 .and(innerProduct.eq(in.getTargetProduct()))
                                 )
