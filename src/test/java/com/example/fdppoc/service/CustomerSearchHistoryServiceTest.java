@@ -4,6 +4,7 @@ import com.example.fdppoc.entity.BaseProduct;
 import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.entity.UserGroupCode;
 import com.example.fdppoc.repository.BaseProductRepository;
+import com.example.fdppoc.repository.InnerProductRepository;
 import com.example.fdppoc.service.dto.InsertProductHistoryIn;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ class CustomerSearchHistoryServiceTest {
     @Autowired
     CustomerSearchHistoryService customerSearchHistoryService;
     @Autowired
-    BaseProductRepository baseProductRepository;
+    InnerProductRepository innerProductRepository;
 
     @Test
     @Transactional
@@ -28,7 +29,7 @@ class CustomerSearchHistoryServiceTest {
     void 이력적재테스트 () {
 
         customerSearchHistoryService.insertProductHistory(InsertProductHistoryIn.builder()
-                        .baseProduct(baseProductRepository.findById(1L).get())
+                        .innerProduct(innerProductRepository.findById(2L).get())
                         .regionGroup(UserGroupCode.builder().id(52L).build())
                         .memberInfo(MemberInfo.builder().id(20160860L).build())
                 .build());

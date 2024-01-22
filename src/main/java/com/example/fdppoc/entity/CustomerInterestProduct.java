@@ -18,13 +18,9 @@ public class CustomerInterestProduct {
     private Long id;
     @ManyToOne
     @JoinColumns(value = {
-            @JoinColumn(name = "categoryCode",referencedColumnName="categoryCode"),
-            @JoinColumn(name = "itemCode",referencedColumnName="itemCode"),
-            @JoinColumn(name = "kindCode",referencedColumnName="kindCode"),
-            @JoinColumn(name = "classCode",referencedColumnName="classCode"),
-            @JoinColumn(name = "gradeCode",referencedColumnName="gradeCode")},
+            @JoinColumn(name = "innerProductId",referencedColumnName="id")},
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private BaseProduct baseProduct;
+    private InnerProduct innerProduct;
     @ManyToOne
     @JoinColumn(name = "customerId", referencedColumnName = "customerId",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private MemberInfo memberInfo;

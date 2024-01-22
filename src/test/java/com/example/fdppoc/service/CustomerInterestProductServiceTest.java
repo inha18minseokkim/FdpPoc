@@ -2,9 +2,11 @@ package com.example.fdppoc.service;
 
 import com.example.fdppoc.entity.BaseProduct;
 import com.example.fdppoc.entity.CustomerInterestProduct;
+import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.repository.BaseProductRepository;
 import com.example.fdppoc.repository.CustomerInterestProductRepository;
+import com.example.fdppoc.repository.InnerProductRepository;
 import com.example.fdppoc.repository.MemberInfoRepository;
 import com.example.fdppoc.service.dto.GetProductInterestIn;
 import com.example.fdppoc.service.dto.GetProductInterestOut;
@@ -25,7 +27,7 @@ class CustomerInterestProductServiceTest {
     @Autowired
     CustomerInterestProductService customerInterestProductService;
     @Autowired
-    BaseProductRepository baseProductRepository;
+    InnerProductRepository innerProductRepository;
     @Autowired
     MemberInfoRepository memberInfoRepository;
     @Autowired
@@ -35,7 +37,7 @@ class CustomerInterestProductServiceTest {
     @Transactional
     @Rollback(value = true)
     void 관심상품등록조회() {
-        Optional<BaseProduct> rice = baseProductRepository.findById(1L);
+        Optional<InnerProduct> rice = innerProductRepository.findById(2L);
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestIn input = GetProductInterestIn.builder()
                 .targetProduct(rice.get())
@@ -50,16 +52,16 @@ class CustomerInterestProductServiceTest {
                 .isAvailable(true)
                 .build();
         customerInterestProductService.setProductInterest(build);
-        customerInterestProductRepository.flush();
-        Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByBaseProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(true);
+        //customerInterestProductRepository.flush();
+        Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(true);
         //Assertions.assertThat(customerInterestProductService.getProductInterest(input).getIsAvailable()).isEqualTo(true);
     }
     @Test
     @Transactional
     @Rollback(true)
     void 관심상품해제조회() {
-        Optional<BaseProduct> rice = baseProductRepository.findById(1L);
-        Optional<MemberInfo> member = memberInfoRepository.findById(52L);
+        Optional<InnerProduct> rice = innerProductRepository.findById(2L);
+        Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestIn input = GetProductInterestIn.builder()
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
@@ -70,11 +72,11 @@ class CustomerInterestProductServiceTest {
         SetProductInterestIn build = SetProductInterestIn.builder()
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
-                .isAvailable(true)
+                .isAvailable(false)
                 .build();
         customerInterestProductService.setProductInterest(build);
         //customerInterestProductRepository.flush();
-        Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByBaseProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(true);
+        Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(false);
         //Assertions.assertThat(customerInterestProductService.getProductInterest(input).getIsAvailable()).isEqualTo(true);
     }
 

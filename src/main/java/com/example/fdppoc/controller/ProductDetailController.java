@@ -5,6 +5,7 @@ import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.ProductDetailControllerMapper;
 import com.example.fdppoc.entity.BaseProduct;
+import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.entity.UserGroupCode;
 import com.example.fdppoc.repository.MemberInfoRepository;
@@ -28,7 +29,7 @@ public class ProductDetailController {
     private final ProductDetailControllerMapper mapper;
     private final MemberInfoRepository memberInfoRepository;
     @GetMapping("/getProductDetail/{targetProductId}/{regionGroupId}")
-    public GetProductDetailResponse getProductDetail(@PathVariable("targetProductId") BaseProduct baseProduct,
+    public GetProductDetailResponse getProductDetail(@PathVariable("targetProductId") InnerProduct innerProduct,
                                                      @PathVariable("regionGroupId") UserGroupCode userGroupCode,
                                                      @Validated MemberInfo memberInfo,
                                                      GetProductDetailRequest in
@@ -47,7 +48,7 @@ public class ProductDetailController {
         GetProductPriceOut productPrice = productDetailService.getProductPrice(
                 GetProductPriceIn.builder()
                         .baseDate(in.getBaseDate())
-                        .targetProduct(baseProduct)
+                        .targetProduct(innerProduct)
                         .rangeForLength(in.getRangeForLength())
                         .rangeForTag(BaseRange.DAY)
                         .regionGroup(userGroupCode)
@@ -58,7 +59,7 @@ public class ProductDetailController {
     }
     @GetMapping("/getProductInterestInfo/{targetProductId}")
     public GetProductInterestInfoResponse getProductInterestInfo(
-            @PathVariable("targetProductId")BaseProduct targetProduct,
+            @PathVariable("targetProductId")InnerProduct targetProduct,
             GetProductInterestInfoRequest in){
         log.info("입력 받음 : {}",in);
         //여기가 맞나? 사용자 없으면 저장 다른 서비스로 분리해야할듯
@@ -75,7 +76,7 @@ public class ProductDetailController {
     }
     @PostMapping("/setProductInterestInfo/{targetProductId}")
     public SetProductInterestResponse setProductInterest(
-            @PathVariable("targetProductId")BaseProduct baseProduct
+            @PathVariable("targetProductId")InnerProduct baseProduct
             ,@RequestBody SetProductInterestRequest in){
         log.info("받음 : {}",in);
         //여기가 맞나? 사용자 없으면 저장 다른 서비스로 분리해야할듯

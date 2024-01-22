@@ -2,6 +2,7 @@ package com.example.fdppoc.repository;
 
 import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.entity.BaseProduct;
+import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.entity.UserGroupCode;
 import com.example.fdppoc.repository.dto.FindPriceListByGroupRegionCodeIn;
 import com.example.fdppoc.repository.dto.FindPriceListByGroupRegionCodeOut;
@@ -21,13 +22,13 @@ class ProcessedPriceInfoRepositoryTest {
     @Autowired
     ProcessedPriceInfoRepositoryCustom processedPriceInfoRepositoryCustom;
     @Autowired
-    BaseProductRepository baseProductRepository;
+    InnerProductRepository innerProductRepository;
     @Autowired
     UserGroupCodeRepository userGroupCodeRepository;
     @Test
     @Transactional
     void 쌀일주일치조회() {
-        Optional<BaseProduct> rice = baseProductRepository.findById(1L);
+        Optional<InnerProduct> rice = innerProductRepository.findById(2L);
         log.info("해당 품목 조회 : {} ",rice.get());
         Optional<UserGroupCode> gyeongki = userGroupCodeRepository.findById(152L);
         log.info("다음 지역 조회 : {}",gyeongki.get());

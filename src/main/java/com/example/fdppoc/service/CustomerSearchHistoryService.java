@@ -21,7 +21,7 @@ public class CustomerSearchHistoryService {
     public void insertProductHistory(InsertProductHistoryIn in) {
         customerSearchHistoryRepository.save(CustomerSearchHistory
                 .builder()
-                        .baseProduct(in.getBaseProduct())
+                        .innerProduct(in.getInnerProduct())
                         .memberInfo(in.getMemberInfo())
                         .regionGroup(in.getRegionGroup())
                         .submitTime(LocalDateTime.now())

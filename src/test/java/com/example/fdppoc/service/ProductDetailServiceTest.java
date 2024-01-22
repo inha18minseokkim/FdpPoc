@@ -5,6 +5,7 @@ import com.example.fdppoc.entity.BaseProduct;
 import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.entity.UserGroupCode;
 import com.example.fdppoc.repository.BaseProductRepository;
+import com.example.fdppoc.repository.InnerProductRepository;
 import com.example.fdppoc.service.dto.GetProductPriceIn;
 import com.example.fdppoc.service.dto.GetProductPriceOut;
 import jakarta.transaction.Transactional;
@@ -20,16 +21,16 @@ class ProductDetailServiceTest {
     @Autowired
     ProductDetailService productDetailService;
     @Autowired
-    BaseProductRepository baseProductRepository;
+    InnerProductRepository innerProductRepository;
 
     @Test
     @Transactional
     @Rollback(value = true)
-    void 상품리스트조회() {
+    void 상품가격리스트조회() {
 
         GetProductPriceIn input = GetProductPriceIn.builder()
                 .baseDate("20240109")
-                .targetProduct(baseProductRepository.findById(2L).get())
+                .targetProduct(innerProductRepository.findById(2L).get())
                 .rangeForLength(BaseRange.WEEK)
                 .rangeForTag(BaseRange.DAY)
                 .regionGroup(UserGroupCode.builder().id(52L).build())

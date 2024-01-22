@@ -29,7 +29,7 @@ public class ProductDetailService {
                 .map(element -> element.getPrice()).mapToLong(Long::longValue).summaryStatistics();
 
         customerSearchHistoryService.insertProductHistory(InsertProductHistoryIn.builder()
-                        .baseProduct(in.getTargetProduct())
+                        .innerProduct(in.getTargetProduct())
                         .memberInfo(in.getMemberInfo())
                         .regionGroup(in.getRegionGroup())
                 .build());

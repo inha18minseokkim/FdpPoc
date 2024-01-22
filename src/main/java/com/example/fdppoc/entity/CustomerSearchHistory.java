@@ -21,14 +21,10 @@ public class CustomerSearchHistory {
     private Long id;
     @ManyToOne
     @JoinColumns(value = {
-            @JoinColumn(name = "categoryCode",referencedColumnName="categoryCode"),
-            @JoinColumn(name = "itemCode",referencedColumnName="itemCode"),
-            @JoinColumn(name = "kindCode",referencedColumnName="kindCode"),
-            @JoinColumn(name = "classCode",referencedColumnName="classCode"),
-            @JoinColumn(name = "gradeCode",referencedColumnName="gradeCode")},
+            @JoinColumn(name = "innerProductId",referencedColumnName="id")},
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
     )
-    private BaseProduct baseProduct;            //조회한상품
+    private InnerProduct innerProduct;            //조회한상품
     @ManyToOne
     @JoinColumn(referencedColumnName = "id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private UserGroupCode regionGroup;                //조회한지역

@@ -28,6 +28,7 @@ public class ProcessedPriceInfoRepositoryCustom {
         QUserCode userCode1 = new QUserCode("a");
         QUserCode userCode2 = new QUserCode("b");
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
+        QInnerProduct innerProduct = QInnerProduct.innerProduct;
         String startDate = LocalDate.parse(in.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
                 .minusDays(in.getRangeForLength().getGapDay()-1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
@@ -36,15 +37,17 @@ public class ProcessedPriceInfoRepositoryCustom {
                 processedPriceInfo.price.avg()
 
                 )
-                .from(processedPriceInfo, userGroupCode, userCode2)
-                .innerJoin(processedPriceInfo.baseProduct, baseProduct)
+                .from(processedPriceInfo, userGroupCode, userCode2,innerProduct)
                 .innerJoin(processedPriceInfo.regionInfo, userCode1)
                 .where(
                         processedPriceInfo.baseRange.eq(in.getRangeForTag())
                                 .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
                                 .and(userGroupCode.id.eq(in.getRegionGroup().getId()))
                                 .and(userCode1.id.eq(userCode2.codeDetailName.castToNum(Long.class)))
-                                .and(userGroupCode.id.eq(userCode2.userGroupCode.id))
+                                .and(userGroupCode.id.eq(userCode2.userGroupCode.id)
+                                .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
+                                                .and(innerProduct.eq(in.getTargetProduct()))
+                                )
                 ).groupBy(
                         processedPriceInfo.baseDate
                 )
@@ -53,7 +56,7 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .baseDate(in.getBaseDate())
                 .price(element.get(processedPriceInfo.price.avg()).longValue())
                 .regionGroupInfo(in.getRegionGroup())
-                .baseProduct(in.getTargetProduct())
+                .innerProduct(in.getTargetProduct())
                 .baseRange(in.getRangeForLength())
                 .build()
         ).collect(Collectors.toList());

@@ -2,7 +2,6 @@ package com.example.fdppoc.repository;
 
 import com.example.fdppoc.entity.InnerProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

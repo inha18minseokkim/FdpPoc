@@ -22,7 +22,7 @@ public class CustomerInterestProductService {
 
     @Transactional
     public GetProductInterestOut getProductInterest(GetProductInterestIn in){
-        Optional<CustomerInterestProduct> result = customerInterestProductRepository.getCustomerInterestProductByBaseProductAndMemberInfo(in.getTargetProduct(), in.getMemberInfo());
+        Optional<CustomerInterestProduct> result = customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(in.getTargetProduct(), in.getMemberInfo());
 
         return GetProductInterestOut.builder().isAvailable(result.isEmpty()?false:result.get().getIsAvailable())
                 .build();
@@ -31,11 +31,11 @@ public class CustomerInterestProductService {
     public void setProductInterest(SetProductInterestIn in){
         log.info("setProductInterest : {}",in);
         Optional<CustomerInterestProduct> result = customerInterestProductRepository
-                .getCustomerInterestProductByBaseProductAndMemberInfo(in.getTargetProduct(), in.getMemberInfo());
+                .getCustomerInterestProductByInnerProductAndMemberInfo(in.getTargetProduct(), in.getMemberInfo());
 
         CustomerInterestProduct customerInterestProduct = result.orElseGet(() ->
                 CustomerInterestProduct.builder()
-                        .baseProduct(in.getTargetProduct())
+                        .innerProduct(in.getTargetProduct())
                         .memberInfo(in.getMemberInfo())
                         .isAvailable(in.getIsAvailable())
                         .build()
