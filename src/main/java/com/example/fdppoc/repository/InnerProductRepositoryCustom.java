@@ -56,4 +56,6 @@ public class InnerProductRepositoryCustom {
                 .fetch();
         return results;
     }
+    //좋아요 누른 상품들
+    //가격 상하
 }

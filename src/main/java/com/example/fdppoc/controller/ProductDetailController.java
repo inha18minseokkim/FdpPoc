@@ -44,7 +44,7 @@ public class ProductDetailController {
             );
         memberInfo = memberInfoOp.get();
         //이런 코드가 있는 이유 : asis의 요구사항이 TOBE Spring JPA 사상과 맞지 않다
-
+        log.info(in.getBaseDate());
         GetProductPriceOut productPrice = productDetailService.getProductPrice(
                 GetProductPriceIn.builder()
                         .baseDate(in.getBaseDate())

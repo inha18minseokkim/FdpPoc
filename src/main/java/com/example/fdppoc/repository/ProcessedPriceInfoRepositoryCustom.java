@@ -1,6 +1,5 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.entity.*;
 import com.example.fdppoc.repository.dto.*;
 import com.querydsl.core.Tuple;
@@ -57,6 +56,32 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .baseRange(in.getRangeForLength())
                 .build()
         ).collect(Collectors.toList());
+    }
+    public GetMinMaxPriceOut getMinMaxPrice(GetMinMaxPriceIn in){
+        QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
+        QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
+        QUserCode userCode = QUserCode.userCode;
+        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+        JPAQueryFactory query = new JPAQueryFactory(entityManager);
+        List<Tuple> result = query.select(
+                        processedPriceInfo.price.max()
+                        , processedPriceInfo.price.min()
+                )
+                .from(processedPriceInfo, userGroupCode, innerProduct, userCode)
+                .where(
+                        processedPriceInfo.baseDate.between(in.getStartDate(), in.getEndDate())
+                                .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName.castToNum(Long.class)))
+                                .and(userGroupCode.eq(in.getRegionGroup()))
+                                .and(userCode.userGroupCode.eq(in.getRegionGroup()))
+                                .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
+                                .and(innerProduct.eq(in.getTargetProduct()))
+                ).groupBy(
+                        processedPriceInfo.baseDate
+                ).fetch();
+        return GetMinMaxPriceOut.builder()
+                .maxPrice(result.get(0).get(processedPriceInfo.price.max()).longValue())
+                .minPrice(result.get(0).get(processedPriceInfo.price.min()).longValue())
+                .build();
     }
 
 }

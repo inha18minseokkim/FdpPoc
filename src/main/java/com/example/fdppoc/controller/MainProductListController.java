@@ -45,6 +45,5 @@ public class MainProductListController {
                 .baseDate(request.getBaseDate())
                 .innerCategories(allInnerProducts.stream().map(element -> mapper.from2(element)).collect(Collectors.toList()))
                 .build();
-
     }
 }
