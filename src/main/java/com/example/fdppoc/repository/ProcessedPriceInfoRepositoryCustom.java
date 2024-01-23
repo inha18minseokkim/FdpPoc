@@ -1,5 +1,6 @@
 package com.example.fdppoc.repository;
 
+import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.entity.*;
 import com.example.fdppoc.repository.dto.*;
 import com.querydsl.core.Tuple;
@@ -57,19 +58,20 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .build()
         ).collect(Collectors.toList());
     }
-    public GetMinMaxPriceOut getMinMaxPrice(GetMinMaxPriceIn in){
+    public GetPriceDiffOut getPriceDiff(GetPriceDiffIn in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
         QUserCode userCode = QUserCode.userCode;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         List<Tuple> result = query.select(
-                        processedPriceInfo.price.max()
-                        , processedPriceInfo.price.min()
+                        processedPriceInfo.price.avg()
+                        ,processedPriceInfo.baseDate
                 )
                 .from(processedPriceInfo, userGroupCode, innerProduct, userCode)
                 .where(
                         processedPriceInfo.baseDate.between(in.getStartDate(), in.getEndDate())
+                                .and(processedPriceInfo.baseRange.eq(BaseRange.DAY))
                                 .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName.castToNum(Long.class)))
                                 .and(userGroupCode.eq(in.getRegionGroup()))
                                 .and(userCode.userGroupCode.eq(in.getRegionGroup()))
@@ -77,10 +79,15 @@ public class ProcessedPriceInfoRepositoryCustom {
                                 .and(innerProduct.eq(in.getTargetProduct()))
                 ).groupBy(
                         processedPriceInfo.baseDate
-                ).fetch();
-        return GetMinMaxPriceOut.builder()
-                .maxPrice(result.get(0).get(processedPriceInfo.price.max()).longValue())
-                .minPrice(result.get(0).get(processedPriceInfo.price.min()).longValue())
+                ).orderBy(
+                        processedPriceInfo.baseDate.asc()
+                )
+                .fetch();
+        return GetPriceDiffOut.builder()
+                .basePrice(result.get(result.size()-1).get(processedPriceInfo.price.avg()).longValue())
+                .baseDate(result.get(result.size()-1).get(processedPriceInfo.baseDate))
+                .pastPrice(result.get(0).get(processedPriceInfo.price.avg()).longValue())
+                .pastDate(result.get(0).get(processedPriceInfo.baseDate))
                 .build();
     }
 

@@ -9,7 +9,7 @@ import lombok.ToString;
 @Builder
 @ToString
 @Data
-public class GetMinMaxPriceIn {
+public class GetPriceDiffIn {
     private UserGroupCode regionGroup;
     private InnerProduct targetProduct;
     private String startDate;
