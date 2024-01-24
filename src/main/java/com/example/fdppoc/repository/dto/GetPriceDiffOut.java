@@ -10,6 +10,6 @@ import lombok.ToString;
 public class GetPriceDiffOut {
     private Long basePrice;
     private String baseDate;
-    private Long pastPrice;
+    private Long meanPrice;
     private String pastDate;
 }

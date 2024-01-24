@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @ToString
 public class GetPopularProductCriteria {
+    private String baseDate;
     private LocalDateTime currentTime;
     private Long rangeHour;
+    private Long regionGroupId;
 }
