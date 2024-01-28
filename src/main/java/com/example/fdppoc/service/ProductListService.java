@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +76,7 @@ public class ProductListService {
         List<GetInnerProductPricesResult> innerProductPriceList = getInnerProductPriceList(GetInnerProductPricesCriteria.builder()
                 .regionGroupId(criteria.getRegionGroupId()).endDate(criteria.getBaseDate()).startDate(startDate).build());
     //고객 관심상품정보 가져옴
-        List<GetMemberInterestProductsOut> memberInterestProducts = customerInterestProductService.getMemberInterestProducts(GetMemberInterestProductsIn.builder().customerId(criteria.getCustomerId()).build());
+        List<GetMemberInterestProductsResult> memberInterestProducts = customerInterestProductService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId(criteria.getCustomerId()).build());
 
     //각각 정보 적재를 위한 맵
         Map<Long,GetAllProductResult> resultMap = allProduct.stream().collect(Collectors.toMap(InnerProduct::getId

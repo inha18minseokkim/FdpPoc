@@ -4,9 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
+@Builder
 @ToString
-public class GetMemberPushInfoOut {
-    private Boolean isAgree;
+public class GetProductInterestResult {
+    private Boolean isAvailable;
 }

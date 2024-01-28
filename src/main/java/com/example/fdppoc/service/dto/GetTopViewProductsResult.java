@@ -1,4 +1,4 @@
 package com.example.fdppoc.service.dto;
 
-public class GetTopViewProductsOut {
+public class GetTopViewProductsResult {
 }

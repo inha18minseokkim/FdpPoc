@@ -4,7 +4,6 @@ import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.ProductDetailControllerMapper;
-import com.example.fdppoc.entity.BaseProduct;
 import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.entity.UserGroupCode;
@@ -45,8 +44,8 @@ public class ProductDetailController {
         memberInfo = memberInfoOp.get();
         //이런 코드가 있는 이유 : asis의 요구사항이 TOBE Spring JPA 사상과 맞지 않다
         log.info(in.getBaseDate());
-        GetProductPriceOut productPrice = productDetailService.getProductPrice(
-                GetProductPriceIn.builder()
+        GetProductPriceResult productPrice = productDetailService.getProductPrice(
+                GetProductPriceCriteria.builder()
                         .baseDate(in.getBaseDate())
                         .targetProduct(innerProduct)
                         .rangeForLength(in.getRangeForLength())
@@ -71,7 +70,7 @@ public class ProductDetailController {
         MemberInfo memberInfo = memberInfoOp.get();
         //이런 코드가 있는 이유 : asis의 요구사항이 TOBE Spring JPA 사상과 맞지 않다
 
-        GetProductInterestOut result = customerInterestProductService.getProductInterest(GetProductInterestIn.builder().targetProduct(targetProduct).memberInfo(memberInfo).build());
+        GetProductInterestResult result = customerInterestProductService.getProductInterest(GetProductInterestCriteria.builder().targetProduct(targetProduct).memberInfo(memberInfo).build());
         return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).build();
     }
     @PostMapping("/setProductInterestInfo/{targetProductId}")
@@ -87,7 +86,7 @@ public class ProductDetailController {
             );
         MemberInfo memberInfo = memberInfoOp.get();
         //이런 코드가 있는 이유 : asis의 요구사항이 TOBE Spring JPA 사상과 맞지 않다
-        customerInterestProductService.setProductInterest(SetProductInterestIn.builder()
+        customerInterestProductService.setProductInterest(SetProductInterestCriteria.builder()
                         .memberInfo(memberInfo)
                         .targetProduct(baseProduct)
                         .isAvailable(in.getIsAvailable())

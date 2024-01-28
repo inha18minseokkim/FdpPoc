@@ -6,9 +6,9 @@ import com.example.fdppoc.controller.mapper.ProductCodeAdminControllerMapper;
 import com.example.fdppoc.service.BaseProductService;
 import com.example.fdppoc.service.InnerCategoryService;
 import com.example.fdppoc.service.InnerProductService;
-import com.example.fdppoc.service.dto.GetAllInnerCategoryOut;
-import com.example.fdppoc.service.dto.GetBaseCodesOut;
-import com.example.fdppoc.service.dto.GetInnerProductsWithFilterOut;
+import com.example.fdppoc.service.dto.GetAllInnerCategoryResult;
+import com.example.fdppoc.service.dto.GetBaseCodesResult;
+import com.example.fdppoc.service.dto.GetInnerProductsWithFilterResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class ProductCodeAdminController {
     private final ProductCodeAdminControllerMapper mapper;
     @GetMapping("/getBaseCodes")
     public GetBaseCodesResponse getBaseCodes(GetBaseCodesRequest request){
-        List<GetBaseCodesOut> baseCodes = baseProductService.getBaseCodes(mapper.from(request));
+        List<GetBaseCodesResult> baseCodes = baseProductService.getBaseCodes(mapper.from(request));
         return GetBaseCodesResponse.builder()
                 .responseCode("001")
                 .list(baseCodes.stream().map((element) -> mapper.from(element)).collect(Collectors.toList()))
@@ -39,7 +39,7 @@ public class ProductCodeAdminController {
     }
     @GetMapping("/getInnerProducts")
     public GetInnerProductsResponse getInnerProducts(GetInnerProductsRequest request){
-        List<GetInnerProductsWithFilterOut> results = innerProductService.getInnerProductsWithFilter(mapper.from(request));
+        List<GetInnerProductsWithFilterResult> results = innerProductService.getInnerProductsWithFilter(mapper.from(request));
         return GetInnerProductsResponse.builder()
                 .responseCode("001")
                 .lists(results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList()))
@@ -53,7 +53,7 @@ public class ProductCodeAdminController {
     }
     @GetMapping("/getInnerCategory")
     public GetInnerCategoryResponse getInnerCategory(GetInnerCategoryRequest request){
-        List<GetAllInnerCategoryOut> allInnerCategory = innerCategoryService.getAllInnerCategory(mapper.from(request));
+        List<GetAllInnerCategoryResult> allInnerCategory = innerCategoryService.getAllInnerCategory(mapper.from(request));
         return GetInnerCategoryResponse.builder().list(allInnerCategory.stream().map(element -> mapper.from(element)).collect(Collectors.toList())).build();
     }
 

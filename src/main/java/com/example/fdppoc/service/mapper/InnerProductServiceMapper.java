@@ -13,23 +13,23 @@ import org.mapstruct.*;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface InnerProductServiceMapper {
-    FindInnerProductsWithFilterIn from(GetInnerProductsWithFilterIn in);
+    FindInnerProductsWithFilterIn from(GetInnerProductsWithFilterCriteria in);
 
     @Mapping(target="baseProductIds",expression = "java(element.getBaseProducts().stream().map(ele->ele.getId()).collect(java.util.stream.Collectors.toList()))")
-    GetInnerProductsWithFilterOut from(FindInnerProductWithFilterOut element);
+    GetInnerProductsWithFilterResult from(FindInnerProductWithFilterOut element);
 
     @Mappings({
             @Mapping(target = "baseProducts", ignore = true),
             @Mapping(target = "innerCategory",ignore = true)
     }
     )
-    InnerProduct toEntity(SetInnerProductsIn element);
+    InnerProduct toEntity(SetInnerProductsCriteria element);
 
-    FindInnerProductListIn from(GetInnerProductListIn in);
+    FindInnerProductListIn from(GetInnerProductsCriteria in);
     @Mappings({
         //@Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())"),
         @Mapping(target="baseProductIds", expression = "java(element.getBaseProducts().stream().map(elem -> elem.getId()).collect(java.util.stream.Collectors.toList()))"),
         @Mapping(target="innerCategoryId",expression = "java(element.getInnerCategory().getId())")
     })
-    GetInnerProductListOut from(InnerProduct element);
+    GetInnerProductsResult from(InnerProduct element);
 }

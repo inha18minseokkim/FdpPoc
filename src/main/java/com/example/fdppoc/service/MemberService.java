@@ -17,23 +17,23 @@ import java.util.Optional;
 public class MemberService {
     private final MemberInfoRepository memberInfoRepository;
     private final MemberServiceMapper mapper;
-    public GetMemberPushInfoOut getMemberPushInfo(GetMemberPushInfoIn in){
+    public GetMemberPushInfoResult getMemberPushInfo(GetMemberPushInfoCriteria in){
         //Optional<MemberInfo> result = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(in.getMemberInfoId(), in.getBusinessCode());
         Optional<MemberInfo> result = getMember(mapper.from(in)).getMemberInfo();
 
-        return GetMemberPushInfoOut.builder().isAgree(result.isEmpty() ? false : result.get().getIsAgree()).build();
+        return GetMemberPushInfoResult.builder().isAgree(result.isEmpty() ? false : result.get().getIsAgree()).build();
     }
     @Transactional
-    public GetMemberOut getMember(GetMemberIn in){
+    public GetMemberResult getMember(GetMemberCriteria in){
         Optional<MemberInfo> result = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(in.getCustomerId(), in.getBusinessCode());
         log.info("getMember 타입 확인 {}",this.getClass());
         if(result.isEmpty())
             result = Optional.of(memberInfoRepository.save(MemberInfo.builder().isAgree(false)
                     .businessCode(in.getBusinessCode()).customerId(in.getCustomerId()).build()));
-        return GetMemberOut.builder().memberInfo(result).build();
+        return GetMemberResult.builder().memberInfo(result).build();
     }
     @Transactional
-    public void setMemberPushInfo(SetMemberPushInfoIn in){
+    public void setMemberPushInfo(SetMemberPushInfoCriteria in){
         Optional<MemberInfo> memberInfo = getMember(mapper.from(in)).getMemberInfo();
         if(memberInfo.isEmpty()) {
             memberInfoRepository.save(mapper.toEntity(in));

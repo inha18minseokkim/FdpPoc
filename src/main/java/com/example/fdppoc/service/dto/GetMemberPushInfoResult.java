@@ -4,10 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Data
 @Builder
+@Data
 @ToString
-public class GetInnerProductsWithFilterIn {
-    private Long innerCategoryId;
-    private String categoryCode;
+public class GetMemberPushInfoResult {
+    private Boolean isAgree;
 }

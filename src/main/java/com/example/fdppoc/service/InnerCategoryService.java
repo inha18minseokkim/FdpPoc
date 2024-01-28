@@ -1,7 +1,6 @@
 package com.example.fdppoc.service;
 
 import com.example.fdppoc.entity.InnerCategory;
-import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.repository.InnerCategoryRepository;
 import com.example.fdppoc.service.dto.*;
 import com.example.fdppoc.service.mapper.InnerCategoryServiceMapper;
@@ -11,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -22,16 +19,16 @@ public class InnerCategoryService {
     private final InnerCategoryRepository innerCategoryRepository;
     private final InnerCategoryServiceMapper mapper;
     @Transactional
-    public List<GetAllInnerProductsOut> getAllInnerProducts(GetAllInnerProductsIn in){
+    public List<GetAllInnerProductsResult> getAllInnerProducts(GetAllInnerProductsCriteria in){
         List<InnerCategory> all = innerCategoryRepository.findAll();
-        List<GetAllInnerProductsOut> result = all.stream().filter(categoryElement -> categoryElement.getIsAvailable() == true)
+        List<GetAllInnerProductsResult> result = all.stream().filter(categoryElement -> categoryElement.getIsAvailable() == true)
                 .map(categoryElement -> {
-                    List<GetAllInnerProductsOutElement> subList = categoryElement.getSubProducts().stream()
+                    List<GetAllInnerProductsResultElement> subList = categoryElement.getSubProducts().stream()
                             .filter(element -> element.getIsAvailable() == true)
                             .map(element -> mapper.from(element))
                             .collect(Collectors.toList());
 
-                    return GetAllInnerProductsOut.builder()
+                    return GetAllInnerProductsResult.builder()
                             .innerProducts(subList)
                             .id(categoryElement.getId())
                             .innerCategoryName(categoryElement.getInnerCategoryName())
@@ -41,11 +38,11 @@ public class InnerCategoryService {
                 }).collect(Collectors.toList());
         return result;
     }
-    public List<GetAllInnerCategoryOut> getAllInnerCategory(GetAllInnerCategoryIn in){
+    public List<GetAllInnerCategoryResult> getAllInnerCategory(GetAllInnerCategoryCriteria in){
         List<InnerCategory> all = innerCategoryRepository.findAll();
         return all.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }
-    public void setInnerCategory(List<SetInnerCategoryIn> in){
+    public void setInnerCategory(List<SetInnerCategoryCriteria> in){
         in.stream().filter(element -> !element.getRowStatus().equals("R")).forEach(
                 element -> {
                     if(element.getId() == null || innerCategoryRepository.findById(element.getId()).isEmpty())

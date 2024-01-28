@@ -1,9 +1,7 @@
 package com.example.fdppoc.controller.mapper;
 
 import com.example.fdppoc.controller.dto.GetProductDetailResponse;
-import com.example.fdppoc.controller.dto.GetProductInterestInfoRequest;
-import com.example.fdppoc.service.dto.GetProductInterestIn;
-import com.example.fdppoc.service.dto.GetProductPriceOut;
+import com.example.fdppoc.service.dto.GetProductPriceResult;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -14,6 +12,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface ProductDetailControllerMapper {
-    GetProductDetailResponse from(GetProductPriceOut productPrice);
+    GetProductDetailResponse from(GetProductPriceResult productPrice);
 
 }

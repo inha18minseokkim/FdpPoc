@@ -1,6 +1,5 @@
 package com.example.fdppoc.service.dto;
 
-import com.example.fdppoc.entity.InnerCategory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -8,9 +7,9 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-@Builder
 @ToString
-public class GetInnerProductListOut {
+@Builder
+public class SetInnerProductsCriteria {
     private Long id;
     private List<Long> baseProductIds;
     private Boolean isMainMaterial;
@@ -22,4 +21,5 @@ public class GetInnerProductListOut {
     private Boolean isSeasonal;
     private String seasonStartDate;
     private String seasonEndDate;
+    private String rowStatus;
 }

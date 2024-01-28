@@ -4,15 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.List;
-
-@Builder
 @Data
+@Builder
 @ToString
-public class GetAllInnerProductsOut {
-    private Long orderSequence;
+public class GetAllInnerCategoryResult {
     private Long id;
     private String innerCategoryName;
+    private Long orderSequence;
     private String additionalDescription;
-    private List<GetAllInnerProductsOutElement> innerProducts;
+    private Boolean isAvailable;
 }

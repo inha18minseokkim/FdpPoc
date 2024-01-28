@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class SetMemberPushInfoIn {
+public class SetMemberPushInfoCriteria {
     private String customerId;
     private String businessCode;
     private Boolean isAgree;

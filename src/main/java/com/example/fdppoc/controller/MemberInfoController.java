@@ -7,8 +7,7 @@ import com.example.fdppoc.controller.dto.SetMemberPushInfoRequest;
 import com.example.fdppoc.controller.dto.SetMemberPushInfoResponse;
 import com.example.fdppoc.controller.mapper.MemberInfoControllerMapper;
 import com.example.fdppoc.service.MemberService;
-import com.example.fdppoc.service.dto.GetMemberPushInfoOut;
-import com.example.fdppoc.service.dto.SetMemberPushInfoIn;
+import com.example.fdppoc.service.dto.GetMemberPushInfoResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class MemberInfoController {
     private final MemberInfoControllerMapper mapper;
     @GetMapping("/getMemberPushInfo")
     GetMemberPushInfoResponse getMemberPushInfo(GetmemberPushInfoRequest request) {
-        GetMemberPushInfoOut memberPushInfo = memberService.getMemberPushInfo(mapper.from(request));
+        GetMemberPushInfoResult memberPushInfo = memberService.getMemberPushInfo(mapper.from(request));
         return mapper.from(memberPushInfo);
     }
     @PostMapping("/setMemberPushInfo")

@@ -1,9 +1,9 @@
 package com.example.fdppoc.service.mapper;
 
 import com.example.fdppoc.entity.MemberInfo;
-import com.example.fdppoc.service.dto.GetMemberIn;
-import com.example.fdppoc.service.dto.GetMemberPushInfoIn;
-import com.example.fdppoc.service.dto.SetMemberPushInfoIn;
+import com.example.fdppoc.service.dto.GetMemberCriteria;
+import com.example.fdppoc.service.dto.GetMemberPushInfoCriteria;
+import com.example.fdppoc.service.dto.SetMemberPushInfoCriteria;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,10 +15,10 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface MemberServiceMapper {
-    GetMemberIn from(SetMemberPushInfoIn in);
+    GetMemberCriteria from(SetMemberPushInfoCriteria in);
 
-    GetMemberIn from(GetMemberPushInfoIn in);
+    GetMemberCriteria from(GetMemberPushInfoCriteria in);
 
     @Mapping(target = "id", ignore = true)
-    MemberInfo toEntity(SetMemberPushInfoIn in);
+    MemberInfo toEntity(SetMemberPushInfoCriteria in);
 }

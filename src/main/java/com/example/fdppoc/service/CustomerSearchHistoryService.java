@@ -2,9 +2,9 @@ package com.example.fdppoc.service;
 
 import com.example.fdppoc.entity.CustomerSearchHistory;
 import com.example.fdppoc.repository.CustomerSearchHistoryRepository;
-import com.example.fdppoc.service.dto.GetTopViewProductsIn;
-import com.example.fdppoc.service.dto.GetTopViewProductsOut;
-import com.example.fdppoc.service.dto.InsertProductHistoryIn;
+import com.example.fdppoc.service.dto.GetTopViewProductsCriteria;
+import com.example.fdppoc.service.dto.GetTopViewProductsResult;
+import com.example.fdppoc.service.dto.InsertProductHistoryCriteria;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class CustomerSearchHistoryService {
     private final CustomerSearchHistoryRepository customerSearchHistoryRepository;
     @Transactional
-    public void insertProductHistory(InsertProductHistoryIn in) {
+    public void insertProductHistory(InsertProductHistoryCriteria in) {
         customerSearchHistoryRepository.save(CustomerSearchHistory
                 .builder()
                         .innerProduct(in.getInnerProduct())
@@ -27,7 +27,7 @@ public class CustomerSearchHistoryService {
                         .submitTime(LocalDateTime.now())
                 .build());
     }
-    public GetTopViewProductsOut getTopViewProducts(GetTopViewProductsIn in){
+    public GetTopViewProductsResult getTopViewProducts(GetTopViewProductsCriteria in){
         return null;
     }
 }

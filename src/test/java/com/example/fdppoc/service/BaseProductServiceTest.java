@@ -1,8 +1,8 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.service.dto.GetBaseCodesIn;
-import com.example.fdppoc.service.dto.GetBaseCodesOut;
-import com.example.fdppoc.service.dto.SetBaseCodesIn;
+import com.example.fdppoc.service.dto.GetBaseCodesCriteria;
+import com.example.fdppoc.service.dto.GetBaseCodesResult;
+import com.example.fdppoc.service.dto.SetBaseCodesCriteria;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -12,8 +12,6 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -25,8 +23,8 @@ class BaseProductServiceTest {
     @Transactional
     @Rollback(true)
     void 기본상품삽입() {
-        List<SetBaseCodesIn> lists = new ArrayList<>();
-        lists.add(SetBaseCodesIn.builder()
+        List<SetBaseCodesCriteria> lists = new ArrayList<>();
+        lists.add(SetBaseCodesCriteria.builder()
                         .categoryCode("600")
                         .itemCode("4301")
                         .kindCode("21")
@@ -42,7 +40,7 @@ class BaseProductServiceTest {
                         .isAvailable(true)
                 .build());
         baseProductService.setBaseCodes(lists);
-        List<GetBaseCodesOut> baseCodes = baseProductService.getBaseCodes(GetBaseCodesIn.builder().build());
+        List<GetBaseCodesResult> baseCodes = baseProductService.getBaseCodes(GetBaseCodesCriteria.builder().build());
         log.info("결과 : {}", baseCodes);
     }
 

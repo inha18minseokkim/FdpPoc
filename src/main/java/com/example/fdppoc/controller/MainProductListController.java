@@ -28,15 +28,15 @@ public class MainProductListController {
     @GetMapping("/searchInnerProducts")
     public SearchInnerProductsResponse searchInnerProducts(SearchInnerProductsRequest request){
         log.info("받음 : {}", request);
-        GetInnerProductListIn from = GetInnerProductListIn.builder().isAvailable(true).build();
-        List<GetInnerProductListOut> results = innerProductService.getInnerProductList(from);
+        GetInnerProductsCriteria from = GetInnerProductsCriteria.builder().isAvailable(true).build();
+        List<GetInnerProductsResult> results = innerProductService.getInnerProductList(from);
         return SearchInnerProductsResponse.builder()
                 //.lists(results.stream().collect(Collectors.toList()))
                 .responseCode(ControllerResponse.OK).build();
     }
     @GetMapping("/searchAllInnerProducts")
     public SearchAllInnerProductsResponse searchAllInnerProducts(SearchAllInnerProductsRequest request){
-        List<GetAllInnerProductsOut> allInnerProducts = innerCategoryService.getAllInnerProducts(GetAllInnerProductsIn.builder().build());
+        List<GetAllInnerProductsResult> allInnerProducts = innerCategoryService.getAllInnerProducts(GetAllInnerProductsCriteria.builder().build());
         return SearchAllInnerProductsResponse.builder()
                 .baseDate(request.getBaseDate())
                 .innerCategories(allInnerProducts.stream().map(element -> mapper.from2(element)).collect(Collectors.toList()))

@@ -2,9 +2,9 @@ package com.example.fdppoc.service.mapper;
 
 import com.example.fdppoc.entity.InnerCategory;
 import com.example.fdppoc.entity.InnerProduct;
-import com.example.fdppoc.service.dto.GetAllInnerCategoryOut;
-import com.example.fdppoc.service.dto.GetAllInnerProductsOutElement;
-import com.example.fdppoc.service.dto.SetInnerCategoryIn;
+import com.example.fdppoc.service.dto.GetAllInnerCategoryResult;
+import com.example.fdppoc.service.dto.GetAllInnerProductsResultElement;
+import com.example.fdppoc.service.dto.SetInnerCategoryCriteria;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,10 +16,10 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface InnerCategoryServiceMapper {
-    GetAllInnerProductsOutElement from(InnerProduct element);
+    GetAllInnerProductsResultElement from(InnerProduct element);
 
-    GetAllInnerCategoryOut from(InnerCategory element);
+    GetAllInnerCategoryResult from(InnerCategory element);
 
     @Mapping(target="subProducts",ignore = true)
-    InnerCategory from(SetInnerCategoryIn element);
+    InnerCategory from(SetInnerCategoryCriteria element);
 }

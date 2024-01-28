@@ -7,6 +7,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class GetMemberInterestProductsIn {
-    private String customerId;
+public class GetBaseCodesCriteria {
+    private String categoryCode;
+    private String itemCode;
 }

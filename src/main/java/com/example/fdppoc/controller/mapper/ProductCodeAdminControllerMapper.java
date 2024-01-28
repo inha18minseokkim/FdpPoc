@@ -12,16 +12,16 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface ProductCodeAdminControllerMapper {
-    GetBaseCodesIn from(GetBaseCodesRequest request);
-    GetBaseCodesResponseElement from(GetBaseCodesOut element);
-    SetBaseCodesIn from(SetBaseCodesRequestElement element);
-    GetInnerProductsWithFilterIn from(GetInnerProductsRequest request);
+    GetBaseCodesCriteria from(GetBaseCodesRequest request);
+    GetBaseCodesResponseElement from(GetBaseCodesResult element);
+    SetBaseCodesCriteria from(SetBaseCodesRequestElement element);
+    GetInnerProductsWithFilterCriteria from(GetInnerProductsRequest request);
 
-    GetInnerProductsResponseElement from(GetInnerProductsWithFilterOut element);
+    GetInnerProductsResponseElement from(GetInnerProductsWithFilterResult element);
 
-    SetInnerProductsIn from(SetInnerProductsRequestElement element);
+    SetInnerProductsCriteria from(SetInnerProductsRequestElement element);
 
-    GetAllInnerCategoryIn from(GetInnerCategoryRequest request);
+    GetAllInnerCategoryCriteria from(GetInnerCategoryRequest request);
 
-    GetInnerCategoryResponseElement from(GetAllInnerCategoryOut element);
+    GetInnerCategoryResponseElement from(GetAllInnerCategoryResult element);
 }

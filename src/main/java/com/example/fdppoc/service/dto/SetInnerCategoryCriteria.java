@@ -7,11 +7,11 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class GetAllInnerProductsOutElement {
-    private Long orderSequence;
+public class SetInnerCategoryCriteria {
     private Long id;
-    private String productName;
+    private String innerCategoryName;
+    private Long orderSequence;
     private String additionalDescription;
-    private Boolean isSeasonal;
-    private Boolean isMainMaterial;
+    private Boolean isAvailable;
+    private String rowStatus;
 }

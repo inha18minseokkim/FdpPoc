@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Builder
-@Data
 @ToString
-public class GetAllInnerProductsIn {
+@Data
+public class GetAllInnerCategoryCriteria {
 }

@@ -9,7 +9,7 @@ import lombok.ToString;
 @Builder
 @Data
 @ToString
-public class SetProductInterestIn {
+public class SetProductInterestCriteria {
     private InnerProduct targetProduct;
     private MemberInfo memberInfo;
     private Boolean isAvailable;

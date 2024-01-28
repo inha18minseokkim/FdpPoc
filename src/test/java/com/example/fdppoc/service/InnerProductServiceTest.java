@@ -19,10 +19,10 @@ class InnerProductServiceTest {
     InnerProductService innerProductService;
     @Test
     void 내부상품조회() {
-        GetInnerProductsWithFilterIn in = GetInnerProductsWithFilterIn.builder()
+        GetInnerProductsWithFilterCriteria in = GetInnerProductsWithFilterCriteria.builder()
                 .categoryCode("100")
                 .build();
-        List<GetInnerProductsWithFilterOut> results = innerProductService.getInnerProductsWithFilter(in);
+        List<GetInnerProductsWithFilterResult> results = innerProductService.getInnerProductsWithFilter(in);
         log.info("실행 결과 : " + results);
     }
     @Test
@@ -35,8 +35,8 @@ class InnerProductServiceTest {
     @Transactional
     @Rollback(value = true)
     void 내부상품삽입() {
-        List<SetInnerProductsIn> in = List.of(
-                SetInnerProductsIn.builder()
+        List<SetInnerProductsCriteria> in = List.of(
+                SetInnerProductsCriteria.builder()
                         .baseProductIds(List.of(202L))
                         .productName("소 안심")
                         .orderSequence(1L)
@@ -46,7 +46,7 @@ class InnerProductServiceTest {
                         .isSeasonal(false)
                         .additionalDescription("소 안심")
                         .innerCategoryId(1L).build(),
-                SetInnerProductsIn.builder()
+                SetInnerProductsCriteria.builder()
                         .baseProductIds(List.of(203L))
                         .productName("돼지 앞다리")
                         .orderSequence(1L)
@@ -56,7 +56,7 @@ class InnerProductServiceTest {
                         .isSeasonal(false)
                         .additionalDescription("돼지 앞다리")
                         .innerCategoryId(1L).build(),
-                SetInnerProductsIn.builder()
+                SetInnerProductsCriteria.builder()
                         .baseProductIds(List.of(213L,214L,215L,216L))
                         .productName("배추")
                         .orderSequence(1L)
@@ -70,20 +70,20 @@ class InnerProductServiceTest {
                         .innerCategoryId(1L).build()
         );
         innerProductService.setInnerProducts(in);
-        List<GetInnerProductListOut> innerProductList = innerProductService.getInnerProductList(GetInnerProductListIn.builder().isAvailable(true).build());
+        List<GetInnerProductsResult> innerProductList = innerProductService.getInnerProductList(GetInnerProductsCriteria.builder().isAvailable(true).build());
         log.info("실행 결과 : {}",innerProductList);
     }
     @Test
     void 내부상품리스트조회() {
-        GetInnerProductListIn in = GetInnerProductListIn.builder().isAvailable(true).searchKeyword("구").build();
-        List<GetInnerProductListOut> innerProductList = innerProductService.getInnerProductList(in);
+        GetInnerProductsCriteria in = GetInnerProductsCriteria.builder().isAvailable(true).searchKeyword("구").build();
+        List<GetInnerProductsResult> innerProductList = innerProductService.getInnerProductList(in);
         log.info("실행 결과 : {}", innerProductList);
         Assertions.assertThat(innerProductList.get(0).getProductName()).isEqualTo("고구마");
     }
     @Test
     void 내부상품리스트조회모두() {
-        GetInnerProductListIn in = GetInnerProductListIn.builder().isAvailable(true).build();
-        List<GetInnerProductListOut> innerProductList = innerProductService.getInnerProductList(in);
+        GetInnerProductsCriteria in = GetInnerProductsCriteria.builder().isAvailable(true).build();
+        List<GetInnerProductsResult> innerProductList = innerProductService.getInnerProductList(in);
         log.info("실행 결과 : {}", innerProductList);
 
     }

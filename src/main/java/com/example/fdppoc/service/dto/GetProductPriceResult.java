@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @Data
 @ToString
-public class GetProductPriceOut {
+public class GetProductPriceResult {
     private Long meanPrice;
     private Long minimumPrice;
     private Long maximumPrice;

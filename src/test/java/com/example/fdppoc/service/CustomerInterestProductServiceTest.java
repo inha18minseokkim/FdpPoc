@@ -1,10 +1,7 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.entity.CustomerInterestProduct;
 import com.example.fdppoc.entity.InnerProduct;
 import com.example.fdppoc.entity.MemberInfo;
-import com.example.fdppoc.repository.BaseProductRepository;
 import com.example.fdppoc.repository.CustomerInterestProductRepository;
 import com.example.fdppoc.repository.InnerProductRepository;
 import com.example.fdppoc.repository.MemberInfoRepository;
@@ -38,14 +35,14 @@ class CustomerInterestProductServiceTest {
     void 관심상품등록조회() {
         Optional<InnerProduct> rice = innerProductRepository.findById(1004L);
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
-        GetProductInterestIn input = GetProductInterestIn.builder()
+        GetProductInterestCriteria input = GetProductInterestCriteria.builder()
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
                 .build();
-        GetProductInterestOut first = customerInterestProductService.getProductInterest(input);
+        GetProductInterestResult first = customerInterestProductService.getProductInterest(input);
         log.info("첫번째 : {}",first);
 
-        SetProductInterestIn build = SetProductInterestIn.builder()
+        SetProductInterestCriteria build = SetProductInterestCriteria.builder()
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
                 .isAvailable(true)
@@ -61,14 +58,14 @@ class CustomerInterestProductServiceTest {
     void 관심상품해제조회() {
         Optional<InnerProduct> rice = innerProductRepository.findById(2L);
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
-        GetProductInterestIn input = GetProductInterestIn.builder()
+        GetProductInterestCriteria input = GetProductInterestCriteria.builder()
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
                 .build();
-        GetProductInterestOut first = customerInterestProductService.getProductInterest(input);
+        GetProductInterestResult first = customerInterestProductService.getProductInterest(input);
         log.info("첫번째 : {}",first);
 
-        SetProductInterestIn build = SetProductInterestIn.builder()
+        SetProductInterestCriteria build = SetProductInterestCriteria.builder()
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
                 .isAvailable(false)
@@ -82,7 +79,7 @@ class CustomerInterestProductServiceTest {
     @Test
     @Transactional
     void 관심상품리스트조회() {
-        List<GetMemberInterestProductsOut> memberInterestProducts = customerInterestProductService.getMemberInterestProducts(GetMemberInterestProductsIn.builder().customerId("20170860").build());
+        List<GetMemberInterestProductsResult> memberInterestProducts = customerInterestProductService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId("20170860").build());
         log.info("결과 : {}", memberInterestProducts);
     }
 

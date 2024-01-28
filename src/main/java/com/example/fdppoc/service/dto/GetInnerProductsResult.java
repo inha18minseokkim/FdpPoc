@@ -7,9 +7,9 @@ import lombok.ToString;
 import java.util.List;
 
 @Data
-@ToString
 @Builder
-public class SetInnerProductsIn {
+@ToString
+public class GetInnerProductsResult {
     private Long id;
     private List<Long> baseProductIds;
     private Boolean isMainMaterial;
@@ -21,5 +21,4 @@ public class SetInnerProductsIn {
     private Boolean isSeasonal;
     private String seasonStartDate;
     private String seasonEndDate;
-    private String rowStatus;
 }

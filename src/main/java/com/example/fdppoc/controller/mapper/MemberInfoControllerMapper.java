@@ -3,9 +3,9 @@ package com.example.fdppoc.controller.mapper;
 import com.example.fdppoc.controller.dto.GetMemberPushInfoResponse;
 import com.example.fdppoc.controller.dto.GetmemberPushInfoRequest;
 import com.example.fdppoc.controller.dto.SetMemberPushInfoRequest;
-import com.example.fdppoc.service.dto.GetMemberPushInfoIn;
-import com.example.fdppoc.service.dto.GetMemberPushInfoOut;
-import com.example.fdppoc.service.dto.SetMemberPushInfoIn;
+import com.example.fdppoc.service.dto.GetMemberPushInfoCriteria;
+import com.example.fdppoc.service.dto.GetMemberPushInfoResult;
+import com.example.fdppoc.service.dto.SetMemberPushInfoCriteria;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -16,9 +16,9 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface MemberInfoControllerMapper {
-    GetMemberPushInfoIn from(GetmemberPushInfoRequest request);
+    GetMemberPushInfoCriteria from(GetmemberPushInfoRequest request);
 
-    GetMemberPushInfoResponse from(GetMemberPushInfoOut memberPushInfo);
+    GetMemberPushInfoResponse from(GetMemberPushInfoResult memberPushInfo);
 
-    SetMemberPushInfoIn from(SetMemberPushInfoRequest request);
+    SetMemberPushInfoCriteria from(SetMemberPushInfoRequest request);
 }

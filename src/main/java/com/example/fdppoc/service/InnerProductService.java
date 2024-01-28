@@ -30,12 +30,12 @@ public class InnerProductService {
     private final InnerCategoryRepository innerCategoryRepository;
     private final InnerProductServiceMapper mapper;
 
-    public List<GetInnerProductsWithFilterOut> getInnerProductsWithFilter(GetInnerProductsWithFilterIn in){
+    public List<GetInnerProductsWithFilterResult> getInnerProductsWithFilter(GetInnerProductsWithFilterCriteria in){
         List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(mapper.from(in));
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
     @Transactional
-    public void setInnerProducts(List<SetInnerProductsIn> in){
+    public void setInnerProducts(List<SetInnerProductsCriteria> in){
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .map((element) -> {
                     InnerProduct entity = mapper.toEntity(element);
@@ -55,7 +55,7 @@ public class InnerProductService {
     }
 
     //내부상품리스트조회
-    public List<GetInnerProductListOut> getInnerProductList(GetInnerProductListIn in){
+    public List<GetInnerProductsResult> getInnerProductList(GetInnerProductsCriteria in){
         FindInnerProductListIn input = mapper.from(in);
         List<InnerProduct> innerProductList = innerProductRepositoryCustom.findInnerProductList(input);
         return innerProductList.stream().map(element -> mapper.from(element)).collect(Collectors.toList());

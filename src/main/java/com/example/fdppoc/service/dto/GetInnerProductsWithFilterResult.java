@@ -1,7 +1,5 @@
 package com.example.fdppoc.service.dto;
 
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.entity.InnerCategory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -11,7 +9,7 @@ import java.util.List;
 @ToString
 @Data
 @Builder
-public class GetInnerProductsWithFilterOut {
+public class GetInnerProductsWithFilterResult {
     private Long id;
     private List<Long> baseProductIds;
     private Boolean isMainMaterial;

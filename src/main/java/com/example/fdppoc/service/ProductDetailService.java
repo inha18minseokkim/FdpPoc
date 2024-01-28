@@ -1,6 +1,5 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.repository.ProcessedPriceInfoRepository;
 import com.example.fdppoc.repository.ProcessedPriceInfoRepositoryCustom;
 import com.example.fdppoc.repository.dto.FindPriceListByGroupRegionCodeOut;
 import com.example.fdppoc.service.dto.*;
@@ -22,19 +21,19 @@ public class ProductDetailService {
     private final CustomerSearchHistoryService customerSearchHistoryService;
     private final ProductDetailServiceMapper mapper;
     @Transactional
-    public GetProductPriceOut getProductPrice(GetProductPriceIn in){
+    public GetProductPriceResult getProductPrice(GetProductPriceCriteria in){
         List<FindPriceListByGroupRegionCodeOut> dailyPrices = processedPriceInfoRepositoryCustom.findPriceListByGroupRegionCode(mapper.from(in));
 
         LongSummaryStatistics summary = dailyPrices.stream()
                 .map(element -> element.getPrice()).mapToLong(Long::longValue).summaryStatistics();
 
-        customerSearchHistoryService.insertProductHistory(InsertProductHistoryIn.builder()
+        customerSearchHistoryService.insertProductHistory(InsertProductHistoryCriteria.builder()
                         .innerProduct(in.getTargetProduct())
                         .memberInfo(in.getMemberInfo())
                         .regionGroup(in.getRegionGroup())
                 .build());
 
-        return GetProductPriceOut.builder()
+        return GetProductPriceResult.builder()
                 .meanPrice(Math.round(summary.getAverage()))
                 .maximumPrice(summary.getMax())
                 .minimumPrice(summary.getMin())

@@ -4,14 +4,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Data
+import java.util.List;
+
 @Builder
+@Data
 @ToString
-public class SetInnerCategoryIn {
+public class GetAllInnerProductsResult {
+    private Long orderSequence;
     private Long id;
     private String innerCategoryName;
-    private Long orderSequence;
     private String additionalDescription;
-    private Boolean isAvailable;
-    private String rowStatus;
+    private List<GetAllInnerProductsResultElement> innerProducts;
 }

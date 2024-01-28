@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class GetInnerProductListIn {
+public class GetInnerProductsCriteria {
     private Long innerCategoryId;
     private String searchKeyword;
     private Boolean isAvailable;

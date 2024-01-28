@@ -8,6 +8,6 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
-public class GetMemberInterestProductsOut {
+public class GetMemberInterestProductsResult {
     private InnerProduct innerProduct;
 }

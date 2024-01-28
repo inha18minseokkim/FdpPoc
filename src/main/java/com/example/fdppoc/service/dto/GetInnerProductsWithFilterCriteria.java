@@ -4,8 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+@Data
 @Builder
 @ToString
-@Data
-public class GetAllInnerCategoryIn {
+public class GetInnerProductsWithFilterCriteria {
+    private Long innerCategoryId;
+    private String categoryCode;
 }

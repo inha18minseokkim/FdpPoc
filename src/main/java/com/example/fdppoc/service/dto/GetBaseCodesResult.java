@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.ToString;
 
 @Builder
-@ToString
 @Data
-public class SetBaseCodesIn {
+@ToString
+public class GetBaseCodesResult {
     private Long id;
     private String categoryCode;    //pd_ctgr_cd
     private String itemCode;            //pd_lsar_cd
@@ -21,5 +21,4 @@ public class SetBaseCodesIn {
     private String itemName;
     private String kindName;
     private String gradeName;
-    private String rowStatus;
 }

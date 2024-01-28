@@ -1,9 +1,7 @@
 package com.example.fdppoc.service;
 
 import com.example.fdppoc.entity.CustomerInterestProduct;
-import com.example.fdppoc.entity.MemberInfo;
 import com.example.fdppoc.repository.CustomerInterestProductRepository;
-import com.example.fdppoc.repository.MemberInfoRepository;
 import com.example.fdppoc.service.dto.*;
 import com.example.fdppoc.service.mapper.CustomerInterestProductServiceMapper;
 import jakarta.transaction.Transactional;
@@ -24,14 +22,14 @@ public class CustomerInterestProductService {
     private final CustomerInterestProductServiceMapper mapper;
 
     @Transactional
-    public GetProductInterestOut getProductInterest(GetProductInterestIn in){
+    public GetProductInterestResult getProductInterest(GetProductInterestCriteria in){
         Optional<CustomerInterestProduct> result = customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(in.getTargetProduct(), in.getMemberInfo());
 
-        return GetProductInterestOut.builder().isAvailable(result.isEmpty()?false:result.get().getIsAvailable())
+        return GetProductInterestResult.builder().isAvailable(result.isEmpty()?false:result.get().getIsAvailable())
                 .build();
     }
     @Transactional
-    public void setProductInterest(SetProductInterestIn in){
+    public void setProductInterest(SetProductInterestCriteria in){
         log.info("setProductInterest : {}",in);
         Optional<CustomerInterestProduct> result = customerInterestProductRepository
                 .getCustomerInterestProductByInnerProductAndMemberInfo(in.getTargetProduct(), in.getMemberInfo());
@@ -48,8 +46,8 @@ public class CustomerInterestProductService {
         customerInterestProductRepository.save(customerInterestProduct);
     }
     @Transactional
-    public List<GetMemberInterestProductsOut> getMemberInterestProducts(GetMemberInterestProductsIn in) {
-        GetMemberOut member = memberService.getMember(GetMemberIn.builder().customerId(in.getCustomerId()).businessCode("001").build());
+    public List<GetMemberInterestProductsResult> getMemberInterestProducts(GetMemberInterestProductsCriteria in) {
+        GetMemberResult member = memberService.getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build());
         List<CustomerInterestProduct> allProduct = customerInterestProductRepository.findAllByMemberInfoAndIsAvailable(member.getMemberInfo().get(), true);
         return allProduct.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }
