@@ -1,5 +1,7 @@
 package com.example.fdppoc.service;
 
+import com.example.fdppoc.service.dto.GetAllProductCriteria;
+import com.example.fdppoc.service.dto.GetAllProductResult;
 import com.example.fdppoc.service.dto.GetPopularProductCriteria;
 import com.example.fdppoc.service.dto.GetPopularProductResult;
 import jakarta.transaction.Transactional;
@@ -31,4 +33,14 @@ class ProductListServiceTest {
         log.info("실행 결과 : {}",popularProduct);
     }
 
+    @Test
+    @Transactional
+    void legacy용모든상품조회() {
+        List<GetAllProductResult> allProduct = productListService.getAllProduct(GetAllProductCriteria.builder()
+                .baseDate("20240119")
+                .customerId("20170860")
+                .regionGroupId(52L)
+                .build());
+        log.info("결과 : {}",allProduct);
+    }
 }

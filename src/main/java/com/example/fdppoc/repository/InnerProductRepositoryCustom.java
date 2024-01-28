@@ -6,6 +6,7 @@ import com.example.fdppoc.entity.QInnerProduct;
 import com.example.fdppoc.repository.dto.FindInnerProductListIn;
 import com.example.fdppoc.repository.dto.FindInnerProductWithFilterOut;
 import com.example.fdppoc.repository.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.repository.dto.GetAllProductIn;
 import com.example.fdppoc.repository.mapper.InnerProductRepositoryMapper;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -56,6 +58,16 @@ public class InnerProductRepositoryCustom {
                 .fetch();
         return results;
     }
+
+//    //Legacy용
+//    public Map<Long,InnerProduct> getAllProduct(GetAllProductIn in){
+//        JPAQueryFactory query = new JPAQueryFactory(em);
+//        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+//        List<InnerProduct> result = query.select(innerProduct)
+//                .from(innerProduct)
+//                .where(innerProduct.isAvailable.eq(true)).fetch();
+//        return result.stream().collect(Collectors.toMap(InnerProduct::getId,element -> element));
+//    }
     //좋아요 누른 상품들
     //가격 상하
 }

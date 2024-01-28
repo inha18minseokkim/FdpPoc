@@ -21,8 +21,12 @@ public class CustomerInterestProduct {
             @JoinColumn(name = "innerProductId",referencedColumnName="id")},
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private InnerProduct innerProduct;
+
     @ManyToOne
-    @JoinColumn(name = "customerId", referencedColumnName = "customerId",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumns(value = {
+            @JoinColumn(name = "customerId", referencedColumnName = "customerId"),
+            @JoinColumn(name = "businessCode", referencedColumnName = "businessCode")
+    },foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private MemberInfo memberInfo;
     private Boolean isAvailable;
 }

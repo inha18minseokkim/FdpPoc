@@ -1,6 +1,7 @@
 package com.example.fdppoc.service.mapper;
 
 import com.example.fdppoc.entity.CustomerInterestProduct;
+import com.example.fdppoc.service.dto.GetMemberInterestProductsOut;
 import com.example.fdppoc.service.dto.SetProductInterestIn;
 import org.mapstruct.*;
 
@@ -16,4 +17,10 @@ public interface CustomerInterestProductServiceMapper {
     }
     )
     CustomerInterestProduct from(SetProductInterestIn in);
+
+    @Mappings({
+            @Mapping(target = "innerProduct", expression = "java(element.getInnerProduct())")
+    }
+    )
+    GetMemberInterestProductsOut from(CustomerInterestProduct element);
 }

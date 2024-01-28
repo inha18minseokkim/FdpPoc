@@ -1,17 +1,12 @@
 package com.example.fdppoc.controller;
 
 import com.example.fdppoc.code.ControllerResponse;
-import com.example.fdppoc.controller.dto.SearchAllInnerProductsRequest;
-import com.example.fdppoc.controller.dto.SearchAllInnerProductsResponse;
-import com.example.fdppoc.controller.dto.SearchInnerProductsRequest;
-import com.example.fdppoc.controller.dto.SearchInnerProductsResponse;
+import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.MainProductListControllerMapper;
 import com.example.fdppoc.service.InnerCategoryService;
 import com.example.fdppoc.service.InnerProductService;
-import com.example.fdppoc.service.dto.GetAllInnerProductsIn;
-import com.example.fdppoc.service.dto.GetAllInnerProductsOut;
-import com.example.fdppoc.service.dto.GetInnerProductListIn;
-import com.example.fdppoc.service.dto.GetInnerProductListOut;
+import com.example.fdppoc.service.ProductListService;
+import com.example.fdppoc.service.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MainProductListController {
     private final InnerProductService innerProductService;
+    private final ProductListService productListService;
     private final InnerCategoryService innerCategoryService;
     private final MainProductListControllerMapper mapper;
     @GetMapping("/searchInnerProducts")
@@ -44,6 +40,15 @@ public class MainProductListController {
         return SearchAllInnerProductsResponse.builder()
                 .baseDate(request.getBaseDate())
                 .innerCategories(allInnerProducts.stream().map(element -> mapper.from2(element)).collect(Collectors.toList()))
+                .build();
+    }
+
+    @GetMapping("/legacyAllInnerProducts")
+    public LegacyAllInnerProductsResponse legacyAllInnerProducts(LegacyAllInnerProductsRequest request){
+        List<GetAllProductResult> allProduct = productListService.getAllProduct(mapper.from(request));
+        return LegacyAllInnerProductsResponse.builder()
+                .list(allProduct.stream().map(element -> mapper.from(element)).collect(Collectors.toList()))
+                .processCount(Long.valueOf(allProduct.size()))
                 .build();
     }
 }

@@ -8,9 +8,7 @@ import com.example.fdppoc.repository.BaseProductRepository;
 import com.example.fdppoc.repository.CustomerInterestProductRepository;
 import com.example.fdppoc.repository.InnerProductRepository;
 import com.example.fdppoc.repository.MemberInfoRepository;
-import com.example.fdppoc.service.dto.GetProductInterestIn;
-import com.example.fdppoc.service.dto.GetProductInterestOut;
-import com.example.fdppoc.service.dto.SetProductInterestIn;
+import com.example.fdppoc.service.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -37,7 +36,7 @@ class CustomerInterestProductServiceTest {
     @Transactional
     @Rollback(value = true)
     void 관심상품등록조회() {
-        Optional<InnerProduct> rice = innerProductRepository.findById(2L);
+        Optional<InnerProduct> rice = innerProductRepository.findById(1004L);
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestIn input = GetProductInterestIn.builder()
                 .targetProduct(rice.get())
@@ -78,6 +77,13 @@ class CustomerInterestProductServiceTest {
         //customerInterestProductRepository.flush();
         Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(false);
         //Assertions.assertThat(customerInterestProductService.getProductInterest(input).getIsAvailable()).isEqualTo(true);
+    }
+
+    @Test
+    @Transactional
+    void 관심상품리스트조회() {
+        List<GetMemberInterestProductsOut> memberInterestProducts = customerInterestProductService.getMemberInterestProducts(GetMemberInterestProductsIn.builder().customerId("20170860").build());
+        log.info("결과 : {}", memberInterestProducts);
     }
 
 }

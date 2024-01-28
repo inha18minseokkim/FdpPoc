@@ -13,6 +13,7 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
+@Transactional
 class InnerProductServiceTest {
     @Autowired
     InnerProductService innerProductService;
@@ -79,6 +80,12 @@ class InnerProductServiceTest {
         log.info("실행 결과 : {}", innerProductList);
         Assertions.assertThat(innerProductList.get(0).getProductName()).isEqualTo("고구마");
     }
+    @Test
+    void 내부상품리스트조회모두() {
+        GetInnerProductListIn in = GetInnerProductListIn.builder().isAvailable(true).build();
+        List<GetInnerProductListOut> innerProductList = innerProductService.getInnerProductList(in);
+        log.info("실행 결과 : {}", innerProductList);
 
+    }
 
 }

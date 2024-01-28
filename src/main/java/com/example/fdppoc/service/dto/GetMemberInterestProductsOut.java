@@ -1,18 +1,13 @@
-package com.example.fdppoc.repository.dto;
+package com.example.fdppoc.service.dto;
 
 import com.example.fdppoc.entity.InnerProduct;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.Optional;
-
 @Data
 @ToString
 @Builder
-public class GetPriceDiffListOut {
+public class GetMemberInterestProductsOut {
     private InnerProduct innerProduct;
-    private Optional<String> baseDate;
-    private Optional<Double> price;
-
 }

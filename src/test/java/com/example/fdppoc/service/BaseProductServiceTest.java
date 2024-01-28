@@ -27,7 +27,7 @@ class BaseProductServiceTest {
     void 기본상품삽입() {
         List<SetBaseCodesIn> lists = new ArrayList<>();
         lists.add(SetBaseCodesIn.builder()
-                        .categoryCode("500")
+                        .categoryCode("600")
                         .itemCode("4301")
                         .kindCode("21")
                         .classCode("01")

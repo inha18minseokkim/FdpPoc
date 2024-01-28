@@ -1,13 +1,13 @@
-package com.example.fdppoc.service.dto;
+package com.example.fdppoc.controller.dto;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
-@ToString
 @Data
-public class GetAllProductResult {
+@ToString
+@Builder
+public class LegacyAllInnerProductsResponseElement {
     private Long innerProductId;
     private String innerProductName;
     private String unitValueName;

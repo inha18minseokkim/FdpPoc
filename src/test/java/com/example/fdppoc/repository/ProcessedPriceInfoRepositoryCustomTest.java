@@ -25,6 +25,8 @@ class ProcessedPriceInfoRepositoryCustomTest {
     UserGroupCodeRepository userGroupCodeRepository;
     @Autowired
     InnerProductRepository innerProductRepository;
+    @Autowired
+    InnerProductRepositoryCustom innerProductRepositoryCustom;
     @Test
     void 범위내최대최소가격탐색() {
         GetPriceDiffOut minMaxPrice = processedPriceInfoRepositoryCustom.getTodayAndWeeklyMeanPrice(
@@ -39,26 +41,24 @@ class ProcessedPriceInfoRepositoryCustomTest {
         Assertions.assertThat(minMaxPrice.getBaseDate()).isGreaterThanOrEqualTo(minMaxPrice.getPastDate());
     }
     @Test
-    void 모든상품해시맵() {
-        Map<Long, InnerProduct> allProduct = processedPriceInfoRepositoryCustom.getAllProduct(GetAllProductIn.builder().build());
-        log.info("모든상품 : {}",allProduct);
-    }
-    @Test
     void  모든상품가격() {
         List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepositoryCustom.getPriceDiffList(
                 GetPriceDiffListIn.builder().regionGroup(userGroupCodeRepository.findById(52L).get())
                         .startDate("20240112").endDate("20240119")
                         .build());
+        //log.info("중간결과 : {}",priceDiffList);
         Map<InnerProduct, List<GetPriceDiffListOut>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProduct()));
         collect.keySet().stream().map(collect::get).map(element -> {
             //기준일자
-            Optional<GetPriceDiffListOut> baseDatePriceInfo = element.stream().max(Comparator.comparing(GetPriceDiffListOut::getBaseDate));
+            Optional<GetPriceDiffListOut> baseDatePriceInfo = element.stream().max(Comparator.comparing(elem -> elem.getBaseDate().orElse("")));
+            //상품정보
+            InnerProduct innerProduct = baseDatePriceInfo.get().getInnerProduct();
             //현재가격
-            Double currentPrice = baseDatePriceInfo.get().getPrice();
-            String baseDate = baseDatePriceInfo.get().getBaseDate();
+            Double currentPrice = baseDatePriceInfo.get().getPrice().orElse(0.0);
+            String baseDate = baseDatePriceInfo.get().getBaseDate().orElse("");
             //평균가격
-            Double averagePrice = element.stream().collect(Collectors.averagingDouble(ele -> ele.getPrice()));
-            return List.of(currentPrice,baseDate,averagePrice);
+            Double averagePrice = element.stream().collect(Collectors.averagingDouble(ele -> ele.getPrice().orElse(0.0)));
+            return List.of(innerProduct,currentPrice,baseDate,averagePrice);
         }).forEach(
                 element -> {
                         log.info("결과 : {}",element);
