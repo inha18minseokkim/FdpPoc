@@ -1,0 +1,70 @@
+package com.example.fdppoc.infrastructure.repository;
+
+import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.domain.entity.*;
+import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.infrastructure.repository.mapper.InnerProductRepositoryMapper;
+import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductListIn;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Repository
+@RequiredArgsConstructor
+@Slf4j
+public class InnerProductRepositoryCustom {
+    private final EntityManager em;
+    private final InnerProductRepositoryMapper mapper;
+
+    public List<FindInnerProductWithFilterOut> findInnerProductWithFilter(FindInnerProductsWithFilterIn in){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+        QBaseProduct baseProduct = QBaseProduct.baseProduct;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if(in.getCategoryCode() != null)
+            booleanBuilder.and(baseProduct.categoryCode.eq(in.getCategoryCode()));
+        if(in.getInnerCategoryId() != null)
+            booleanBuilder.and(innerProduct.innerCategory.id.eq(in.getInnerCategoryId()));
+        List<InnerProduct> results = query.select(innerProduct)
+                .from(innerProduct).innerJoin(innerProduct.baseProducts,baseProduct)
+                .where(booleanBuilder)
+                .fetch();
+        return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
+    }
+    public List<InnerProduct> findInnerProductList(FindInnerProductListIn in){
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if(in.getInnerCategoryId() != null)
+            booleanBuilder.and(innerProduct.innerCategory.id.eq(in.getInnerCategoryId()));
+        if(in.getSearchKeyword() != null)
+            booleanBuilder.and(innerProduct.productName.like("%"+in.getSearchKeyword()+"%"));
+        List<InnerProduct> results = query.select(innerProduct)
+                .from(innerProduct)
+                .where(
+                        innerProduct.isAvailable.eq(in.getIsAvailable())
+                                .and(booleanBuilder)
+                )
+                .fetch();
+        return results;
+    }
+
+//    //Legacy용
+//    public Map<Long,InnerProduct> getAllProduct(GetAllProductIn in){
+//        JPAQueryFactory query = new JPAQueryFactory(em);
+//        QInnerProduct innerProduct = QInnerProduct.innerProduct;
+//        List<InnerProduct> result = query.select(innerProduct)
+//                .from(innerProduct)
+//                .where(innerProduct.isAvailable.eq(true)).fetch();
+//        return result.stream().collect(Collectors.toMap(InnerProduct::getId,element -> element));
+//    }
+    //좋아요 누른 상품들
+    //가격 상하
+}

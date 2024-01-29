@@ -3,10 +3,10 @@ package com.example.fdppoc.controller;
 import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.MainProductListControllerMapper;
-import com.example.fdppoc.service.InnerCategoryService;
-import com.example.fdppoc.service.InnerProductService;
-import com.example.fdppoc.service.ProductListService;
-import com.example.fdppoc.service.dto.*;
+import com.example.fdppoc.domain.dto.*;
+import com.example.fdppoc.domain.impl.InnerCategoryServiceImpl;
+import com.example.fdppoc.domain.impl.InnerProductServiceImpl;
+import com.example.fdppoc.domain.interfaces.ProductPriceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/mainProductList")
 @Slf4j
 public class MainProductListController {
-    private final InnerProductService innerProductService;
-    private final ProductListService productListService;
-    private final InnerCategoryService innerCategoryService;
+    private final InnerProductServiceImpl innerProductService;
+    private final ProductPriceService productPriceService;
+    private final InnerCategoryServiceImpl innerCategoryService;
     private final MainProductListControllerMapper mapper;
     @GetMapping("/searchInnerProducts")
     public SearchInnerProductsResponse searchInnerProducts(SearchInnerProductsRequest request){
@@ -45,7 +45,7 @@ public class MainProductListController {
 
     @GetMapping("/legacyAllInnerProducts")
     public LegacyAllInnerProductsResponse legacyAllInnerProducts(LegacyAllInnerProductsRequest request){
-        List<GetAllProductResult> allProduct = productListService.getAllProduct(mapper.from(request));
+        List<GetAllProductResult> allProduct = productPriceService.getAllProduct(mapper.from(request));
         return LegacyAllInnerProductsResponse.builder()
                 .list(allProduct.stream().map(element -> mapper.from(element)).collect(Collectors.toList()))
                 .processCount(Long.valueOf(allProduct.size()))

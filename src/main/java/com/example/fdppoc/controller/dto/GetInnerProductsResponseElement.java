@@ -1,9 +1,6 @@
 package com.example.fdppoc.controller.dto;
 
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.entity.InnerCategory;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 

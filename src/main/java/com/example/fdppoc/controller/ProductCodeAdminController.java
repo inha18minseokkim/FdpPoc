@@ -3,12 +3,12 @@ package com.example.fdppoc.controller;
 import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.ProductCodeAdminControllerMapper;
-import com.example.fdppoc.service.BaseProductService;
-import com.example.fdppoc.service.InnerCategoryService;
-import com.example.fdppoc.service.InnerProductService;
-import com.example.fdppoc.service.dto.GetAllInnerCategoryResult;
-import com.example.fdppoc.service.dto.GetBaseCodesResult;
-import com.example.fdppoc.service.dto.GetInnerProductsWithFilterResult;
+import com.example.fdppoc.domain.impl.BaseProductServiceImpl;
+import com.example.fdppoc.domain.impl.InnerCategoryServiceImpl;
+import com.example.fdppoc.domain.impl.InnerProductServiceImpl;
+import com.example.fdppoc.domain.dto.GetAllInnerCategoryResult;
+import com.example.fdppoc.domain.dto.GetBaseCodesResult;
+import com.example.fdppoc.domain.dto.GetInnerProductsWithFilterResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/productCodeAdmin")
 @RequiredArgsConstructor
 public class ProductCodeAdminController {
-    private final BaseProductService baseProductService;
-    private final InnerProductService innerProductService;
-    private final InnerCategoryService innerCategoryService;
+    private final BaseProductServiceImpl baseProductService;
+    private final InnerProductServiceImpl innerProductService;
+    private final InnerCategoryServiceImpl innerCategoryService;
     private final ProductCodeAdminControllerMapper mapper;
     @GetMapping("/getBaseCodes")
     public GetBaseCodesResponse getBaseCodes(GetBaseCodesRequest request){

@@ -1,8 +1,9 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.entity.MemberInfo;
-import com.example.fdppoc.repository.MemberInfoRepository;
-import com.example.fdppoc.service.dto.*;
+import com.example.fdppoc.domain.dto.*;
+import com.example.fdppoc.domain.entity.MemberInfo;
+import com.example.fdppoc.domain.impl.MemberServiceImpl;
+import com.example.fdppoc.infrastructure.repository.MemberInfoRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -17,7 +18,7 @@ import java.util.Optional;
 class MemberServiceTest {
 
     @Autowired
-    MemberService memberService;
+    MemberServiceImpl memberService;
     @Autowired
     MemberInfoRepository memberInfoRepository;
 

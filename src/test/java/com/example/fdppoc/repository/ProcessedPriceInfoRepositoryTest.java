@@ -1,11 +1,13 @@
 package com.example.fdppoc.repository;
 
 import com.example.fdppoc.code.BaseRange;
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.entity.InnerProduct;
-import com.example.fdppoc.entity.UserGroupCode;
-import com.example.fdppoc.repository.dto.FindPriceListByGroupRegionCodeIn;
-import com.example.fdppoc.repository.dto.FindPriceListByGroupRegionCodeOut;
+import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
+import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
+import com.example.fdppoc.infrastructure.repository.dto.FindPriceListByGroupRegionCodeIn;
+import com.example.fdppoc.infrastructure.repository.dto.FindPriceListByGroupRegionCodeOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

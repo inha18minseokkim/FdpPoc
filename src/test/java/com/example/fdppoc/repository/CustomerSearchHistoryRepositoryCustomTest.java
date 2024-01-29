@@ -1,7 +1,8 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.repository.dto.GetTopViewedInnerProductIn;
-import com.example.fdppoc.repository.dto.GetTopViewedInnerProductOut;
+import com.example.fdppoc.infrastructure.repository.CustomerSearchHistoryRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.dto.GetTopViewedInnerProductIn;
+import com.example.fdppoc.infrastructure.repository.dto.GetTopViewedInnerProductOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @SpringBootTest
 @Transactional

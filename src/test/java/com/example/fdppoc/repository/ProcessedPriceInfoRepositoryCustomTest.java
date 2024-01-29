@@ -1,7 +1,14 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.entity.InnerProduct;
-import com.example.fdppoc.repository.dto.*;
+import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
+import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffIn;
+import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffListIn;
+import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffListOut;
+import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;

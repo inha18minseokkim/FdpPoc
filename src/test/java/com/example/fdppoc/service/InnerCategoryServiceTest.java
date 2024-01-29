@@ -1,6 +1,7 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.service.dto.*;
+import com.example.fdppoc.domain.dto.*;
+import com.example.fdppoc.domain.impl.InnerCategoryServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.util.List;
 @Transactional
 class InnerCategoryServiceTest {
     @Autowired
-    InnerCategoryService innerCategoryService;
+    InnerCategoryServiceImpl innerCategoryService;
 
     @Test
 

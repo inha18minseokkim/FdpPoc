@@ -1,8 +1,9 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.service.dto.GetBaseCodesCriteria;
-import com.example.fdppoc.service.dto.GetBaseCodesResult;
-import com.example.fdppoc.service.dto.SetBaseCodesCriteria;
+import com.example.fdppoc.domain.impl.BaseProductServiceImpl;
+import com.example.fdppoc.domain.dto.GetBaseCodesCriteria;
+import com.example.fdppoc.domain.dto.GetBaseCodesResult;
+import com.example.fdppoc.domain.dto.SetBaseCodesCriteria;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import java.util.List;
 @SpringBootTest
 class BaseProductServiceTest {
     @Autowired
-    BaseProductService baseProductService;
+    BaseProductServiceImpl baseProductService;
 
     @Test
     @Transactional

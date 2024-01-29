@@ -1,11 +1,15 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.entity.InnerCategory;
-import com.example.fdppoc.entity.InnerProduct;
-import com.example.fdppoc.repository.dto.FindInnerProductListIn;
-import com.example.fdppoc.repository.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.repository.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.domain.entity.BaseProduct;
+import com.example.fdppoc.domain.entity.InnerCategory;
+import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
+import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductListIn;
+import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductsWithFilterIn;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;

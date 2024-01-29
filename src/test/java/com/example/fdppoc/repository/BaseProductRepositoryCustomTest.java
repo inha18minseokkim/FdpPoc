@@ -1,20 +1,20 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.entity.BaseProduct;
-import com.example.fdppoc.repository.dto.FindBaseProductWithFilterIn;
-import com.example.fdppoc.repository.dto.FindBaseProductWithFilterOut;
+import com.example.fdppoc.domain.entity.BaseProduct;
+import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
+import com.example.fdppoc.infrastructure.repository.BaseProductRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.dto.FindBaseProductWithFilterIn;
+import com.example.fdppoc.infrastructure.repository.dto.FindBaseProductWithFilterOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Slf4j
 class BaseProductRepositoryCustomTest {

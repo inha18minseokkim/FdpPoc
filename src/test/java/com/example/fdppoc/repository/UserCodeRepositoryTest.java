@@ -1,7 +1,9 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.entity.UserCode;
-import com.example.fdppoc.entity.UserGroupCode;
+import com.example.fdppoc.domain.entity.UserCode;
+import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.infrastructure.repository.UserCodeRepository;
+import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserCodeRepositoryTest {

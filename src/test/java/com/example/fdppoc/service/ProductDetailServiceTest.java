@@ -1,11 +1,12 @@
 package com.example.fdppoc.service;
 
 import com.example.fdppoc.code.BaseRange;
-import com.example.fdppoc.entity.MemberInfo;
-import com.example.fdppoc.entity.UserGroupCode;
-import com.example.fdppoc.repository.InnerProductRepository;
-import com.example.fdppoc.service.dto.GetProductPriceCriteria;
-import com.example.fdppoc.service.dto.GetProductPriceResult;
+import com.example.fdppoc.domain.entity.MemberInfo;
+import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.domain.interfaces.ProductPriceService;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
+import com.example.fdppoc.domain.dto.GetProductPriceCriteria;
+import com.example.fdppoc.domain.dto.GetProductPriceResult;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import org.springframework.test.annotation.Rollback;
 @Slf4j
 class ProductDetailServiceTest {
     @Autowired
-    ProductDetailService productDetailService;
+    ProductPriceService productPriceService;
     @Autowired
     InnerProductRepository innerProductRepository;
 
@@ -34,7 +35,7 @@ class ProductDetailServiceTest {
                 .regionGroup(UserGroupCode.builder().id(152L).build())
                 .memberInfo(MemberInfo.builder().customerId("20160860").businessCode("001").build())
                 .build();
-        GetProductPriceResult result = productDetailService.getProductPrice(input);
+        GetProductPriceResult result = productPriceService.getProductPrice(input);
         log.info("실행결과 : {}",result);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.fdppoc.controller.mapper;
 
 import com.example.fdppoc.controller.dto.GetProductDetailResponse;
-import com.example.fdppoc.service.dto.GetProductPriceResult;
+import com.example.fdppoc.domain.dto.GetProductPriceResult;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

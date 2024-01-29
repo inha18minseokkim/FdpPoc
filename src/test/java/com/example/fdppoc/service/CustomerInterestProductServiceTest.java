@@ -1,11 +1,12 @@
 package com.example.fdppoc.service;
 
-import com.example.fdppoc.entity.InnerProduct;
-import com.example.fdppoc.entity.MemberInfo;
-import com.example.fdppoc.repository.CustomerInterestProductRepository;
-import com.example.fdppoc.repository.InnerProductRepository;
-import com.example.fdppoc.repository.MemberInfoRepository;
-import com.example.fdppoc.service.dto.*;
+import com.example.fdppoc.domain.dto.*;
+import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.domain.entity.MemberInfo;
+import com.example.fdppoc.domain.interfaces.MemberService;
+import com.example.fdppoc.infrastructure.repository.CustomerInterestProductRepository;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
+import com.example.fdppoc.infrastructure.repository.MemberInfoRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -21,7 +22,7 @@ import java.util.Optional;
 @Slf4j
 class CustomerInterestProductServiceTest {
     @Autowired
-    CustomerInterestProductService customerInterestProductService;
+    MemberService memberService;
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired
@@ -39,7 +40,7 @@ class CustomerInterestProductServiceTest {
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
                 .build();
-        GetProductInterestResult first = customerInterestProductService.getProductInterest(input);
+        GetProductInterestResult first = memberService.getProductInterest(input);
         log.info("첫번째 : {}",first);
 
         SetProductInterestCriteria build = SetProductInterestCriteria.builder()
@@ -47,7 +48,7 @@ class CustomerInterestProductServiceTest {
                 .memberInfo(member.get())
                 .isAvailable(true)
                 .build();
-        customerInterestProductService.setProductInterest(build);
+        memberService.setProductInterest(build);
         //customerInterestProductRepository.flush();
         Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(true);
         //Assertions.assertThat(customerInterestProductService.getProductInterest(input).getIsAvailable()).isEqualTo(true);
@@ -62,7 +63,7 @@ class CustomerInterestProductServiceTest {
                 .targetProduct(rice.get())
                 .memberInfo(member.get())
                 .build();
-        GetProductInterestResult first = customerInterestProductService.getProductInterest(input);
+        GetProductInterestResult first = memberService.getProductInterest(input);
         log.info("첫번째 : {}",first);
 
         SetProductInterestCriteria build = SetProductInterestCriteria.builder()
@@ -70,7 +71,7 @@ class CustomerInterestProductServiceTest {
                 .memberInfo(member.get())
                 .isAvailable(false)
                 .build();
-        customerInterestProductService.setProductInterest(build);
+        memberService.setProductInterest(build);
         //customerInterestProductRepository.flush();
         Assertions.assertThat(customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(rice.get(),member.get()).get().getIsAvailable()).isEqualTo(false);
         //Assertions.assertThat(customerInterestProductService.getProductInterest(input).getIsAvailable()).isEqualTo(true);
@@ -79,7 +80,7 @@ class CustomerInterestProductServiceTest {
     @Test
     @Transactional
     void 관심상품리스트조회() {
-        List<GetMemberInterestProductsResult> memberInterestProducts = customerInterestProductService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId("20170860").build());
+        List<GetMemberInterestProductsResult> memberInterestProducts = memberService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId("20170860").build());
         log.info("결과 : {}", memberInterestProducts);
     }
 

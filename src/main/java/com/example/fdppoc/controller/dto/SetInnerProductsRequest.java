@@ -1,7 +1,5 @@
 package com.example.fdppoc.controller.dto;
 
-import com.example.fdppoc.entity.BaseProduct;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
