@@ -2,13 +2,13 @@ package com.example.fdppoc.repository;
 
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.repository.InnerProductRepositoryCustom;
-import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepositoryCustom;
+import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
+import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
-import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffIn;
-import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffListIn;
-import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffListOut;
-import com.example.fdppoc.infrastructure.repository.dto.GetPriceDiffOut;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffIn;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffListIn;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOut;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 @Transactional
 class ProcessedPriceInfoRepositoryCustomTest {
     @Autowired
-    ProcessedPriceInfoRepositoryCustom processedPriceInfoRepositoryCustom;
+    ProcessedPriceInfoRepositoryImpl processedPriceInfoRepositoryCustom;
     @Autowired
     UserGroupCodeRepository userGroupCodeRepository;
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired
-    InnerProductRepositoryCustom innerProductRepositoryCustom;
+    InnerProductRepositoryImpl innerProductRepositoryCustom;
     @Test
     void 범위내최대최소가격탐색() {
         GetPriceDiffOut minMaxPrice = processedPriceInfoRepositoryCustom.getTodayAndWeeklyMeanPrice(

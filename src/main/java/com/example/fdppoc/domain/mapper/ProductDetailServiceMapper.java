@@ -1,6 +1,6 @@
 package com.example.fdppoc.domain.mapper;
 
-import com.example.fdppoc.infrastructure.repository.dto.FindPriceListByGroupRegionCodeIn;
+import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeIn;
 import com.example.fdppoc.domain.dto.GetProductPriceCriteria;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

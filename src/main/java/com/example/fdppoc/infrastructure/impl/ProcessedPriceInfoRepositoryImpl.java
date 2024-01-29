@@ -1,8 +1,9 @@
-package com.example.fdppoc.infrastructure.repository;
+package com.example.fdppoc.infrastructure.impl;
 
 import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.entity.*;
-import com.example.fdppoc.infrastructure.repository.dto.*;
+import com.example.fdppoc.infrastructure.dto.*;
+import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoRepositoryCustom;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -19,9 +20,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class ProcessedPriceInfoRepositoryCustom {
+public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepositoryCustom {
     private final EntityManager entityManager;
 
+    @Override
     public List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(FindPriceListByGroupRegionCodeIn in){
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
@@ -59,6 +61,7 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .build()
         ).collect(Collectors.toList());
     }
+    @Override
     public GetPriceDiffOut getTodayAndWeeklyMeanPrice(GetPriceDiffIn in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
@@ -95,7 +98,7 @@ public class ProcessedPriceInfoRepositoryCustom {
                 .build();
     }
 
-
+    @Override
     public List<GetPriceDiffListOut> getPriceDiffList(GetPriceDiffListIn in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;

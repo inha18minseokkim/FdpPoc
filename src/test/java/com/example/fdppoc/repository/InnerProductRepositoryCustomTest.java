@@ -6,10 +6,10 @@ import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.repository.InnerProductRepositoryCustom;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductListIn;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterIn;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 class InnerProductRepositoryCustomTest {
     @Autowired
-    InnerProductRepositoryCustom innerProductRepositoryCustom;
+    InnerProductRepositoryImpl innerProductRepositoryCustom;
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired

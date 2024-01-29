@@ -1,7 +1,7 @@
-package com.example.fdppoc.infrastructure.repository.mapper;
+package com.example.fdppoc.infrastructure.mapper;
 
 import com.example.fdppoc.domain.entity.BaseProduct;
-import com.example.fdppoc.infrastructure.repository.dto.FindBaseProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOut;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

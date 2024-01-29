@@ -13,4 +13,5 @@ public class GetProductDetailRequest {
     //private BaseProduct targetProduct;
     private BaseRange rangeForLength;
     //private UserGroupCode regionGroup;
+    private String customerId;
 }

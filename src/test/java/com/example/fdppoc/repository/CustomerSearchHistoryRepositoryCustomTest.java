@@ -1,8 +1,8 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.infrastructure.repository.CustomerSearchHistoryRepositoryCustom;
-import com.example.fdppoc.infrastructure.repository.dto.GetTopViewedInnerProductIn;
-import com.example.fdppoc.infrastructure.repository.dto.GetTopViewedInnerProductOut;
+import com.example.fdppoc.infrastructure.impl.CustomerSearchHistoryRepositoryImpl;
+import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductIn;
+import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional
 class CustomerSearchHistoryRepositoryCustomTest {
     @Autowired
-    CustomerSearchHistoryRepositoryCustom customerSearchHistoryRepositoryCustom;
+    CustomerSearchHistoryRepositoryImpl customerSearchHistoryRepositoryCustom;
 
     @Test
     void 범위시간내조회수출력() {

@@ -22,17 +22,6 @@ class MemberServiceTest {
     @Autowired
     MemberInfoRepository memberInfoRepository;
 
-    @Test
-    void 사용자조회() {
-        GetMemberCriteria in = GetMemberCriteria.builder().customerId("20160860").businessCode("001").build();
-        GetMemberResult member = memberService.getMember(in);
-        log.info("ㅇㅇㅇ : {} ",memberService.getClass());
-        log.info("실행결과 : {}",member.getMemberInfo().get());
-
-        Optional<MemberInfo> repositoryMember = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode("20160860", "001");
-        Assertions.assertThat(member.getMemberInfo().get()).isEqualTo(repositoryMember.get());
-
-    }
 
     @Test
     void 사용자푸시여부조회() {

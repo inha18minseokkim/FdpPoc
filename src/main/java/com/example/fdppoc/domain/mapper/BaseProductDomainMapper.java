@@ -1,8 +1,8 @@
 package com.example.fdppoc.domain.mapper;
 
 import com.example.fdppoc.domain.entity.BaseProduct;
-import com.example.fdppoc.infrastructure.repository.dto.FindBaseProductWithFilterIn;
-import com.example.fdppoc.infrastructure.repository.dto.FindBaseProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterIn;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOut;
 import com.example.fdppoc.domain.dto.GetBaseCodesCriteria;
 import com.example.fdppoc.domain.dto.GetBaseCodesResult;
 import com.example.fdppoc.domain.dto.SetBaseCodesCriteria;

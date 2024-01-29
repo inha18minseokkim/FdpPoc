@@ -1,4 +1,4 @@
-package com.example.fdppoc.infrastructure.repository.dto;
+package com.example.fdppoc.infrastructure.dto;
 
 import lombok.Builder;
 import lombok.Data;

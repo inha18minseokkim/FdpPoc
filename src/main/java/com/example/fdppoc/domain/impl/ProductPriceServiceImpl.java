@@ -7,8 +7,10 @@ import com.example.fdppoc.domain.entity.MemberInfo;
 import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.domain.interfaces.ProductPriceService;
+import com.example.fdppoc.infrastructure.dto.*;
+import com.example.fdppoc.infrastructure.impl.CustomerSearchHistoryRepositoryImpl;
+import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
 import com.example.fdppoc.infrastructure.repository.*;
-import com.example.fdppoc.infrastructure.repository.dto.*;
 import com.example.fdppoc.domain.mapper.ProductListServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,22 +27,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductPriceServiceImpl implements ProductPriceService {
-    private final CustomerSearchHistoryRepositoryCustom customerSearchHistoryRepositoryCustom;
-    private final ProcessedPriceInfoRepositoryCustom processedPriceInfoRepositoryCustom;
+    private final CustomerSearchHistoryRepository customerSearchHistoryRepository;
+    private final ProcessedPriceInfoRepository processedPriceInfoRepository;
     private final MemberService memberService;
-    private final UserGroupCodeRepository userGroupCodeRepository;
     private final MemberInfoRepository memberInfoRepository;
+    private final UserGroupCodeRepository userGroupCodeRepository;
     private final ProductListServiceMapper mapper;
     private final InnerProductRepository innerProductRepository;
     //인기상품리스트조회
     @Override
     public List<GetPopularProductResult> getPopularProduct(GetPopularProductCriteria criteria){
-        List<GetTopViewedInnerProductOut> results = customerSearchHistoryRepositoryCustom.getTopViewedInnerProduct(mapper.from(criteria));
+        List<GetTopViewedInnerProductOut> results = customerSearchHistoryRepository.getTopViewedInnerProduct(mapper.from(criteria));
         Optional<UserGroupCode> targetRegionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd")).minusDays(BaseRange.WEEK.getGapDay()).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         return results.stream().map(element -> {
-
-                    GetPriceDiffOut priceDiff = processedPriceInfoRepositoryCustom.getTodayAndWeeklyMeanPrice(GetPriceDiffIn.builder()
+                    GetPriceDiffOut priceDiff = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(GetPriceDiffIn.builder()
                             .regionGroup(targetRegionGroup.get()).targetProduct(element.getInnerProduct()).startDate(startDate).endDate(criteria.getBaseDate()).build());
                     log.info("쿼리결과 : {}",priceDiff);
                     return GetPopularProductResult.builder()
@@ -58,16 +59,11 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         //모든 상품 맵 가져옴
         List<InnerProduct> allProduct = innerProductRepository.findAllByIsAvailable(true);
         //가장 많이 조회한 상품 리스트 가져옴
-        List<GetTopViewedInnerProductOut> topViewedInnerProducts = customerSearchHistoryRepositoryCustom.getTopViewedInnerProduct(GetTopViewedInnerProductIn.builder()
+        List<GetTopViewedInnerProductOut> topViewedInnerProducts = customerSearchHistoryRepository.getTopViewedInnerProduct(GetTopViewedInnerProductIn.builder()
                 .currentTime(LocalDateTime.now()).rangeHour(12)
                 .build());
         //가격 가져올건데 대상 지역그룹가져옴
         UserGroupCode regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
-        //고객 관심상품 가져올 고객 가져옴
-        Optional<MemberInfo> memberInfo = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(criteria.getCustomerId(), "001");
-        //해당 멤버가 멤버테이블에 없으면 동의하지 않은 상태의 고객으로 넣어
-        if(memberInfo.isEmpty())
-            memberInfo = Optional.of(memberInfoRepository.save(MemberInfo.builder().isAgree(false).customerId(criteria.getCustomerId()).businessCode("001").build()));
 
         //가격 가져올 범위 에서 startDate는 baseDate에서 일주일 전
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
@@ -129,7 +125,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     }
     public List<GetInnerProductPricesResult> getInnerProductPriceList(GetInnerProductPricesCriteria criteria) {
         UserGroupCode regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
-        List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepositoryCustom.getPriceDiffList(
+        List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
                 GetPriceDiffListIn.builder().regionGroup(regionGroup)
                         .startDate(criteria.getStartDate()).endDate(criteria.getEndDate())
                         .build());
@@ -164,14 +160,16 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     @Override
     @Transactional
     public GetProductPriceResult getProductPrice(GetProductPriceCriteria in){
-        List<FindPriceListByGroupRegionCodeOut> dailyPrices = processedPriceInfoRepositoryCustom.findPriceListByGroupRegionCode(mapper.from(in));
+        List<FindPriceListByGroupRegionCodeOut> dailyPrices = processedPriceInfoRepository.findPriceListByGroupRegionCode(mapper.from(in));
 
         LongSummaryStatistics summary = dailyPrices.stream()
                 .map(element -> element.getPrice()).mapToLong(Long::longValue).summaryStatistics();
 
+        MemberInfo memberInfo = memberInfoRepository.getMember(GetMemberInDto.builder().customerId(in.getCustomerId()).businessCode("001").build());
+
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                 .innerProduct(in.getTargetProduct())
-                .memberInfo(in.getMemberInfo())
+                .memberInfo(memberInfo)
                 .regionGroup(in.getRegionGroup())
                 .build());
 

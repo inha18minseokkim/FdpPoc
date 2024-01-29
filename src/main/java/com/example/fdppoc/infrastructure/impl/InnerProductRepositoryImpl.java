@@ -1,11 +1,12 @@
-package com.example.fdppoc.infrastructure.repository;
+package com.example.fdppoc.infrastructure.impl;
 
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.*;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductsWithFilterIn;
-import com.example.fdppoc.infrastructure.repository.mapper.InnerProductRepositoryMapper;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductListIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.infrastructure.interfaces.InnerProductRepositoryCustom;
+import com.example.fdppoc.infrastructure.mapper.InnerProductRepositoryMapper;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -19,10 +20,10 @@ import java.util.stream.Collectors;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class InnerProductRepositoryCustom {
+public class InnerProductRepositoryImpl implements InnerProductRepositoryCustom {
     private final EntityManager em;
     private final InnerProductRepositoryMapper mapper;
-
+    @Override
     public List<FindInnerProductWithFilterOut> findInnerProductWithFilter(FindInnerProductsWithFilterIn in){
         JPAQueryFactory query = new JPAQueryFactory(em);
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
@@ -38,6 +39,7 @@ public class InnerProductRepositoryCustom {
                 .fetch();
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
+    @Override
     public List<InnerProduct> findInnerProductList(FindInnerProductListIn in){
         JPAQueryFactory query = new JPAQueryFactory(em);
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
@@ -56,15 +58,6 @@ public class InnerProductRepositoryCustom {
         return results;
     }
 
-//    //Legacy용
-//    public Map<Long,InnerProduct> getAllProduct(GetAllProductIn in){
-//        JPAQueryFactory query = new JPAQueryFactory(em);
-//        QInnerProduct innerProduct = QInnerProduct.innerProduct;
-//        List<InnerProduct> result = query.select(innerProduct)
-//                .from(innerProduct)
-//                .where(innerProduct.isAvailable.eq(true)).fetch();
-//        return result.stream().collect(Collectors.toMap(InnerProduct::getId,element -> element));
-//    }
     //좋아요 누른 상품들
     //가격 상하
 }

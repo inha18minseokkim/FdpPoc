@@ -2,9 +2,9 @@ package com.example.fdppoc.domain.mapper;
 
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.entity.InnerProduct;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductListIn;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterIn;
 import org.mapstruct.*;
 
 @Mapper(

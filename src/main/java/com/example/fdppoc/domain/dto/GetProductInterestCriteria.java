@@ -11,5 +11,5 @@ import lombok.ToString;
 @ToString
 public class GetProductInterestCriteria {
     private InnerProduct targetProduct;
-    private MemberInfo memberInfo;
+    private String customerId;
 }

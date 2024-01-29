@@ -12,13 +12,6 @@ import org.mapstruct.*;
 )
 public interface CustomerInterestProductServiceMapper {
     @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "innerProduct", source = "targetProduct")
-    }
-    )
-    CustomerInterestProduct from(SetProductInterestCriteria in);
-
-    @Mappings({
             @Mapping(target = "innerProduct", expression = "java(element.getInnerProduct())")
     }
     )

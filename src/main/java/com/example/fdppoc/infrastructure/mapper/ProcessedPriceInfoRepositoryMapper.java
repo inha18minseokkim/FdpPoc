@@ -1,4 +1,4 @@
-package com.example.fdppoc.infrastructure.repository.dto;
+package com.example.fdppoc.infrastructure.mapper;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

@@ -11,6 +11,6 @@ import lombok.ToString;
 @ToString
 public class SetProductInterestCriteria {
     private InnerProduct targetProduct;
-    private MemberInfo memberInfo;
+    private String customerId;
     private Boolean isAvailable;
 }

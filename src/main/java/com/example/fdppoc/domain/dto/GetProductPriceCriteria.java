@@ -17,5 +17,5 @@ public class GetProductPriceCriteria {
     private BaseRange rangeForLength;
     private BaseRange rangeForTag;
     private UserGroupCode regionGroup;
-    private MemberInfo memberInfo;
+    private String customerId;
 }

@@ -8,9 +8,9 @@ import com.example.fdppoc.domain.interfaces.InnerProductService;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.repository.InnerProductRepositoryCustom;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductListIn;
-import com.example.fdppoc.infrastructure.repository.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
 import com.example.fdppoc.domain.mapper.InnerProductServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class InnerProductServiceImpl implements InnerProductService {
-    private final InnerProductRepositoryCustom innerProductRepositoryCustom;
     private final InnerProductRepository innerProductRepository;
     private final BaseProductRepository baseProductRepository;
     private final InnerCategoryRepository innerCategoryRepository;
@@ -33,7 +32,7 @@ public class InnerProductServiceImpl implements InnerProductService {
 
     @Override
     public List<GetInnerProductsWithFilterResult> getInnerProductsWithFilter(GetInnerProductsWithFilterCriteria in){
-        List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(mapper.from(in));
+        List<FindInnerProductWithFilterOut> results = innerProductRepository.findInnerProductWithFilter(mapper.from(in));
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
     @Override
@@ -61,7 +60,7 @@ public class InnerProductServiceImpl implements InnerProductService {
     @Override
     public List<GetInnerProductsResult> getInnerProductList(GetInnerProductsCriteria in){
         FindInnerProductListIn input = mapper.from(in);
-        List<InnerProduct> innerProductList = innerProductRepositoryCustom.findInnerProductList(input);
+        List<InnerProduct> innerProductList = innerProductRepository.findInnerProductList(input);
         return innerProductList.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }
 }

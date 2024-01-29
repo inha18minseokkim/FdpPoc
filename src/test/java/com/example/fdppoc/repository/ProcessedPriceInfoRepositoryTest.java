@@ -4,10 +4,10 @@ import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepositoryCustom;
+import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
-import com.example.fdppoc.infrastructure.repository.dto.FindPriceListByGroupRegionCodeIn;
-import com.example.fdppoc.infrastructure.repository.dto.FindPriceListByGroupRegionCodeOut;
+import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeIn;
+import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 class ProcessedPriceInfoRepositoryTest {
     @Autowired
-    ProcessedPriceInfoRepositoryCustom processedPriceInfoRepositoryCustom;
+    ProcessedPriceInfoRepositoryImpl processedPriceInfoRepositoryCustom;
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired
