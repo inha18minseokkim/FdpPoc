@@ -30,7 +30,6 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     private final CustomerSearchHistoryRepository customerSearchHistoryRepository;
     private final ProcessedPriceInfoRepository processedPriceInfoRepository;
     private final MemberService memberService;
-    private final MemberInfoRepository memberInfoRepository;
     private final UserGroupCodeRepository userGroupCodeRepository;
     private final ProductListServiceMapper mapper;
     private final InnerProductRepository innerProductRepository;
@@ -165,11 +164,11 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         LongSummaryStatistics summary = dailyPrices.stream()
                 .map(element -> element.getPrice()).mapToLong(Long::longValue).summaryStatistics();
 
-        MemberInfo memberInfo = memberInfoRepository.getMember(GetMemberInDto.builder().customerId(in.getCustomerId()).businessCode("001").build());
+        MemberInfo member = memberService.getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
 
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                 .innerProduct(in.getTargetProduct())
-                .memberInfo(memberInfo)
+                .memberInfo(member)
                 .regionGroup(in.getRegionGroup())
                 .build());
 
@@ -179,6 +178,68 @@ public class ProductPriceServiceImpl implements ProductPriceService {
                 .minimumPrice(summary.getMin())
                 .priceList(dailyPrices.stream().map(element->element.getPrice()).collect(Collectors.toList()))
                 .baseRange(in.getRangeForLength())
+                .build();
+    }
+    @Override
+    public GetLatestBaseDateResult getLatestBaseDate(GetLatestBaseDate criteria) {
+        String maxBaseDate = processedPriceInfoRepository.getMaxBaseDate(criteria.getBaseDate());
+        return GetLatestBaseDateResult.builder().baseDate(maxBaseDate).build();
+    }
+
+    @Override
+    public GetDetailPriceLegacyResult getDetailPriceLegacy(GetDetailPriceCriteria criteria) {
+        GetLatestBaseDateResult latestBaseDate = getLatestBaseDate(GetLatestBaseDate
+                                                                .builder().baseDate(criteria.getBaseDate()).build());
+
+        Optional<UserGroupCode> regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
+        Optional<InnerProduct> innerProduct = innerProductRepository.findById(criteria.getInnerProductId());
+        GetMemberResult member = memberService.getMember(GetMemberCriteria.builder()
+                                                        .customerId(criteria.getCustomerId())
+                                                        .businessCode("001").build());
+        //멤버 조회 이력 insert
+        memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
+                                        .innerProduct(innerProduct.get())
+                                        .regionGroup(regionGroup.get())
+                                        .memberInfo(member.getMemberInfo())
+                                        .build());
+        // 1년치 가격 뽑아옴
+        List<FindPriceListByGroupRegionCodeOut> priceList
+                = processedPriceInfoRepository.findPriceListByGroupRegionCode
+                                (FindPriceListByGroupRegionCodeIn.builder()
+                                                .regionGroup(regionGroup.get())
+                                                .baseDate(latestBaseDate.getBaseDate())
+                                                .rangeForLength(BaseRange.YEAR)
+                                                .rangeForTag(BaseRange.DAY)
+                                                .targetProduct(innerProduct.get()).build());
+        //조립시작, 1주일, 1개월, 6개월, 1년
+        List<GetDetailPriceLegacyResultElement> list = new ArrayList<>();
+        for(BaseRange baseRange : BaseRange.getDetailRangeList()){
+            DoubleSummaryStatistics summary = priceList.stream().limit(baseRange.getGapDay()).mapToDouble(element -> element.getPrice()).summaryStatistics();
+            List<GetDetailPriceLegacyResultSubElement> subList = priceList.stream().limit(baseRange.getGapDay()).map(element -> mapper.toSubElement(element)).collect(Collectors.toList());
+            double max = summary.getMax();
+            double min = summary.getMin();
+            double average = summary.getAverage();
+            list.add(GetDetailPriceLegacyResultElement.builder()
+                            .basePrice(average)
+                            .baseRange(baseRange)
+                            .list(subList)
+                            .listSize((long)subList.size())
+                            .maximumPrice(max)
+                            .minimumPrice(min)
+                    .build());
+        }
+
+        return GetDetailPriceLegacyResult.builder()
+                .listCount((long)list.size())
+                .unitName(innerProduct.get().getBaseProducts().get(0).getUnitName())
+                .unitValue(innerProduct.get().getBaseProducts().get(0).getUnitValue().doubleValue())
+                .innerProductId(innerProduct.get().getId())
+                .regionGroupId(regionGroup.get().getId())
+                .gapPrice(null)
+                .basePrice(null)
+                .innerProductName(innerProduct.get().getProductName())
+                .baseDate(latestBaseDate.getBaseDate())
+                .list(list)
                 .build();
     }
 }

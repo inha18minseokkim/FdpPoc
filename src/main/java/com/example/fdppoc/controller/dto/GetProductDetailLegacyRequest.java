@@ -4,10 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
 @ToString
-public class GetProductInterestInfoResponse {
-    private Long innerProductId;
-    private Boolean isAvailable;
+@Builder
+public class GetProductDetailLegacyRequest {
+    private String baseDate;
+    private String customerId;
 }

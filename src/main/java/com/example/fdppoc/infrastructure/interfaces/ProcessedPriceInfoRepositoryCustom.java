@@ -8,4 +8,6 @@ public interface ProcessedPriceInfoRepositoryCustom {
     List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(FindPriceListByGroupRegionCodeIn in);
     GetPriceDiffOut getTodayAndWeeklyMeanPrice(GetPriceDiffIn in);
     List<GetPriceDiffListOut> getPriceDiffList(GetPriceDiffListIn in);
+
+    String getMaxBaseDate(String baseDate);
 }

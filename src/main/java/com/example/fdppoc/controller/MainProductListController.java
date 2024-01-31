@@ -6,6 +6,8 @@ import com.example.fdppoc.controller.mapper.MainProductListControllerMapper;
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.impl.InnerCategoryServiceImpl;
 import com.example.fdppoc.domain.impl.InnerProductServiceImpl;
+import com.example.fdppoc.domain.interfaces.InnerCategoryService;
+import com.example.fdppoc.domain.interfaces.InnerProductService;
 import com.example.fdppoc.domain.interfaces.ProductPriceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +23,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/mainProductList")
 @Slf4j
 public class MainProductListController {
-    private final InnerProductServiceImpl innerProductService;
+    private final InnerProductService innerProductService;
     private final ProductPriceService productPriceService;
-    private final InnerCategoryServiceImpl innerCategoryService;
+    private final InnerCategoryService innerCategoryService;
     private final MainProductListControllerMapper mapper;
     @GetMapping("/searchInnerProducts")
     public SearchInnerProductsResponse searchInnerProducts(SearchInnerProductsRequest request){
@@ -45,9 +47,16 @@ public class MainProductListController {
 
     @GetMapping("/legacyAllInnerProducts")
     public LegacyAllInnerProductsResponse legacyAllInnerProducts(LegacyAllInnerProductsRequest request){
-        List<GetAllProductResult> allProduct = productPriceService.getAllProduct(mapper.from(request));
+        GetLatestBaseDateResult latestBaseDate = productPriceService.getLatestBaseDate(GetLatestBaseDate.builder().baseDate(request.getBaseDate()).build());
+        GetAllProductCriteria input = mapper.from(request);
+        input.setBaseDate(latestBaseDate.getBaseDate());
+        List<GetAllProductResult> allProduct = productPriceService.getAllProduct(input);
         return LegacyAllInnerProductsResponse.builder()
                 .list(allProduct.stream().map(element -> mapper.from(element)).collect(Collectors.toList()))
+                .baseDate(latestBaseDate.getBaseDate())
+                .regionGroupId(request.getRegionGroupId())
+                .customerId(request.getCustomerId())
+                .compareDsCode("01")
                 .processCount(Long.valueOf(allProduct.size()))
                 .build();
     }

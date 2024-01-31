@@ -14,14 +14,4 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class MemberInfoRepositoryImpl implements MemberInfoRepositoryCustom {
-    private final MemberInfoRepository memberInfoRepository;
-    @Override
-    public MemberInfo getMember(GetMemberInDto in) {
-        Optional<MemberInfo> result = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(in.getCustomerId(), in.getBusinessCode());
-        log.info("getMember 타입 확인 {}",this.getClass());
-        if(result.isEmpty())
-            result = Optional.of(memberInfoRepository.save(MemberInfo.builder().isAgree(false)
-                    .businessCode(in.getBusinessCode()).customerId(in.getCustomerId()).build()));
-        return result.get();
-    }
 }

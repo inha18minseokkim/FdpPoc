@@ -9,6 +9,9 @@ import com.example.fdppoc.domain.impl.InnerProductServiceImpl;
 import com.example.fdppoc.domain.dto.GetAllInnerCategoryResult;
 import com.example.fdppoc.domain.dto.GetBaseCodesResult;
 import com.example.fdppoc.domain.dto.GetInnerProductsWithFilterResult;
+import com.example.fdppoc.domain.interfaces.BaseProductService;
+import com.example.fdppoc.domain.interfaces.InnerCategoryService;
+import com.example.fdppoc.domain.interfaces.InnerProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +22,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/productCodeAdmin")
 @RequiredArgsConstructor
 public class ProductCodeAdminController {
-    private final BaseProductServiceImpl baseProductService;
-    private final InnerProductServiceImpl innerProductService;
-    private final InnerCategoryServiceImpl innerCategoryService;
+    private final BaseProductService baseProductService;
+    private final InnerProductService innerProductService;
+    private final InnerCategoryService innerCategoryService;
     private final ProductCodeAdminControllerMapper mapper;
     @GetMapping("/getBaseCodes")
     public GetBaseCodesResponse getBaseCodes(GetBaseCodesRequest request){

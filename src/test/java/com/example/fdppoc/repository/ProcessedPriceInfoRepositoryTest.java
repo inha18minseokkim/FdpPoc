@@ -29,14 +29,14 @@ class ProcessedPriceInfoRepositoryTest {
     UserGroupCodeRepository userGroupCodeRepository;
     @Test
     @Transactional
-    void 쌀일주일치조회() {
+    void 쌀일년치조회() {
         Optional<InnerProduct> rice = innerProductRepository.findById(2L);
         log.info("해당 품목 조회 : {} ",rice.get());
         Optional<UserGroupCode> gyeongki = userGroupCodeRepository.findById(152L);
         log.info("다음 지역 조회 : {}",gyeongki.get());
         FindPriceListByGroupRegionCodeIn in = FindPriceListByGroupRegionCodeIn.builder()
-                .baseDate("20240110")
-                .rangeForLength(BaseRange.WEEK)
+                .baseDate("20240119")
+                .rangeForLength(BaseRange.YEAR)
                 .rangeForTag(BaseRange.DAY)
                 .targetProduct(rice.get())
                 .regionGroup(gyeongki.get())

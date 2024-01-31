@@ -43,25 +43,32 @@ public class ProductDetailController {
         );
         return mapper.from(productPrice);
     }
+    @GetMapping("/getProductDetailLegacy/{targetProductId}/{regionGroupId}")
+    public GetProductDetailLegacyResponse getProductDetailLegacy(@PathVariable("targetProductId") InnerProduct innerProduct,
+                                                                 @PathVariable("regionGroupId") UserGroupCode userGroupCode
+                                                                ,GetProductDetailLegacyRequest request){
+        return null;
+    }
+
     @GetMapping("/getProductInterestInfo/{targetProductId}")
     public GetProductInterestInfoResponse getProductInterestInfo(
             @PathVariable("targetProductId")InnerProduct targetProduct,
             GetProductInterestInfoRequest in){
         GetProductInterestResult result = memberService.getProductInterest(
                 GetProductInterestCriteria.builder().targetProduct(targetProduct).customerId(in.getCustomerId()).build());
-        return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).build();
+        return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).innerProductId(targetProduct.getId()).build();
     }
     @PostMapping("/setProductInterestInfo/{targetProductId}")
     public SetProductInterestResponse setProductInterest(
-            @PathVariable("targetProductId")InnerProduct baseProduct
+            @PathVariable("targetProductId")InnerProduct targetProduct
             ,@RequestBody SetProductInterestRequest in){
 
         memberService.setProductInterest(SetProductInterestCriteria.builder()
                         .customerId(in.getCustomerId())
-                        .targetProduct(baseProduct)
+                        .targetProduct(targetProduct)
                         .isAvailable(in.getIsAvailable())
                 .build());
-        return SetProductInterestResponse.builder().responseCode(ControllerResponse.OK).build();
+        return SetProductInterestResponse.builder().innerProductId(targetProduct.getId()).isAvailable(in.getIsAvailable()).build();
     }
 
 }

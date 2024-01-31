@@ -9,5 +9,6 @@ import lombok.ToString;
 @ToString
 @Builder
 public class SetProductInterestResponse {
-    private ControllerResponse responseCode;
+    private Boolean isAvailable;
+    private Long innerProductId;
 }

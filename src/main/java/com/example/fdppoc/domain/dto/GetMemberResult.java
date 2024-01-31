@@ -11,5 +11,5 @@ import java.util.Optional;
 @Builder
 @ToString
 public class GetMemberResult {
-    private Optional<MemberInfo> memberInfo;
+    private MemberInfo memberInfo;
 }

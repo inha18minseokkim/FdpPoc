@@ -4,6 +4,7 @@ import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
 import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
+import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffIn;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListIn;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @Transactional
 class ProcessedPriceInfoRepositoryCustomTest {
     @Autowired
-    ProcessedPriceInfoRepositoryImpl processedPriceInfoRepositoryCustom;
+    ProcessedPriceInfoRepository processedPriceInfoRepository;
     @Autowired
     UserGroupCodeRepository userGroupCodeRepository;
     @Autowired
@@ -36,7 +37,7 @@ class ProcessedPriceInfoRepositoryCustomTest {
     InnerProductRepositoryImpl innerProductRepositoryCustom;
     @Test
     void 범위내최대최소가격탐색() {
-        GetPriceDiffOut minMaxPrice = processedPriceInfoRepositoryCustom.getTodayAndWeeklyMeanPrice(
+        GetPriceDiffOut minMaxPrice = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(
                 GetPriceDiffIn.builder()
                         .startDate("20240101")
                         .endDate("20240119")
@@ -49,11 +50,11 @@ class ProcessedPriceInfoRepositoryCustomTest {
     }
     @Test
     void  모든상품가격() {
-        List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepositoryCustom.getPriceDiffList(
+        List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
                 GetPriceDiffListIn.builder().regionGroup(userGroupCodeRepository.findById(52L).get())
-                        .startDate("20240112").endDate("20240119")
+                        .startDate("20230112").endDate("20240119")
                         .build());
-        //log.info("중간결과 : {}",priceDiffList);
+        log.info("중간결과 : {}",priceDiffList);
         Map<InnerProduct, List<GetPriceDiffListOut>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProduct()));
         collect.keySet().stream().map(collect::get).map(element -> {
             //기준일자
@@ -71,5 +72,12 @@ class ProcessedPriceInfoRepositoryCustomTest {
                         log.info("결과 : {}",element);
                 }
         );
+    }
+    @Test
+    void 최대날짜테스트(){
+        String maxBaseDate = processedPriceInfoRepository.getMaxBaseDate("20240130");
+        log.info("결과 : {}",maxBaseDate);
+        Assertions.assertThat(maxBaseDate).isLessThanOrEqualTo("20240130");
+
     }
 }

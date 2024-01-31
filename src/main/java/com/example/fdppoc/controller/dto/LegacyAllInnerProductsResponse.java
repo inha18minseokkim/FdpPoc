@@ -10,6 +10,10 @@ import java.util.List;
 @ToString
 @Data
 public class LegacyAllInnerProductsResponse {
+    private String baseDate;
+    private String compareDsCode;
+    private String customerId;
+    private Long regionGroupId;
     private Long processCount;
     private List<LegacyAllInnerProductsResponseElement> list;
 }

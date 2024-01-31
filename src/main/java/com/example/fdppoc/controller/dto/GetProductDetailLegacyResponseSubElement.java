@@ -4,10 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
+@Builder
 @ToString
-public class GetProductInterestInfoResponse {
-    private Long innerProductId;
-    private Boolean isAvailable;
+public class GetProductDetailLegacyResponseSubElement {
+    private String baseDate;
+    private Long price;
 }

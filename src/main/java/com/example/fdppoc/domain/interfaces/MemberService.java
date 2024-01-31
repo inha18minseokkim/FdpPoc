@@ -15,4 +15,6 @@ public interface MemberService {
     void insertProductHistory(InsertProductHistoryCriteria in);
     GetTopViewProductsResult getTopViewProducts(GetTopViewProductsCriteria in);
 
+    GetMemberResult getMember(GetMemberCriteria criteria);
+
 }

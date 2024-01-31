@@ -5,6 +5,7 @@ import com.example.fdppoc.domain.entity.*;
 import com.example.fdppoc.infrastructure.dto.*;
 import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoRepositoryCustom;
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -141,5 +142,19 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
                 .price(Optional.ofNullable(element.get(processedPriceInfo.price.avg())))
                 .baseDate(Optional.ofNullable(element.get(processedPriceInfo.baseDate)))
                 .build()).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getMaxBaseDate(String baseDate) {
+        QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
+        JPAQueryFactory query = new JPAQueryFactory(entityManager);
+        List<String> result = query.select(processedPriceInfo.baseDate.max())
+                .from(processedPriceInfo)
+                .where(
+                        processedPriceInfo.baseDate.loe(baseDate)
+                        , processedPriceInfo.baseRange.eq(BaseRange.DAY)
+                        , processedPriceInfo.baseProduct.categoryCode.ne("500")
+                ).fetch();
+        return result.get(0);
     }
 }
