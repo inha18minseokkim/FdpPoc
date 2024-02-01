@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @ToString
 public class SetInnerProductsRequestElement {
-    private Long id;
+    private String id;
     private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;

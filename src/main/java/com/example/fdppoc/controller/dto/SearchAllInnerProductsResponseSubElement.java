@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class SearchAllInnerProductsResponseSubElement {
     private Long orderSequence;
-    private Long id;
+    private String id;
     private String productName;
     private String additionalDescription;
     private Boolean isSeasonal;

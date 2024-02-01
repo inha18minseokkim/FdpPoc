@@ -31,7 +31,7 @@ public class BaseProduct {
     private String itemName;
     private String kindName;
     private String gradeName;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="innerProductId",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @ToString.Exclude
     private InnerProduct innerProduct;

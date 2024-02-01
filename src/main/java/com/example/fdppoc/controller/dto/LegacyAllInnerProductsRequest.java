@@ -10,6 +10,6 @@ import lombok.ToString;
 @Builder
 public class LegacyAllInnerProductsRequest {
     private String customerId;
-    private Long regionGroupId;
+    private String regionGroupId;
     private String baseDate;
 }

@@ -41,8 +41,8 @@ class ProcessedPriceInfoRepositoryCustomTest {
                 GetPriceDiffIn.builder()
                         .startDate("20240101")
                         .endDate("20240119")
-                        .regionGroup(userGroupCodeRepository.findById(152L).get())
-                        .targetProduct(innerProductRepository.findById(1004L).get())
+                        .regionGroup(userGroupCodeRepository.findById("").get())
+                        .targetProduct(innerProductRepository.findById("1004").get())
                         .build()
         );
         log.info("결과 : {}",minMaxPrice);
@@ -51,7 +51,7 @@ class ProcessedPriceInfoRepositoryCustomTest {
     @Test
     void  모든상품가격() {
         List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
-                GetPriceDiffListIn.builder().regionGroup(userGroupCodeRepository.findById(52L).get())
+                GetPriceDiffListIn.builder().regionGroup(userGroupCodeRepository.findById("FDPREGN3100").get())
                         .startDate("20230112").endDate("20240119")
                         .build());
         log.info("중간결과 : {}",priceDiffList);

@@ -34,7 +34,7 @@ class CustomerInterestProductServiceTest {
     @Transactional
     @Rollback(value = true)
     void 관심상품등록조회() {
-        Optional<InnerProduct> rice = innerProductRepository.findById(1004L);
+        Optional<InnerProduct> rice = innerProductRepository.findById("1004");
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestCriteria input = GetProductInterestCriteria.builder()
                 .targetProduct(rice.get())
@@ -57,7 +57,7 @@ class CustomerInterestProductServiceTest {
     @Transactional
     @Rollback(true)
     void 관심상품해제조회() {
-        Optional<InnerProduct> rice = innerProductRepository.findById(2L);
+        Optional<InnerProduct> rice = innerProductRepository.findById("2");
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestCriteria input = GetProductInterestCriteria.builder()
                 .targetProduct(rice.get())

@@ -13,5 +13,5 @@ public class GetPopularProductCriteria {
     private String baseDate;
     private LocalDateTime currentTime;
     private Long rangeHour;
-    private Long regionGroupId;
+    private String regionGroupId;
 }

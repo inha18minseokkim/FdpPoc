@@ -20,9 +20,9 @@ class ProductPriceServiceImplTest {
     @Transactional
     void 상세정보Legacy조회() {
         GetDetailPriceLegacyResult detailPriceLegacy = productPriceService.getDetailPriceLegacy(GetDetailPriceCriteria.builder()
-                .innerProductId(2L)
+                .innerProductId("002")
                 .customerId("20160860")
-                .regionGroupId(52L)
+                .regionGroupId("")
                 .baseDate("20240130")
                 .build()
         );

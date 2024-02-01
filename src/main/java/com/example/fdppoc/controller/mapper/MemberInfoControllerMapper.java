@@ -16,9 +16,10 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface MemberInfoControllerMapper {
-    GetMemberPushInfoCriteria from(GetmemberPushInfoRequest request);
 
     GetMemberPushInfoResponse from(GetMemberPushInfoResult memberPushInfo);
 
     SetMemberPushInfoCriteria from(SetMemberPushInfoRequest request);
+
+    GetMemberPushInfoCriteria from(GetmemberPushInfoRequest request);
 }

@@ -39,7 +39,8 @@ public class InnerProductServiceImpl implements InnerProductService {
     @Transactional
     public void setInnerProducts(List<SetInnerProductsCriteria> in){
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
-                .map((element) -> {
+                .forEach((element) -> {
+                    log.info("다음 저장 : {}",element);
                     InnerProduct entity = mapper.toEntity(element);
                     Optional<InnerCategory> resultInnerCategory = innerCategoryRepository.findById(element.getInnerCategoryId());
 
@@ -50,9 +51,14 @@ public class InnerProductServiceImpl implements InnerProductService {
                             .collect(Collectors.toList());
                     baseProducts.forEach(baseProductElement -> baseProductElement.setInnerProduct(entity));
                     entity.setInnerCategory(resultInnerCategory.orElseThrow());
-                    entity.setBaseProducts(baseProducts);
-                    return entity;
-                }).forEach((element) -> innerProductRepository.save(element));
+
+                    innerProductRepository.save(entity);
+                    baseProducts.forEach(baseProductElement -> {
+                        baseProductElement.setInnerProduct(entity);
+                        baseProductRepository.save(baseProductElement);
+                    });
+
+                });
 
     }
 

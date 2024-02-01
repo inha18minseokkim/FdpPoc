@@ -30,9 +30,9 @@ class ProcessedPriceInfoRepositoryTest {
     @Test
     @Transactional
     void 쌀일년치조회() {
-        Optional<InnerProduct> rice = innerProductRepository.findById(2L);
+        Optional<InnerProduct> rice = innerProductRepository.findById("2");
         log.info("해당 품목 조회 : {} ",rice.get());
-        Optional<UserGroupCode> gyeongki = userGroupCodeRepository.findById(152L);
+        Optional<UserGroupCode> gyeongki = userGroupCodeRepository.findById("FDPREGN3100");
         log.info("다음 지역 조회 : {}",gyeongki.get());
         FindPriceListByGroupRegionCodeIn in = FindPriceListByGroupRegionCodeIn.builder()
                 .baseDate("20240119")

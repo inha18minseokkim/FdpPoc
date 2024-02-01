@@ -9,7 +9,7 @@ import lombok.ToString;
 @Data
 public class GetDetailPriceCriteria {
     private String baseDate;
-    private Long regionGroupId;
-    private Long innerProductId;
+    private String regionGroupId;
+    private String innerProductId;
     private String customerId;
 }

@@ -12,8 +12,10 @@ public class OriginalPriceInfo {
     private Long id;
     private String baseDate;
     @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private UserCode regionInfo;
     @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private BaseProduct baseProduct;
     private String storeName;
     private String itemName;

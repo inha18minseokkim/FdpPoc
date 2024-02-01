@@ -31,8 +31,8 @@ class CustomerSearchHistoryServiceTest {
     void 이력적재테스트 () {
         Optional<MemberInfo> tempMember = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode("20160860", "001");
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
-                        .innerProduct(innerProductRepository.findById(1004L).get())
-                        .regionGroup(UserGroupCode.builder().id(152L).build())
+                        .innerProduct(innerProductRepository.findById("1004").get())
+                        .regionGroup(UserGroupCode.builder().id("").build())
                         .memberInfo(tempMember.get())
                 .build());
 

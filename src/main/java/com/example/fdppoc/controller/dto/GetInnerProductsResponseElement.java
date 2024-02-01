@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @Getter
 public class GetInnerProductsResponseElement {
-    private Long id;
+    private String id;
     private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;

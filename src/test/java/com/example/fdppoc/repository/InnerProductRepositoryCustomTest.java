@@ -69,7 +69,7 @@ class InnerProductRepositoryCustomTest {
     @Rollback(value = true)
     void 수정_테스트() {
 
-        InnerProduct innerProduct = innerProductRepository.findById(2L).get();
+        InnerProduct innerProduct = innerProductRepository.findById("002").get();
 
         log.info("InnerProduct 출력: {}",innerProduct);
         InnerCategory tobeCategory = innerCategoryRepository.findById(2L).get();

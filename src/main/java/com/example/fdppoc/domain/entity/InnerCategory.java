@@ -1,9 +1,6 @@
 package com.example.fdppoc.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -21,7 +18,7 @@ public class InnerCategory {
     private Long orderSequence;
     private String additionalDescription;
     private Boolean isAvailable;
-    @OneToMany
+    @OneToMany(mappedBy = "innerCategory",cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<InnerProduct> subProducts;
 

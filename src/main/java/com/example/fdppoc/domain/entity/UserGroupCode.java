@@ -18,8 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserGroupCode {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
     private String codeDetailName;
     private String description;
     private Long orderSequence;

@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 public class GetProductDetailLegacyResponse {
     private String baseDate;
-    private Long regionGroupId;
+    private String regionGroupId;
     private String innerProductId;
     private String innerProductName;
     private String unitName;

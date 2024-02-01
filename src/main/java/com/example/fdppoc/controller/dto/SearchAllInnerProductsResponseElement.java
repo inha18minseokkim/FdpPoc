@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 public class SearchAllInnerProductsResponseElement {
     private Long orderSequence;
-    private Long id;
+    private String id;
     private String innerCategoryName;
     private String additionalDescription;
     private List<SearchAllInnerProductsResponseSubElement> innerProducts;

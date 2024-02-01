@@ -10,5 +10,5 @@ import lombok.ToString;
 @Builder
 public class SetProductInterestResponse {
     private Boolean isAvailable;
-    private Long innerProductId;
+    private String innerProductId;
 }

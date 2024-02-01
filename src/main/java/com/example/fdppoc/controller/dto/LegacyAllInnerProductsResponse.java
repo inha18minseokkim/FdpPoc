@@ -13,7 +13,7 @@ public class LegacyAllInnerProductsResponse {
     private String baseDate;
     private String compareDsCode;
     private String customerId;
-    private Long regionGroupId;
+    private String regionGroupId;
     private Long processCount;
     private List<LegacyAllInnerProductsResponseElement> list;
 }

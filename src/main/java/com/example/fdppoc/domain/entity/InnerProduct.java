@@ -15,19 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 public class InnerProduct {
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
-    @OneToMany(mappedBy = "innerProduct",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "innerProduct",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<BaseProduct> baseProducts;
 
     private Boolean isMainMaterial;
     private Boolean isAvailable;
-    @ManyToOne
-    @JoinColumns(
-            value = @JoinColumn(name="innerCategoryId",referencedColumnName = "id"),
-            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
-    )
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="innerCategoryId",referencedColumnName = "id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private InnerCategory innerCategory;
     private Long orderSequence;
     private String productName;

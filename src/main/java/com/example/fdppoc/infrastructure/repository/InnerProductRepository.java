@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface InnerProductRepository extends JpaRepository<InnerProduct,Long> , InnerProductRepositoryCustom {
+public interface InnerProductRepository extends JpaRepository<InnerProduct,String> , InnerProductRepositoryCustom {
     List<InnerProduct> findAllByIsAvailable(boolean isAvailable);
 }

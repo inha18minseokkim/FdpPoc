@@ -8,6 +8,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class GetProductInterestInfoResponse {
-    private Long innerProductId;
+    private String innerProductId;
     private Boolean isAvailable;
 }

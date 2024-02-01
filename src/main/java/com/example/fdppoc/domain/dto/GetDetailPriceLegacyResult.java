@@ -11,8 +11,8 @@ import java.util.List;
 @Builder
 public class GetDetailPriceLegacyResult {
     private String baseDate;
-    private Long regionGroupId;
-    private Long innerProductId;
+    private String regionGroupId;
+    private String innerProductId;
     private String innerProductName;
     private String unitName;
     private Double unitValue;

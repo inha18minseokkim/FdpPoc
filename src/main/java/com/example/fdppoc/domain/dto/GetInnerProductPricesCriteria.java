@@ -8,7 +8,7 @@ import lombok.ToString;
 @Data
 @Builder
 public class GetInnerProductPricesCriteria {
-    private Long regionGroupId;
+    private String regionGroupId;
     private String startDate;
     private String endDate;
 }

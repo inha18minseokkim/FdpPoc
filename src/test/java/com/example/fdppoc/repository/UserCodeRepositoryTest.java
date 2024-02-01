@@ -5,6 +5,7 @@ import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.infrastructure.repository.UserCodeRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @SpringBootTest
+@Slf4j
 class UserCodeRepositoryTest {
     @Autowired
     UserCodeRepository userCodeRepository;
@@ -22,7 +25,7 @@ class UserCodeRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(value = true)
+    @Rollback(value = false)
     void usercode_insertionTest() {
 //        UserGroupCode kamisApiRegion = UserGroupCode.builder()
 //                .codeDetailName("KamisApiRegionCode")
@@ -31,7 +34,7 @@ class UserCodeRepositoryTest {
 //                .userCodes(new ArrayList<>())
 //                .useInfo(true)
 //                .build();
-        UserGroupCode kamisApiRegion = groupCodeRepository.findById(1L).get();
+        UserGroupCode kamisApiRegion = groupCodeRepository.findById("FDPREGN1101").get();
 //        UserCode seoul = UserCode.builder()
 //                .codeDetailName("1101")
 //                .description("서울지역 식별자")
@@ -162,5 +165,12 @@ class UserCodeRepositoryTest {
         savedGyonkiGroup = groupCodeRepository.save(savedGyonkiGroup);
         Assertions.assertThat(savedGyonkiGroup.getUserCodes()).contains(savedyongin);
         Assertions.assertThat(savedGyonkiGroup.getUserCodes()).contains(savedSuwon);
+    }
+    @Test
+    @Transactional
+    void Kamis전국조회() {
+        UserGroupCode kamis = groupCodeRepository.findById("FDPREGN3100").get();
+        log.info("결과 : {}",kamis.getUserCodes());
+        Assertions.assertThat(kamis.getUserCodes().get(0).getUserGroupCode()).isEqualTo(kamis);
     }
 }

@@ -27,7 +27,7 @@ class ProductListServiceTest {
                         .baseDate("20240119")
                         .currentTime(LocalDateTime.now())
                         .rangeHour(24L)
-                        .regionGroupId(152L)
+                        .regionGroupId("")
                 .build());
         log.info("실행 결과 : {}",popularProduct);
     }
@@ -38,7 +38,7 @@ class ProductListServiceTest {
         List<GetAllProductResult> allProduct = productPriceService.getAllProduct(GetAllProductCriteria.builder()
                 .baseDate("20240119")
                 .customerId("20170860")
-                .regionGroupId(52L)
+                .regionGroupId("FDPREGN1101")
                 .build());
         log.info("결과 : {}",allProduct);
     }

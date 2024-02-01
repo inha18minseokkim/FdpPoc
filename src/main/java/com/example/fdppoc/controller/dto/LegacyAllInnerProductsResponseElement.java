@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class LegacyAllInnerProductsResponseElement {
-    private Long innerProductId;
+    private String innerProductId;
     private String innerProductName;
     private String unitValueName;
     private Long currentPrice;

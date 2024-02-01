@@ -75,7 +75,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         List<GetMemberInterestProductsResult> memberInterestProducts = memberService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId(criteria.getCustomerId()).build());
 
         //각각 정보 적재를 위한 맵
-        Map<Long,GetAllProductResult> resultMap = allProduct.stream().collect(Collectors.toMap(InnerProduct::getId
+        Map<String,GetAllProductResult> resultMap = allProduct.stream().collect(Collectors.toMap(InnerProduct::getId
                 ,element -> {
                     return GetAllProductResult.builder()
                             .innerProductId(element.getId())
@@ -104,7 +104,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
             clickProduct.setClickCount(element.getCount());
         });
         //가격정보
-        for(int i = 0; i < Math.max(innerProductPriceList.size(),5); i++){
+        for(int i = 0; i < Math.min(innerProductPriceList.size(),5); i++){
             if(innerProductPriceList.get(i).getGapRatio() >= 0) break;
             InnerProduct minusInnerProduct = innerProductPriceList.get(i).getInnerProduct();
             resultMap.get(minusInnerProduct.getId()).setIsRiseOrDecline(true);

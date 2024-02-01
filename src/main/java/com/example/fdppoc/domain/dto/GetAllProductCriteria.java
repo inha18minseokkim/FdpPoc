@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class GetAllProductCriteria {
     private String customerId;
-    private Long regionGroupId;
+    private String regionGroupId;
     private String baseDate;
 }

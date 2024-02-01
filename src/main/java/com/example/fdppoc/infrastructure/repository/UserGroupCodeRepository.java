@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserGroupCodeRepository extends JpaRepository<UserGroupCode,Long> {
+public interface UserGroupCodeRepository extends JpaRepository<UserGroupCode,String> {
 }
