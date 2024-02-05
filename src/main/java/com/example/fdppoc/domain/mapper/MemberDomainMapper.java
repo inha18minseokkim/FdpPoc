@@ -24,5 +24,6 @@ public interface MemberDomainMapper {
     @Mapping(target = "id", ignore = true)
     MemberInfo toEntity(SetMemberPushInfoCriteria in);
 
+    @Mapping(target="innerProductId",expression = "java(element.getInnerProduct().getId())")
     GetMemberInterestProductsResult from(CustomerInterestProduct element);
 }

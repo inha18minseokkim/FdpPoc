@@ -12,7 +12,7 @@ import org.mapstruct.*;
 )
 public interface CustomerInterestProductServiceMapper {
     @Mappings({
-            @Mapping(target = "innerProduct", expression = "java(element.getInnerProduct())")
+            @Mapping(target = "innerProductId", expression = "java(element.getInnerProduct().getId())")
     }
     )
     GetMemberInterestProductsResult from(CustomerInterestProduct element);

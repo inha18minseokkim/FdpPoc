@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new StringToBaseRangeConverter());
     }
     @Slf4j
-    static class StringToBaseRangeConverter implements Converter<String, BaseRange> {
+    static class StringToBaseRangeConverter implements Converter<String, BaseRange> { //BaseRange Serializing
         @Override
         public BaseRange convert(String s) {
             try {

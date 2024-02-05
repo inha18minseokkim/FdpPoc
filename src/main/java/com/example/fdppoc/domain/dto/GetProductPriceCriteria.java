@@ -13,9 +13,9 @@ import lombok.ToString;
 @ToString
 public class GetProductPriceCriteria {
     private String baseDate;
-    private InnerProduct targetProduct;
+    private String targetInnerProductId;
     private BaseRange rangeForLength;
     private BaseRange rangeForTag;
-    private UserGroupCode regionGroup;
+    private String regionGroupCodeId;
     private String customerId;
 }

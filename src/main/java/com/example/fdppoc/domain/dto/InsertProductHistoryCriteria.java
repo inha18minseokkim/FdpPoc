@@ -11,7 +11,7 @@ import lombok.ToString;
 @Builder
 @ToString
 public class InsertProductHistoryCriteria {
-    private InnerProduct innerProduct;
-    private MemberInfo memberInfo;
-    private UserGroupCode regionGroup;
+    private String innerProductId;
+    private Long memberInfoId;
+    private String regionGroupCodeId;
 }

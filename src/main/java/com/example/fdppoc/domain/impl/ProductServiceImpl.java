@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
                             .regionGroup(targetRegionGroup.get()).targetProduct(element.getInnerProduct()).startDate(startDate).endDate(criteria.getBaseDate()).build());
                     log.debug("쿼리결과 : {}",priceDiff);
                     return GetPopularProductResult.builder()
-                            .innerProduct(element.getInnerProduct())
+                            .innerProductId(element.getInnerProduct().getId())
                             .count(element.getCount())
                             .gapPrice(priceDiff.getBasePrice()-priceDiff.getMeanPrice())
                             .gapRatio(((double)(priceDiff.getBasePrice()-priceDiff.getMeanPrice())/ priceDiff.getBasePrice()))
@@ -94,7 +94,7 @@ public class ProductServiceImpl implements ProductService {
                 }));
         //관심상품
         memberInterestProducts.stream().forEach(element -> {
-            GetAllProductResult interestProduct = resultMap.get(element.getInnerProduct().getId());
+            GetAllProductResult interestProduct = resultMap.get(element.getInnerProductId());
             interestProduct.setIsCustomerInterest(true);
         });
         //검색순위
@@ -139,9 +139,9 @@ public class ProductServiceImpl implements ProductService {
         MemberInfo member = memberService.getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
 
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
-                .innerProduct(in.getTargetProduct())
-                .memberInfo(member)
-                .regionGroup(in.getRegionGroup())
+                .innerProductId(in.getTargetInnerProductId())
+                .memberInfoId(member.getId())
+                .regionGroupCodeId(in.getRegionGroupCodeId())
                 .build());
 
         return GetProductPriceResult.builder()
@@ -172,9 +172,9 @@ public class ProductServiceImpl implements ProductService {
                                                         .businessCode("001").build());
         //멤버 조회 이력 insert
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
-                                        .innerProduct(innerProduct.get())
-                                        .regionGroup(regionGroup.get())
-                                        .memberInfo(member.getMemberInfo())
+                                        .innerProductId(criteria.getInnerProductId())
+                                        .regionGroupCodeId(criteria.getRegionGroupId())
+                                        .memberInfoId(member.getMemberInfo().getId())
                                         .build());
         //가격정보 기간별로 가져옴
         List<GetDetailPriceLegacyResultElement> list = productDetailService.getDetailPriceList(GetDetilPriceListCriteria.builder()

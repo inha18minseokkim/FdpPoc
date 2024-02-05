@@ -10,6 +10,6 @@ import lombok.ToString;
 @Builder
 @ToString
 public class GetProductInterestCriteria {
-    private InnerProduct targetProduct;
+    private String targetInnerProductId;
     private String customerId;
 }

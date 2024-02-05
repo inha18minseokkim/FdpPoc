@@ -34,7 +34,7 @@ public class MainProductListController {
                 //.lists(results.stream().collect(Collectors.toList()))
                 .responseCode(ControllerResponse.OK).build();
     }
-    @GetMapping("/searchAllInnerProducts") //CKBFP01000008
+    @GetMapping("/searchAllInnerProducts") //CKBFP01000008 전체상품검색
     public SearchAllInnerProductsResponse searchAllInnerProducts(SearchAllInnerProductsRequest request){
         List<GetAllInnerProductsResult> allInnerProducts = innerCategoryService.getAllInnerProducts(GetAllInnerProductsCriteria.builder().build());
         return SearchAllInnerProductsResponse.builder()
@@ -43,7 +43,7 @@ public class MainProductListController {
                 .build();
     }
 
-    @GetMapping("/legacyAllInnerProducts") //CKBFP01000010
+    @GetMapping("/legacyAllInnerProducts") //CKBFP01000010 주제단위상품정보조회
     public LegacyAllInnerProductsResponse legacyAllInnerProducts(LegacyAllInnerProductsRequest request){
         GetLatestBaseDateResult latestBaseDate = productService.getLatestBaseDate(GetLatestBaseDate.builder().baseDate(request.getBaseDate()).build());
         GetAllProductCriteria input = mapper.from(request);

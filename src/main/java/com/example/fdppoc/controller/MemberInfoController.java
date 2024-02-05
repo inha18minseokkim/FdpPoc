@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class MemberInfoController {
     private final MemberService memberService;
     private final MemberInfoControllerMapper mapper;
-    @GetMapping("/getMemberPushInfo") //CKBFP01000006
+    @GetMapping("/getMemberPushInfo") //CKBFP01000006 푸시동의조회
     GetMemberPushInfoResponse getMemberPushInfo(GetmemberPushInfoRequest request) {
         GetMemberPushInfoResult memberPushInfo = memberService.getMemberPushInfo(mapper.from(request));
         return mapper.from(memberPushInfo);
     }
-    @PostMapping("/setMemberPushInfo") //CKBFP01000005
+    @PostMapping("/setMemberPushInfo") //CKBFP01000005 푸시동의저장
     SetMemberPushInfoResponse setMemberPushInfo(@RequestBody SetMemberPushInfoRequest request){
         memberService.setMemberPushInfo(mapper.from(request));
         return SetMemberPushInfoResponse.builder().responseCode(ControllerResponse.OK).build();

@@ -75,11 +75,11 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         List<FindPriceListByGroupRegionCodeOut> priceList
                 = processedPriceInfoRepository.findPriceListByGroupRegionCode
                 (FindPriceListByGroupRegionCodeIn.builder()
-                        .regionGroup(regionGroup)
+                        .regionGroupCodeId(criteria.getRegionGroupId())
                         .baseDate(latestBaseDate)
                         .rangeForLength(BaseRange.YEAR)
                         .rangeForTag(BaseRange.DAY)
-                        .targetProduct(innerProduct).build());
+                        .targetInnerProductId(criteria.getInnerProductId()).build());
         //조립시작, 1주일, 1개월, 6개월, 1년
         List<GetDetailPriceLegacyResultElement> list = new ArrayList<>();
         for(BaseRange baseRange : BaseRange.getDetailRangeList()){

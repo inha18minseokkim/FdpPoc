@@ -20,7 +20,7 @@ public class ProductDetailController {
     private final ProductService productService;
     private final MemberService memberService;
     private final ProductDetailControllerMapper mapper;
-    @GetMapping("/getProductDetail/{targetProductId}/{regionGroupId}") //그냥 짠거
+    @GetMapping("/getProductDetail/{targetProductId}/{regionGroupId}") //그냥 React 기반으로 간다면 생각하고 짠것(통 응답에서 3개로 쪼갠 것 중 하나)
     public GetProductDetailResponse getProductDetail(@PathVariable("targetProductId") InnerProduct innerProduct,
                                                      @PathVariable("regionGroupId") UserGroupCode userGroupCode,
                                                      GetProductDetailRequest in
@@ -28,10 +28,10 @@ public class ProductDetailController {
         GetProductPriceResult productPrice = productService.getProductPrice(
                 GetProductPriceCriteria.builder()
                         .baseDate(in.getBaseDate())
-                        .targetProduct(innerProduct)
+                        .targetInnerProductId(innerProduct.getId())
                         .rangeForLength(in.getRangeForLength())
                         .rangeForTag(BaseRange.DAY)
-                        .regionGroup(userGroupCode)
+                        .regionGroupCodeId(userGroupCode.getId())
                         .customerId(in.getCustomerId())
                         .build()
         );
@@ -56,7 +56,7 @@ public class ProductDetailController {
             @PathVariable("targetProductId")InnerProduct targetProduct,
             GetProductInterestInfoRequest in){
         GetProductInterestResult result = memberService.getProductInterest(
-                GetProductInterestCriteria.builder().targetProduct(targetProduct).customerId(in.getCustomerId()).build());
+                GetProductInterestCriteria.builder().targetInnerProductId(targetProduct.getId()).customerId(in.getCustomerId()).build());
         return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).innerProductId(targetProduct.getId()).build();
     }
     @PostMapping("/setProductInterestInfo/{targetProductId}") //CKBFP01000012 관심식품등록
@@ -66,7 +66,7 @@ public class ProductDetailController {
 
         memberService.setProductInterest(SetProductInterestCriteria.builder()
                         .customerId(in.getCustomerId())
-                        .targetProduct(targetProduct)
+                        .targetInnerProductId(targetProduct.getId())
                         .isAvailable(in.getIsAvailable())
                 .build());
         return SetProductInterestResponse.builder().innerProductId(targetProduct.getId()).isAvailable(in.getIsAvailable()).build();

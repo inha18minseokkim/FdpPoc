@@ -38,8 +38,8 @@ class ProcessedPriceInfoRepositoryTest {
                 .baseDate("20240119")
                 .rangeForLength(BaseRange.YEAR)
                 .rangeForTag(BaseRange.DAY)
-                .targetProduct(rice.get())
-                .regionGroup(gyeongki.get())
+                .targetInnerProductId("2")
+                .regionGroupCodeId("FDPREGN3100")
                 .build();
         List<FindPriceListByGroupRegionCodeOut> results = processedPriceInfoRepositoryCustom.findPriceListByGroupRegionCode(in);
         log.info("실행결과 : {}",results);

@@ -28,10 +28,10 @@ class ProductDetailServiceTest {
 
         GetProductPriceCriteria input = GetProductPriceCriteria.builder()
                 .baseDate("20240119")
-                .targetProduct(innerProductRepository.findById("1004").get())
+                .targetInnerProductId("1004")
                 .rangeForLength(BaseRange.MONTH)
                 .rangeForTag(BaseRange.DAY)
-                .regionGroup(UserGroupCode.builder().id("").build())
+                .regionGroupCodeId("FDPREGN3100")
                 .customerId("20170860")
                 .build();
         GetProductPriceResult result = productService.getProductPrice(input);

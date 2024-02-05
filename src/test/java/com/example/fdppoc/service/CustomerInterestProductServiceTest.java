@@ -37,14 +37,14 @@ class CustomerInterestProductServiceTest {
         Optional<InnerProduct> rice = innerProductRepository.findById("1004");
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestCriteria input = GetProductInterestCriteria.builder()
-                .targetProduct(rice.get())
+                .targetInnerProductId("1004")
                 .customerId("20170860")
                 .build();
         GetProductInterestResult first = memberService.getProductInterest(input);
         log.info("첫번째 : {}",first);
 
         SetProductInterestCriteria build = SetProductInterestCriteria.builder()
-                .targetProduct(rice.get())
+                .targetInnerProductId("1004")
                 .customerId("20170860")
                 .isAvailable(true)
                 .build();
@@ -60,14 +60,14 @@ class CustomerInterestProductServiceTest {
         Optional<InnerProduct> rice = innerProductRepository.findById("2");
         Optional<MemberInfo> member = memberInfoRepository.findById(102L);
         GetProductInterestCriteria input = GetProductInterestCriteria.builder()
-                .targetProduct(rice.get())
+                .targetInnerProductId("2")
                 .customerId("20170860")
                 .build();
         GetProductInterestResult first = memberService.getProductInterest(input);
         log.info("첫번째 : {}",first);
 
         SetProductInterestCriteria build = SetProductInterestCriteria.builder()
-                .targetProduct(rice.get())
+                .targetInnerProductId("2")
                 .customerId("20170860")
                 .isAvailable(false)
                 .build();

@@ -9,5 +9,5 @@ import lombok.ToString;
 @ToString
 @Builder
 public class GetMemberInterestProductsResult {
-    private InnerProduct innerProduct;
+    private String innerProductId;
 }

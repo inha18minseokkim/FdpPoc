@@ -3,14 +3,13 @@ package com.example.fdppoc.domain.impl;
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.entity.CustomerInterestProduct;
 import com.example.fdppoc.domain.entity.CustomerSearchHistory;
+import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.MemberInfo;
 import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.domain.mapper.MemberDomainMapper;
 import com.example.fdppoc.infrastructure.dto.GetMemberInDto;
 import com.example.fdppoc.infrastructure.interfaces.MemberInfoRepositoryCustom;
-import com.example.fdppoc.infrastructure.repository.CustomerInterestProductRepository;
-import com.example.fdppoc.infrastructure.repository.CustomerSearchHistoryRepository;
-import com.example.fdppoc.infrastructure.repository.MemberInfoRepository;
+import com.example.fdppoc.infrastructure.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +27,8 @@ public class MemberServiceImpl implements MemberService {
     private final CustomerSearchHistoryRepository customerSearchHistoryRepository;
     private final MemberInfoRepository memberInfoRepository;
     private final CustomerInterestProductRepository customerInterestProductRepository;
+    private final InnerProductRepository innerProductRepository;
+    private final UserGroupCodeRepository userGroupCodeRepository;
     private final MemberDomainMapper mapper;
     @Override
     public GetMemberPushInfoResult getMemberPushInfo(GetMemberPushInfoCriteria in){
@@ -45,11 +46,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     public void insertProductHistory(InsertProductHistoryCriteria in) {
+
         customerSearchHistoryRepository.save(CustomerSearchHistory
                 .builder()
-                .innerProduct(in.getInnerProduct())
-                .memberInfo(in.getMemberInfo())
-                .regionGroup(in.getRegionGroup())
+                .innerProduct(innerProductRepository.findById(in.getInnerProductId()).orElseThrow())
+                .memberInfo(memberInfoRepository.findById(in.getMemberInfoId()).orElseThrow())
+                .regionGroup(userGroupCodeRepository.findById(in.getRegionGroupCodeId()).orElseThrow())
                 .submitTime(LocalDateTime.now())
                 .build());
     }
@@ -72,7 +74,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public GetProductInterestResult getProductInterest(GetProductInterestCriteria in){
         MemberInfo member = getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
-        Optional<CustomerInterestProduct> result = customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(in.getTargetProduct(), member);
+        InnerProduct innerProduct = innerProductRepository.findById(in.getTargetInnerProductId()).orElseThrow();
+        Optional<CustomerInterestProduct> result = customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(innerProduct, member);
 
         return GetProductInterestResult.builder().isAvailable(result.isEmpty()?false:result.get().getIsAvailable())
                 .build();
@@ -81,12 +84,13 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void setProductInterest(SetProductInterestCriteria in){
         MemberInfo member = getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
+        InnerProduct targetProduct = innerProductRepository.findById(in.getTargetInnerProductId()).orElseThrow();
         Optional<CustomerInterestProduct> result = customerInterestProductRepository
-                .getCustomerInterestProductByInnerProductAndMemberInfo(in.getTargetProduct(), member);
+                .getCustomerInterestProductByInnerProductAndMemberInfo(targetProduct, member);
 
         CustomerInterestProduct customerInterestProduct = result.orElseGet(() ->
                 CustomerInterestProduct.builder()
-                        .innerProduct(in.getTargetProduct())
+                        .innerProduct(targetProduct)
                         .memberInfo(member)
                         .isAvailable(in.getIsAvailable())
                         .build()

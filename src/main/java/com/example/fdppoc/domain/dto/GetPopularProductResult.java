@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @Data
 public class GetPopularProductResult {
-    private InnerProduct innerProduct;
+    private String innerProductId;
     private Long count;
     private Long gapPrice;
     private Double gapRatio;

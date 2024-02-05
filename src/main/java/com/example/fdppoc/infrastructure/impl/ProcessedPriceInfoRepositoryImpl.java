@@ -37,27 +37,29 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
 
         List<Tuple> results = query.select(
                 processedPriceInfo.baseDate,
-                processedPriceInfo.price.avg()
+                processedPriceInfo.price.avg(),
+                userGroupCode
                 )
                 .from(processedPriceInfo, userGroupCode,innerProduct,userCode)
                 .where(
                         processedPriceInfo.baseRange.eq(in.getRangeForTag())
                                 .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
-                                .and(userGroupCode.id.eq(in.getRegionGroup().getId()))
+                                .and(userGroupCode.id.eq(in.getRegionGroupCodeId()))
                                 .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName))
                                 .and(userGroupCode.id.eq(userCode.userGroupCode.id)
                                 .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
-                                                .and(innerProduct.eq(in.getTargetProduct()))
+                                                .and(innerProduct.id.eq(in.getTargetInnerProductId()))
                                 )
                 ).groupBy(
-                        processedPriceInfo.baseDate
+                        processedPriceInfo.baseDate,
+                        userGroupCode
                 )
                 .fetch();
         return results.stream().map((element) -> FindPriceListByGroupRegionCodeOut.builder()
                 .baseDate(in.getBaseDate())
                 .price(element.get(processedPriceInfo.price.avg()).longValue())
-                .regionGroupInfo(in.getRegionGroup())
-                .innerProduct(in.getTargetProduct())
+                .regionGroupInfo(element.get(userGroupCode))
+                .innerProduct(element.get(innerProduct))
                 .baseRange(in.getRangeForLength())
                 .build()
         ).collect(Collectors.toList());
