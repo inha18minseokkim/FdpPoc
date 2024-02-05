@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class GetProductDetailLegacyResponseElement {
     private BaseRange baseRange;
-    private Long currentPrice;
+    private Long basePrice;
     private Double minimumPrice;
     private Double maximumPrice;
     private Long listSize;

@@ -1,14 +1,14 @@
 package com.example.fdppoc.domain.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
 @Data
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class GetAllInnerProductsResult {
     private Long orderSequence;
     private Long id;

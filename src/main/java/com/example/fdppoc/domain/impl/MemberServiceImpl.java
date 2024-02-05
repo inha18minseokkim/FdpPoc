@@ -60,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public GetMemberResult getMember(GetMemberCriteria criteria) {
         Optional<MemberInfo> result = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode(criteria.getCustomerId(), criteria.getBusinessCode());
-        log.info("getMember 타입 확인 {}",this.getClass());
+        //log.info("getMember 타입 확인 {}",this.getClass());
         if(result.isEmpty())
             result = Optional.of(memberInfoRepository.save(MemberInfo.builder().isAgree(false)
                     .businessCode(criteria.getBusinessCode()).customerId(criteria.getCustomerId()).build()));

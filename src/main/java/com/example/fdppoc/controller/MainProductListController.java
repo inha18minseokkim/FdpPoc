@@ -4,11 +4,9 @@ import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.MainProductListControllerMapper;
 import com.example.fdppoc.domain.dto.*;
-import com.example.fdppoc.domain.impl.InnerCategoryServiceImpl;
-import com.example.fdppoc.domain.impl.InnerProductServiceImpl;
 import com.example.fdppoc.domain.interfaces.InnerCategoryService;
 import com.example.fdppoc.domain.interfaces.InnerProductService;
-import com.example.fdppoc.domain.interfaces.ProductPriceService;
+import com.example.fdppoc.domain.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MainProductListController {
     private final InnerProductService innerProductService;
-    private final ProductPriceService productPriceService;
+    private final ProductService productService;
     private final InnerCategoryService innerCategoryService;
     private final MainProductListControllerMapper mapper;
     @GetMapping("/searchInnerProducts")
@@ -36,7 +34,7 @@ public class MainProductListController {
                 //.lists(results.stream().collect(Collectors.toList()))
                 .responseCode(ControllerResponse.OK).build();
     }
-    @GetMapping("/searchAllInnerProducts")
+    @GetMapping("/searchAllInnerProducts") //CKBFP01000008
     public SearchAllInnerProductsResponse searchAllInnerProducts(SearchAllInnerProductsRequest request){
         List<GetAllInnerProductsResult> allInnerProducts = innerCategoryService.getAllInnerProducts(GetAllInnerProductsCriteria.builder().build());
         return SearchAllInnerProductsResponse.builder()
@@ -45,12 +43,12 @@ public class MainProductListController {
                 .build();
     }
 
-    @GetMapping("/legacyAllInnerProducts")
+    @GetMapping("/legacyAllInnerProducts") //CKBFP01000010
     public LegacyAllInnerProductsResponse legacyAllInnerProducts(LegacyAllInnerProductsRequest request){
-        GetLatestBaseDateResult latestBaseDate = productPriceService.getLatestBaseDate(GetLatestBaseDate.builder().baseDate(request.getBaseDate()).build());
+        GetLatestBaseDateResult latestBaseDate = productService.getLatestBaseDate(GetLatestBaseDate.builder().baseDate(request.getBaseDate()).build());
         GetAllProductCriteria input = mapper.from(request);
         input.setBaseDate(latestBaseDate.getBaseDate());
-        List<GetAllProductResult> allProduct = productPriceService.getAllProduct(input);
+        List<GetAllProductResult> allProduct = productService.getAllProduct(input);
         return LegacyAllInnerProductsResponse.builder()
                 .list(allProduct.stream().map(element -> mapper.from(element)).collect(Collectors.toList()))
                 .baseDate(latestBaseDate.getBaseDate())

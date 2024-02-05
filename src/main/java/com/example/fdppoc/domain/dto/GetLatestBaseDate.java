@@ -1,12 +1,12 @@
 package com.example.fdppoc.domain.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 @Builder
 @ToString
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GetLatestBaseDate {
     private String baseDate;
 }

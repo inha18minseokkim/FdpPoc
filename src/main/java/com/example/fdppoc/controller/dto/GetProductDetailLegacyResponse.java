@@ -16,8 +16,12 @@ public class GetProductDetailLegacyResponse {
     private String innerProductName;
     private String unitName;
     private Long unitValue;
-    private Double currentPrice;
+    private Double basePrice;
     private Double gapPrice;
     private Double listCount;
     private List<GetProductDetailLegacyResponseElement> list;
+    private String weeklyForecastData;
+    private String weeklyForcastUpDown;
+    private Long otherRegionPriceInfoListCount;
+    private List<Long> otherRegionPriceInfoList;
 }

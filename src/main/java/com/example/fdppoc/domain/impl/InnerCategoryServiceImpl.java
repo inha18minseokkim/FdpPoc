@@ -8,6 +8,8 @@ import com.example.fdppoc.domain.mapper.InnerCategoryServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Cache;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class InnerCategoryServiceImpl implements InnerCategoryService {
     private final InnerCategoryServiceMapper mapper;
     @Override
     @Transactional
+    @Cacheable(value = "InnerCategoryServiceImpl.getAllInnerProducts", key="#in")
     public List<GetAllInnerProductsResult> getAllInnerProducts(GetAllInnerProductsCriteria in){
         List<InnerCategory> all = innerCategoryRepository.findAll();
         List<GetAllInnerProductsResult> result = all.stream().filter(categoryElement -> categoryElement.getIsAvailable() == true)

@@ -1,9 +1,8 @@
 package com.example.fdppoc.service;
 
 import com.example.fdppoc.code.BaseRange;
-import com.example.fdppoc.domain.entity.MemberInfo;
 import com.example.fdppoc.domain.entity.UserGroupCode;
-import com.example.fdppoc.domain.interfaces.ProductPriceService;
+import com.example.fdppoc.domain.interfaces.ProductService;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.domain.dto.GetProductPriceCriteria;
 import com.example.fdppoc.domain.dto.GetProductPriceResult;
@@ -18,7 +17,7 @@ import org.springframework.test.annotation.Rollback;
 @Slf4j
 class ProductDetailServiceTest {
     @Autowired
-    ProductPriceService productPriceService;
+    ProductService productService;
     @Autowired
     InnerProductRepository innerProductRepository;
 
@@ -35,7 +34,7 @@ class ProductDetailServiceTest {
                 .regionGroup(UserGroupCode.builder().id("").build())
                 .customerId("20170860")
                 .build();
-        GetProductPriceResult result = productPriceService.getProductPrice(input);
+        GetProductPriceResult result = productService.getProductPrice(input);
         log.info("실행결과 : {}",result);
     }
 }

@@ -15,6 +15,7 @@ import com.example.fdppoc.domain.mapper.InnerProductServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class InnerProductServiceImpl implements InnerProductService {
 
     //내부상품리스트조회
     @Override
+    @Cacheable(value="InnerProductServiceImpl.getInnerProductList",key = "#in")
     public List<GetInnerProductsResult> getInnerProductList(GetInnerProductsCriteria in){
         FindInnerProductListIn input = mapper.from(in);
         List<InnerProduct> innerProductList = innerProductRepository.findInnerProductList(input);

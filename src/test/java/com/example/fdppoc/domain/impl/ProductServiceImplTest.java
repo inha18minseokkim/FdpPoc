@@ -2,24 +2,22 @@ package com.example.fdppoc.domain.impl;
 
 import com.example.fdppoc.domain.dto.GetDetailPriceCriteria;
 import com.example.fdppoc.domain.dto.GetDetailPriceLegacyResult;
-import com.example.fdppoc.domain.interfaces.ProductPriceService;
+import com.example.fdppoc.domain.interfaces.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Slf4j
 @SpringBootTest
-class ProductPriceServiceImplTest {
+class ProductServiceImplTest {
     @Autowired
-    ProductPriceService productPriceService;
+    ProductService productService;
     @Test
     @Transactional
     void 상세정보Legacy조회() {
-        GetDetailPriceLegacyResult detailPriceLegacy = productPriceService.getDetailPriceLegacy(GetDetailPriceCriteria.builder()
+        GetDetailPriceLegacyResult detailPriceLegacy = productService.getDetailPriceLegacy(GetDetailPriceCriteria.builder()
                 .innerProductId("002")
                 .customerId("20160860")
                 .regionGroupId("")

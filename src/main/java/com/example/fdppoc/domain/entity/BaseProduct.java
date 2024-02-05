@@ -1,5 +1,6 @@
 package com.example.fdppoc.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,5 +35,6 @@ public class BaseProduct {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="innerProductId",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @ToString.Exclude
+    @JsonIgnore
     private InnerProduct innerProduct;
 }

@@ -1,5 +1,6 @@
 package com.example.fdppoc.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class InnerCategory {
     private Boolean isAvailable;
     @OneToMany(mappedBy = "innerCategory",cascade = CascadeType.ALL)
     @ToString.Exclude
+    @JsonIgnore
     private List<InnerProduct> subProducts;
 
 }

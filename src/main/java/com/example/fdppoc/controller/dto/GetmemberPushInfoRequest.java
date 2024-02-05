@@ -10,5 +10,4 @@ import lombok.ToString;
 public class GetmemberPushInfoRequest {
     private String customerId;
     private String businessCode;
-    private Boolean isAgree;
 }

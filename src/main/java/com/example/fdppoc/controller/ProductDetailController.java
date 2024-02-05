@@ -1,37 +1,31 @@
 package com.example.fdppoc.controller;
 
 import com.example.fdppoc.code.BaseRange;
-import com.example.fdppoc.code.ControllerResponse;
 import com.example.fdppoc.controller.dto.*;
 import com.example.fdppoc.controller.mapper.ProductDetailControllerMapper;
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.entity.InnerProduct;
-import com.example.fdppoc.domain.entity.MemberInfo;
 import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.domain.interfaces.MemberService;
-import com.example.fdppoc.domain.interfaces.ProductPriceService;
-import com.example.fdppoc.infrastructure.repository.MemberInfoRepository;
+import com.example.fdppoc.domain.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/productDetail")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductDetailController {
-    private final ProductPriceService productPriceService;
+    private final ProductService productService;
     private final MemberService memberService;
     private final ProductDetailControllerMapper mapper;
-    @GetMapping("/getProductDetail/{targetProductId}/{regionGroupId}")
+    @GetMapping("/getProductDetail/{targetProductId}/{regionGroupId}") //그냥 짠거
     public GetProductDetailResponse getProductDetail(@PathVariable("targetProductId") InnerProduct innerProduct,
                                                      @PathVariable("regionGroupId") UserGroupCode userGroupCode,
                                                      GetProductDetailRequest in
                                                 ){
-        GetProductPriceResult productPrice = productPriceService.getProductPrice(
+        GetProductPriceResult productPrice = productService.getProductPrice(
                 GetProductPriceCriteria.builder()
                         .baseDate(in.getBaseDate())
                         .targetProduct(innerProduct)
@@ -43,14 +37,21 @@ public class ProductDetailController {
         );
         return mapper.from(productPrice);
     }
-    @GetMapping("/getProductDetailLegacy/{targetProductId}/{regionGroupId}")
+    @GetMapping("/getProductDetailLegacy/{targetProductId}/{regionGroupId}") //CKBFP01000009 상품상세정보조회
     public GetProductDetailLegacyResponse getProductDetailLegacy(@PathVariable("targetProductId") InnerProduct innerProduct,
                                                                  @PathVariable("regionGroupId") UserGroupCode userGroupCode
                                                                 ,GetProductDetailLegacyRequest request){
-        return null;
+        GetDetailPriceLegacyResult result = productService.getDetailPriceLegacy(GetDetailPriceCriteria.builder()
+                        .baseDate(request.getBaseDate())
+                        .innerProductId(innerProduct.getId())
+                        .customerId(request.getCustomerId())
+                        .regionGroupId(userGroupCode.getId())
+                .build());
+
+        return mapper.from(result);
     }
 
-    @GetMapping("/getProductInterestInfo/{targetProductId}")
+    @GetMapping("/getProductInterestInfo/{targetProductId}") //CKBFP01000011 관심식품여부조회
     public GetProductInterestInfoResponse getProductInterestInfo(
             @PathVariable("targetProductId")InnerProduct targetProduct,
             GetProductInterestInfoRequest in){
@@ -58,7 +59,7 @@ public class ProductDetailController {
                 GetProductInterestCriteria.builder().targetProduct(targetProduct).customerId(in.getCustomerId()).build());
         return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).innerProductId(targetProduct.getId()).build();
     }
-    @PostMapping("/setProductInterestInfo/{targetProductId}")
+    @PostMapping("/setProductInterestInfo/{targetProductId}") //CKBFP01000012 관심식품등록
     public SetProductInterestResponse setProductInterest(
             @PathVariable("targetProductId")InnerProduct targetProduct
             ,@RequestBody SetProductInterestRequest in){

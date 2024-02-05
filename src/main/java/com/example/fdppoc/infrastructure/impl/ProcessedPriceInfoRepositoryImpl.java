@@ -114,10 +114,13 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
                         ,processedPriceInfo.baseDate
                         ,processedPriceInfo.price.avg()
                 )
-                .from(userGroupCode, userCode, innerProduct )
-                .join(baseProduct).on(baseProduct.innerProduct.id.eq(innerProduct.id))
+                .from(innerProduct)
+                .join(baseProduct)
+                    .on(baseProduct.innerProduct.id.eq(innerProduct.id))
                 .leftJoin(processedPriceInfo)
                     .on(processedPriceInfo.baseProduct.id.eq(baseProduct.id))
+                .join(userCode)
+                    .on(processedPriceInfo.regionInfo.eq(userCode))
                 .where(
                         innerProduct.isAvailable.eq(true)
                                 ,(processedPriceInfo.baseDate.between(in.getStartDate(), in.getEndDate())
@@ -126,22 +129,22 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
                                 ,(processedPriceInfo.baseRange.eq(BaseRange.DAY)
                                         .or(processedPriceInfo.baseRange.isNull())
                                 )
-                                ,(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName)
+                                ,(processedPriceInfo.regionInfo.eq(userCode)
                                         .or(processedPriceInfo.regionInfo.isNull())
                                 )
-                                ,(userGroupCode.eq(in.getRegionGroup()))
                                 ,(userCode.userGroupCode.eq(in.getRegionGroup()))
-                                //.and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
                 ).groupBy(
                         innerProduct,
                         processedPriceInfo.baseDate
                 )
                 .fetch();
-        //log.info("실행결과 : {}",result);
-        return result.stream().map(element -> GetPriceDiffListOut.builder().innerProduct(element.get(innerProduct))
-                .price(Optional.ofNullable(element.get(processedPriceInfo.price.avg())))
-                .baseDate(Optional.ofNullable(element.get(processedPriceInfo.baseDate)))
-                .build()).collect(Collectors.toList());
+        return result.stream().map(element ->
+                GetPriceDiffListOut.builder()
+                    .innerProduct(element.get(innerProduct))
+                    .price(Optional.ofNullable(element.get(processedPriceInfo.price.avg())))
+                    .baseDate(Optional.ofNullable(element.get(processedPriceInfo.baseDate)))
+                    .build())
+                .collect(Collectors.toList());
     }
 
     @Override

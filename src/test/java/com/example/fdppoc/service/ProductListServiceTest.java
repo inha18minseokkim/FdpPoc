@@ -4,7 +4,7 @@ import com.example.fdppoc.domain.dto.GetAllProductCriteria;
 import com.example.fdppoc.domain.dto.GetAllProductResult;
 import com.example.fdppoc.domain.dto.GetPopularProductCriteria;
 import com.example.fdppoc.domain.dto.GetPopularProductResult;
-import com.example.fdppoc.domain.interfaces.ProductPriceService;
+import com.example.fdppoc.domain.interfaces.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,12 +18,12 @@ import java.util.List;
 @Slf4j
 class ProductListServiceTest {
     @Autowired
-    ProductPriceService productPriceService;
+    ProductService productService;
 
     @Test
     @Transactional
     void 시간내최근상품조회() {
-        List<GetPopularProductResult> popularProduct = productPriceService.getPopularProduct(GetPopularProductCriteria.builder()
+        List<GetPopularProductResult> popularProduct = productService.getPopularProduct(GetPopularProductCriteria.builder()
                         .baseDate("20240119")
                         .currentTime(LocalDateTime.now())
                         .rangeHour(24L)
@@ -35,7 +35,7 @@ class ProductListServiceTest {
     @Test
     @Transactional
     void legacy용모든상품조회() {
-        List<GetAllProductResult> allProduct = productPriceService.getAllProduct(GetAllProductCriteria.builder()
+        List<GetAllProductResult> allProduct = productService.getAllProduct(GetAllProductCriteria.builder()
                 .baseDate("20240119")
                 .customerId("20170860")
                 .regionGroupId("FDPREGN1101")
