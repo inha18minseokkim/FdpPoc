@@ -5,6 +5,6 @@ import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOutDto;
 
 import java.util.List;
 
-public interface CustomerSearchHistoryRepositoryCustom {
+public interface CustomerSearchHistoryReader {
     List<GetTopViewedInnerProductOutDto> getTopViewedInnerProduct(GetTopViewedInnerProductInDto in);
 }

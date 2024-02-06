@@ -1,7 +1,7 @@
 package com.example.fdppoc.infrastructure.impl;
 
 import com.example.fdppoc.domain.entity.*;
-import com.example.fdppoc.infrastructure.interfaces.BaseProductRepositoryCustom;
+import com.example.fdppoc.infrastructure.interfaces.BaseProductReader;
 import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterInDto;
 import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.mapper.BaseProductRepositoryMapper;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class BaseProductRepositoryImpl implements BaseProductRepositoryCustom {
+public class BaseProductRepositoryImpl implements BaseProductReader {
     private final EntityManager em;
     private final BaseProductRepositoryMapper mapper;
     @Override

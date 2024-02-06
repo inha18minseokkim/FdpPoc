@@ -2,7 +2,7 @@ package com.example.fdppoc.infrastructure.impl;
 
 import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductInDto;
 import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOutDto;
-import com.example.fdppoc.infrastructure.interfaces.CustomerSearchHistoryRepositoryCustom;
+import com.example.fdppoc.infrastructure.interfaces.CustomerSearchHistoryReader;
 import com.querydsl.core.Tuple;
 import com.example.fdppoc.domain.entity.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerSearchHistoryRepositoryImpl implements CustomerSearchHistoryRepositoryCustom {
+public class CustomerSearchHistoryRepositoryImpl implements CustomerSearchHistoryReader {
     private final EntityManager entityManager;
 
     public List<GetTopViewedInnerProductOutDto> getTopViewedInnerProduct(GetTopViewedInnerProductInDto in){

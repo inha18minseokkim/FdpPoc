@@ -7,8 +7,6 @@ import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.MemberInfo;
 import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.domain.mapper.MemberDomainMapper;
-import com.example.fdppoc.infrastructure.dto.GetMemberInDto;
-import com.example.fdppoc.infrastructure.interfaces.MemberInfoRepositoryCustom;
 import com.example.fdppoc.infrastructure.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

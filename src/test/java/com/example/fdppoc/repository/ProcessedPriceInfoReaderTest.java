@@ -1,9 +1,8 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoReader;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
-import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffInDto;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListInDto;
@@ -25,9 +24,9 @@ import java.util.stream.Collectors;
 @SpringBootTest
 @Slf4j
 @Transactional
-class ProcessedPriceInfoRepositoryCustomTest {
+class ProcessedPriceInfoReaderTest {
     @Autowired
-    ProcessedPriceInfoRepository processedPriceInfoRepository;
+    ProcessedPriceInfoReader priceInfoReader;
     @Autowired
     UserGroupCodeRepository userGroupCodeRepository;
     @Autowired
@@ -36,7 +35,7 @@ class ProcessedPriceInfoRepositoryCustomTest {
     InnerProductRepositoryImpl innerProductRepositoryCustom;
     @Test
     void 범위내최대최소가격탐색() {
-        GetPriceDiffOutDto minMaxPrice = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(
+        GetPriceDiffOutDto minMaxPrice = priceInfoReader.getTodayAndWeeklyMeanPrice(
                 GetPriceDiffInDto.builder()
                         .startDate("20240101")
                         .endDate("20240119")
@@ -49,7 +48,7 @@ class ProcessedPriceInfoRepositoryCustomTest {
     }
     @Test
     void  모든상품가격() {
-        List<GetPriceDiffListOutDto> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
+        List<GetPriceDiffListOutDto> priceDiffList = priceInfoReader.getPriceDiffList(
                 GetPriceDiffListInDto.builder().regionGroupCodeId("FDPREGN3100")
                         .startDate("20230112").endDate("20240119")
                         .build());
@@ -74,7 +73,7 @@ class ProcessedPriceInfoRepositoryCustomTest {
     }
     @Test
     void 최대날짜테스트(){
-        String maxBaseDate = processedPriceInfoRepository.getMaxBaseDate("20240130");
+        String maxBaseDate = priceInfoReader.getMaxBaseDate("20240130");
         log.info("결과 : {}",maxBaseDate);
         Assertions.assertThat(maxBaseDate).isLessThanOrEqualTo("20240130");
 

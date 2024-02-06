@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @SpringBootTest
 @Transactional
-class CustomerSearchHistoryRepositoryCustomTest {
+class CustomerSearchHistoryReaderTest {
     @Autowired
     CustomerSearchHistoryRepositoryImpl customerSearchHistoryRepositoryCustom;
 

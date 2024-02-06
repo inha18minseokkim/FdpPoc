@@ -4,7 +4,7 @@ import com.example.fdppoc.infrastructure.dto.*;
 
 import java.util.List;
 
-public interface ProcessedPriceInfoRepositoryCustom {
+public interface ProcessedPriceInfoReader {
     List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(FindPriceListByGroupRegionCodeInDto in);
     GetPriceDiffOutDto getTodayAndWeeklyMeanPrice(GetPriceDiffInDto in);
     List<GetPriceDiffListOutDto> getPriceDiffList(GetPriceDiffListInDto in);

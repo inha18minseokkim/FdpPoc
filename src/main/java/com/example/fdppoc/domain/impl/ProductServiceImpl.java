@@ -9,6 +9,8 @@ import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.domain.interfaces.ProductDetailService;
 import com.example.fdppoc.domain.interfaces.ProductService;
 import com.example.fdppoc.infrastructure.dto.*;
+import com.example.fdppoc.infrastructure.interfaces.CustomerSearchHistoryReader;
+import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoReader;
 import com.example.fdppoc.infrastructure.repository.*;
 import com.example.fdppoc.domain.mapper.ProductListServiceMapper;
 import jakarta.transaction.Transactional;
@@ -27,8 +29,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class ProductServiceImpl implements ProductService {
-    private final CustomerSearchHistoryRepository customerSearchHistoryRepository;
-    private final ProcessedPriceInfoRepository processedPriceInfoRepository;
+    private final CustomerSearchHistoryReader customerSearchHistoryReader;
+    private final ProcessedPriceInfoReader processedPriceInfoReader;
     private final MemberService memberService;
     private final UserGroupCodeRepository userGroupCodeRepository;
     private final ProductListServiceMapper mapper;
@@ -37,11 +39,11 @@ public class ProductServiceImpl implements ProductService {
     //인기상품리스트조회
     @Override
     public List<GetPopularProductResult> getPopularProduct(GetPopularProductCriteria criteria){
-        List<GetTopViewedInnerProductOutDto> results = customerSearchHistoryRepository.getTopViewedInnerProduct(mapper.from(criteria));
+        List<GetTopViewedInnerProductOutDto> results = customerSearchHistoryReader.getTopViewedInnerProduct(mapper.from(criteria));
         Optional<UserGroupCode> targetRegionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd")).minusDays(BaseRange.WEEK.getGapDay()).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         return results.stream().map(element -> {
-                    GetPriceDiffOutDto priceDiff = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(GetPriceDiffInDto.builder()
+                    GetPriceDiffOutDto priceDiff = processedPriceInfoReader.getTodayAndWeeklyMeanPrice(GetPriceDiffInDto.builder()
                             .regionGroupCodeId(criteria.getRegionGroupId()).targetInnerProductId(element.getInnerProductId()).startDate(startDate).endDate(criteria.getBaseDate()).build());
                     log.debug("쿼리결과 : {}",priceDiff);
                     return GetPopularProductResult.builder()
@@ -60,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
     //모든 상품 맵 가져옴
         List<InnerProduct> allProduct = innerProductRepository.findAllByIsAvailable(true);
     //가장 많이 조회한 상품 리스트 가져옴
-        List<GetTopViewedInnerProductOutDto> topViewedInnerProducts = customerSearchHistoryRepository.getTopViewedInnerProduct(GetTopViewedInnerProductInDto.builder()
+        List<GetTopViewedInnerProductOutDto> topViewedInnerProducts = customerSearchHistoryReader.getTopViewedInnerProduct(GetTopViewedInnerProductInDto.builder()
                 .currentTime(LocalDateTime.now()).rangeHour(12)
                 .build());
 
@@ -131,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public GetProductPriceResult getProductPrice(GetProductPriceCriteria in){
-        List<FindPriceListByGroupRegionCodeOut> dailyPrices = processedPriceInfoRepository.findPriceListByGroupRegionCode(mapper.from(in));
+        List<FindPriceListByGroupRegionCodeOut> dailyPrices = processedPriceInfoReader.findPriceListByGroupRegionCode(mapper.from(in));
 
         LongSummaryStatistics summary = dailyPrices.stream()
                 .map(element -> element.getPrice()).mapToLong(Long::longValue).summaryStatistics();
@@ -155,7 +157,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable(value = "ProductServiceImpl.getLatestBaseDate",key = "#criteria")
     public GetLatestBaseDateResult getLatestBaseDate(GetLatestBaseDate criteria) {
-        String maxBaseDate = processedPriceInfoRepository.getMaxBaseDate(criteria.getBaseDate());
+        String maxBaseDate = processedPriceInfoReader.getMaxBaseDate(criteria.getBaseDate());
         return GetLatestBaseDateResult.builder().baseDate(maxBaseDate).build();
     }
 

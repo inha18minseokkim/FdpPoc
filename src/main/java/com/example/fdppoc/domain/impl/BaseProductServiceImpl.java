@@ -1,12 +1,13 @@
 package com.example.fdppoc.domain.impl;
 
 import com.example.fdppoc.domain.interfaces.BaseProductService;
-import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
+import com.example.fdppoc.infrastructure.interfaces.BaseProductReader;
 import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto;
 import com.example.fdppoc.domain.dto.GetBaseCodesCriteria;
 import com.example.fdppoc.domain.dto.GetBaseCodesResult;
 import com.example.fdppoc.domain.dto.SetBaseCodesCriteria;
 import com.example.fdppoc.domain.mapper.BaseProductDomainMapper;
+import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class BaseProductServiceImpl implements BaseProductService {
+    private final BaseProductReader baseProductReader;
     private final BaseProductRepository baseProductRepository;
     private final BaseProductDomainMapper mapper;
     @Override
     public List<GetBaseCodesResult> getBaseCodes(GetBaseCodesCriteria in){
-        List<FindBaseProductWithFilterOutDto> results = baseProductRepository
+        List<FindBaseProductWithFilterOutDto> results = baseProductReader
                 .findBaseProductWithFilter(mapper.from(in));
         return results.stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList());

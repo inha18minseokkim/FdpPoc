@@ -5,6 +5,6 @@ import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto;
 
 import java.util.List;
 
-public interface BaseProductRepositoryCustom {
+public interface BaseProductReader {
     List<FindBaseProductWithFilterOutDto> findBaseProductWithFilter(FindBaseProductWithFilterInDto in);
 }

@@ -7,7 +7,7 @@ import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterInDto;
 
 import java.util.List;
 
-public interface InnerProductRepositoryCustom {
+public interface InnerProductReader {
     List<FindInnerProductWithFilterOutDto> findInnerProductWithFilter(FindInnerProductsWithFilterInDto in);
     List<InnerProduct> findInnerProductList(FindInnerProductListInDto in);
 }

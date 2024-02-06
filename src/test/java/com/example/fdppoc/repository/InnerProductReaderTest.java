@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
-class InnerProductRepositoryCustomTest {
+class InnerProductReaderTest {
     @Autowired
     InnerProductRepositoryImpl innerProductRepositoryCustom;
     @Autowired

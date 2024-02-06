@@ -2,7 +2,6 @@ package com.example.fdppoc.domain.impl;
 
 import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.dto.*;
-import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.domain.interfaces.ProductDetailService;
 import com.example.fdppoc.domain.mapper.ProductDetailServiceMapper;
@@ -10,8 +9,8 @@ import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeInDto
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListInDto;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOutDto;
+import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoReader;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductDetailServiceImpl implements ProductDetailService {
     private final UserGroupCodeRepository userGroupCodeRepository;
-    private final ProcessedPriceInfoRepository processedPriceInfoRepository;
+    private final ProcessedPriceInfoReader processedPriceInfoReader;
     private final InnerProductRepository innerProductRepository;
     private final ProductDetailServiceMapper mapper;
     @Override
@@ -35,7 +34,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Transactional
     public List<GetInnerProductPricesResult> getInnerProductPriceList(GetInnerProductPricesCriteria criteria) {
         UserGroupCode regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
-        List<GetPriceDiffListOutDto> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
+        List<GetPriceDiffListOutDto> priceDiffList = processedPriceInfoReader.getPriceDiffList(
                 GetPriceDiffListInDto.builder().regionGroupCodeId(criteria.getRegionGroupId())
                         .startDate(criteria.getStartDate()).endDate(criteria.getEndDate())
                         .build());
@@ -72,7 +71,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         String latestBaseDate = criteria.getBaseDate();
         // 1년치 가격 뽑아옴
         List<FindPriceListByGroupRegionCodeOut> priceList
-                = processedPriceInfoRepository.findPriceListByGroupRegionCode
+                = processedPriceInfoReader.findPriceListByGroupRegionCode
                 (FindPriceListByGroupRegionCodeInDto.builder()
                         .regionGroupCodeId(criteria.getRegionGroupId())
                         .baseDate(latestBaseDate)

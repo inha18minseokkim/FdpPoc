@@ -3,7 +3,7 @@ package com.example.fdppoc.infrastructure.impl;
 import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.entity.*;
 import com.example.fdppoc.infrastructure.dto.*;
-import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoRepositoryCustom;
+import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoReader;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import com.querydsl.core.Tuple;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepositoryCustom {
+public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoReader {
     private final EntityManager entityManager;
     private final UserGroupCodeRepository userGroupCodeRepository;
     private final InnerProductRepository innerProductRepository;
@@ -40,7 +40,8 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
         List<Tuple> results = query.select(
                 processedPriceInfo.baseDate,
                 processedPriceInfo.price.avg(),
-                userGroupCode
+                userGroupCode,
+                innerProduct
                 )
                 .from(processedPriceInfo, userGroupCode,innerProduct,userCode)
                 .where(
@@ -54,7 +55,8 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
                                 )
                 ).groupBy(
                         processedPriceInfo.baseDate,
-                        userGroupCode
+                        userGroupCode,
+                        innerProduct
                 )
                 .fetch();
         return results.stream().map((element) -> FindPriceListByGroupRegionCodeOut.builder()

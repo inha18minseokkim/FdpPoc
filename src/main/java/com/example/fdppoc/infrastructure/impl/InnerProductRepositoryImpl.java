@@ -4,7 +4,7 @@ import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.*;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterInDto;
-import com.example.fdppoc.infrastructure.interfaces.InnerProductRepositoryCustom;
+import com.example.fdppoc.infrastructure.interfaces.InnerProductReader;
 import com.example.fdppoc.infrastructure.mapper.InnerProductRepositoryMapper;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductListInDto;
 import com.querydsl.core.BooleanBuilder;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class InnerProductRepositoryImpl implements InnerProductRepositoryCustom {
+public class InnerProductRepositoryImpl implements InnerProductReader {
     private final EntityManager em;
     private final InnerProductRepositoryMapper mapper;
     @Override
