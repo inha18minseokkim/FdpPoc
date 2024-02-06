@@ -3,13 +3,13 @@ package com.example.fdppoc.repository;
 import com.example.fdppoc.domain.entity.BaseProduct;
 import com.example.fdppoc.domain.entity.InnerCategory;
 import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListInDto;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterInDto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -58,11 +58,11 @@ class InnerProductRepositoryCustomTest {
     @Test
     @Transactional
     void 동적쿼리_조회테스트(){
-        FindInnerProductsWithFilterIn testInput = FindInnerProductsWithFilterIn
+        FindInnerProductsWithFilterInDto testInput = FindInnerProductsWithFilterInDto
                 .builder().categoryCode("100").innerCategoryId(1L).build();
-        List<FindInnerProductWithFilterOut> results = innerProductRepositoryCustom.findInnerProductWithFilter(testInput);
+        List<FindInnerProductWithFilterOutDto> results = innerProductRepositoryCustom.findInnerProductWithFilter(testInput);
         log.info("실행 결과 : {}",results);
-        Assertions.assertThat(results.get(0).getBaseProducts().get(0).getCategoryCode()).isEqualTo("100");
+        Assertions.assertThat(results.get(0).getInnerCategoryId()).isEqualTo(1L);
     }
     @Test
     @Transactional
@@ -84,7 +84,7 @@ class InnerProductRepositoryCustomTest {
     @Transactional
     void 내부상품대고객리스트조회() {
         List<InnerProduct> singleList = innerProductRepositoryCustom.findInnerProductList(
-                FindInnerProductListIn.builder().searchKeyword("구").isAvailable(true).build());
+                FindInnerProductListInDto.builder().searchKeyword("구").isAvailable(true).build());
         log.info("출력 : {}",singleList);
         Assertions.assertThat(singleList.get(0).getProductName()).isEqualTo("고구마");
     }

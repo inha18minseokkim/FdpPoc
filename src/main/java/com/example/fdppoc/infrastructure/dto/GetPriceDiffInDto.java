@@ -9,9 +9,9 @@ import lombok.ToString;
 @Builder
 @ToString
 @Data
-public class GetPriceDiffIn {
-    private UserGroupCode regionGroup;
-    private InnerProduct targetProduct;
+public class GetPriceDiffInDto {
+    private String regionGroupCodeId;
+    private String targetInnerProductId;
     private String startDate;
     private String endDate;
 }

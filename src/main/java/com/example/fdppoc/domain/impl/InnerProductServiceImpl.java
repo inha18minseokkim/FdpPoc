@@ -5,12 +5,11 @@ import com.example.fdppoc.domain.entity.BaseProduct;
 import com.example.fdppoc.domain.entity.InnerCategory;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.interfaces.InnerProductService;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListInDto;
 import com.example.fdppoc.domain.mapper.InnerProductServiceMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class InnerProductServiceImpl implements InnerProductService {
 
     @Override
     public List<GetInnerProductsWithFilterResult> getInnerProductsWithFilter(GetInnerProductsWithFilterCriteria in){
-        List<FindInnerProductWithFilterOut> results = innerProductRepository.findInnerProductWithFilter(mapper.from(in));
+        List<FindInnerProductWithFilterOutDto> results = innerProductRepository.findInnerProductWithFilter(mapper.from(in));
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
     @Override
@@ -67,7 +66,7 @@ public class InnerProductServiceImpl implements InnerProductService {
     @Override
     @Cacheable(value="InnerProductServiceImpl.getInnerProductList",key = "#in")
     public List<GetInnerProductsResult> getInnerProductList(GetInnerProductsCriteria in){
-        FindInnerProductListIn input = mapper.from(in);
+        FindInnerProductListInDto input = mapper.from(in);
         List<InnerProduct> innerProductList = innerProductRepository.findInnerProductList(input);
         return innerProductList.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }

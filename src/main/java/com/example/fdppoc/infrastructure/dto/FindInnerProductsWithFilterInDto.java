@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
-public class FindInnerProductsWithFilterIn {
+public class FindInnerProductsWithFilterInDto {
     private Long innerCategoryId;
     private String categoryCode;    //pd_ctgr_cd
 }

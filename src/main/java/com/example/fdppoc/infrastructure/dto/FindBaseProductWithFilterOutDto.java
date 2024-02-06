@@ -9,7 +9,7 @@ import lombok.ToString;
 @Data
 @ToString
 @Builder
-public class FindBaseProductWithFilterOut {
+public class FindBaseProductWithFilterOutDto {
     private Long id;
     private String categoryCode;    //pd_ctgr_cd
     private String itemCode;            //pd_lsar_cd
@@ -23,5 +23,5 @@ public class FindBaseProductWithFilterOut {
     private String itemName;
     private String kindName;
     private String gradeName;
-    private InnerProduct innerProduct;
+    private String innerProductId;
 }

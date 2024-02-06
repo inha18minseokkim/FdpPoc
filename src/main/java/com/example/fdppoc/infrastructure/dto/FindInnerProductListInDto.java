@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class FindInnerProductListIn {
+public class FindInnerProductListInDto {
     private Boolean isAvailable;
     private Long innerCategoryId;
     private String searchKeyword;

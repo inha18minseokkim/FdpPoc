@@ -10,9 +10,9 @@ import java.util.List;
 @Builder
 @ToString
 @Data
-public class FindInnerProductWithFilterOut {
+public class FindInnerProductWithFilterOutDto {
     private Long id;
-    private List<BaseProduct> baseProducts;
+    private List<Long> baseProductIds;
     private Boolean isMainMaterial;
     private Boolean isAvailable;
     private Long innerCategoryId;

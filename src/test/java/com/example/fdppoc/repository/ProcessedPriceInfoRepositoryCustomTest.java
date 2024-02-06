@@ -3,13 +3,12 @@ package com.example.fdppoc.repository;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
-import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
 import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
-import com.example.fdppoc.infrastructure.dto.GetPriceDiffIn;
-import com.example.fdppoc.infrastructure.dto.GetPriceDiffListIn;
-import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOut;
-import com.example.fdppoc.infrastructure.dto.GetPriceDiffOut;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffInDto;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffListInDto;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOutDto;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffOutDto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -37,12 +36,12 @@ class ProcessedPriceInfoRepositoryCustomTest {
     InnerProductRepositoryImpl innerProductRepositoryCustom;
     @Test
     void 범위내최대최소가격탐색() {
-        GetPriceDiffOut minMaxPrice = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(
-                GetPriceDiffIn.builder()
+        GetPriceDiffOutDto minMaxPrice = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(
+                GetPriceDiffInDto.builder()
                         .startDate("20240101")
                         .endDate("20240119")
-                        .regionGroup(userGroupCodeRepository.findById("").get())
-                        .targetProduct(innerProductRepository.findById("1004").get())
+                        .regionGroupCodeId("FDPREGN1101")
+                        .targetInnerProductId("1004")
                         .build()
         );
         log.info("결과 : {}",minMaxPrice);
@@ -50,23 +49,23 @@ class ProcessedPriceInfoRepositoryCustomTest {
     }
     @Test
     void  모든상품가격() {
-        List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
-                GetPriceDiffListIn.builder().regionGroup(userGroupCodeRepository.findById("FDPREGN3100").get())
+        List<GetPriceDiffListOutDto> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
+                GetPriceDiffListInDto.builder().regionGroupCodeId("FDPREGN3100")
                         .startDate("20230112").endDate("20240119")
                         .build());
         log.info("중간결과 : {}",priceDiffList);
-        Map<InnerProduct, List<GetPriceDiffListOut>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProduct()));
+        Map<String, List<GetPriceDiffListOutDto>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProductId()));
         collect.keySet().stream().map(collect::get).map(element -> {
             //기준일자
-            Optional<GetPriceDiffListOut> baseDatePriceInfo = element.stream().max(Comparator.comparing(elem -> elem.getBaseDate().orElse("")));
+            Optional<GetPriceDiffListOutDto> baseDatePriceInfo = element.stream().max(Comparator.comparing(elem -> elem.getBaseDate().orElse("")));
             //상품정보
-            InnerProduct innerProduct = baseDatePriceInfo.get().getInnerProduct();
+            String innerProductId = baseDatePriceInfo.get().getInnerProductId();
             //현재가격
             Double currentPrice = baseDatePriceInfo.get().getPrice().orElse(0.0);
             String baseDate = baseDatePriceInfo.get().getBaseDate().orElse("");
             //평균가격
             Double averagePrice = element.stream().collect(Collectors.averagingDouble(ele -> ele.getPrice().orElse(0.0)));
-            return List.of(innerProduct,currentPrice,baseDate,averagePrice);
+            return List.of(innerProductId,currentPrice,baseDate,averagePrice);
         }).forEach(
                 element -> {
                         log.info("결과 : {}",element);

@@ -10,8 +10,8 @@ import java.util.Optional;
 @Data
 @ToString
 @Builder
-public class GetPriceDiffListOut {
-    private InnerProduct innerProduct;
+public class GetPriceDiffListOutDto {
+    private String innerProductId;
     private Optional<String> baseDate;
     private Optional<Double> price;
 

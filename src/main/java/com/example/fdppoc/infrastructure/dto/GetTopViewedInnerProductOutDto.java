@@ -4,10 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Data
 @Builder
+@Data
 @ToString
-public class FindBaseProductWithFilterIn {
-    private String categoryCode;
-    private String itemCode;
+public class GetTopViewedInnerProductOutDto {
+    private String innerProductId;
+    private Long count;
 }

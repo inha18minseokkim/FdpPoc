@@ -12,8 +12,8 @@ import lombok.*;
 @NoArgsConstructor
 public class FindPriceListByGroupRegionCodeOut {
     private String baseDate;
-    private UserGroupCode regionGroupInfo;
-    private InnerProduct innerProduct;
+    private String regionGroupCodeId;
+    private String innerProductId;
     private BaseRange baseRange;
     private Long price;
 }

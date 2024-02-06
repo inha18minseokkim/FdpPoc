@@ -1,7 +1,7 @@
 package com.example.fdppoc.domain.mapper;
 
 import com.example.fdppoc.domain.dto.GetDetailPriceLegacyResultSubElement;
-import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeIn;
+import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeInDto;
 import com.example.fdppoc.domain.dto.GetProductPriceCriteria;
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
 import org.mapstruct.InjectionStrategy;
@@ -14,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface ProductDetailServiceMapper {
-    FindPriceListByGroupRegionCodeIn from(GetProductPriceCriteria in);
+    FindPriceListByGroupRegionCodeInDto from(GetProductPriceCriteria in);
 
     GetDetailPriceLegacyResultSubElement toSubElement(FindPriceListByGroupRegionCodeOut element);
 }

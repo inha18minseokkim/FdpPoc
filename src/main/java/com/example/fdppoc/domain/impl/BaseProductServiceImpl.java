@@ -2,8 +2,7 @@ package com.example.fdppoc.domain.impl;
 
 import com.example.fdppoc.domain.interfaces.BaseProductService;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
-import com.example.fdppoc.infrastructure.impl.BaseProductRepositoryImpl;
-import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto;
 import com.example.fdppoc.domain.dto.GetBaseCodesCriteria;
 import com.example.fdppoc.domain.dto.GetBaseCodesResult;
 import com.example.fdppoc.domain.dto.SetBaseCodesCriteria;
@@ -24,7 +23,7 @@ public class BaseProductServiceImpl implements BaseProductService {
     private final BaseProductDomainMapper mapper;
     @Override
     public List<GetBaseCodesResult> getBaseCodes(GetBaseCodesCriteria in){
-        List<FindBaseProductWithFilterOut> results = baseProductRepository
+        List<FindBaseProductWithFilterOutDto> results = baseProductRepository
                 .findBaseProductWithFilter(mapper.from(in));
         return results.stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList());

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 @ToString
-public class GetTopViewedInnerProductIn {
+public class GetTopViewedInnerProductInDto {
     private LocalDateTime currentTime;
     private Integer rangeHour;
 }

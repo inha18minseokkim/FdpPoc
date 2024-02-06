@@ -6,10 +6,10 @@ import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.domain.interfaces.ProductDetailService;
 import com.example.fdppoc.domain.mapper.ProductDetailServiceMapper;
-import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeIn;
+import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeInDto;
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
-import com.example.fdppoc.infrastructure.dto.GetPriceDiffListIn;
-import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOut;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffListInDto;
+import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOutDto;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.repository.ProcessedPriceInfoRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
@@ -35,16 +35,16 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Transactional
     public List<GetInnerProductPricesResult> getInnerProductPriceList(GetInnerProductPricesCriteria criteria) {
         UserGroupCode regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
-        List<GetPriceDiffListOut> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
-                GetPriceDiffListIn.builder().regionGroup(regionGroup)
+        List<GetPriceDiffListOutDto> priceDiffList = processedPriceInfoRepository.getPriceDiffList(
+                GetPriceDiffListInDto.builder().regionGroupCodeId(criteria.getRegionGroupId())
                         .startDate(criteria.getStartDate()).endDate(criteria.getEndDate())
                         .build());
-        Map<InnerProduct, List<GetPriceDiffListOut>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProduct()));
+        Map<String, List<GetPriceDiffListOutDto>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProductId()));
         List<GetInnerProductPricesResult> priceList = collect.keySet().stream().map(collect::get).map(element -> {
             //기준일자
-            Optional<GetPriceDiffListOut> baseDatePriceInfo = element.stream().max(Comparator.comparing(elem -> elem.getBaseDate().orElse("")));
+            Optional<GetPriceDiffListOutDto> baseDatePriceInfo = element.stream().max(Comparator.comparing(elem -> elem.getBaseDate().orElse("")));
             //상품정보
-            InnerProduct innerProduct = baseDatePriceInfo.get().getInnerProduct();
+            String innerProductId = baseDatePriceInfo.get().getInnerProductId();
             //현재가격
             Double currentPrice = baseDatePriceInfo.get().getPrice().orElse(0.0);
             String baseDate = baseDatePriceInfo.get().getBaseDate().orElse(criteria.getEndDate());
@@ -58,7 +58,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
                     .gapPrice(gapPrice)
                     .gapRatio(gapRatio)
                     .baseDate(baseDate)
-                    .innerProductId(innerProduct.getId())
+                    .innerProductId(innerProductId)
                     .build();
         }).sorted((a,b) -> a.getGapRatio() < b.getGapRatio() ? 1 : -1).collect(Collectors.toList());
         return priceList;
@@ -68,13 +68,12 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Transactional
     @Cacheable(value = "ProductDetailServiceImpl.getDetailPriceList", key="#criteria")
     public List<GetDetailPriceLegacyResultElement> getDetailPriceList(GetDetilPriceListCriteria criteria) {
-        InnerProduct innerProduct = innerProductRepository.findById(criteria.getInnerProductId()).orElseThrow();
-        UserGroupCode regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
+
         String latestBaseDate = criteria.getBaseDate();
         // 1년치 가격 뽑아옴
         List<FindPriceListByGroupRegionCodeOut> priceList
                 = processedPriceInfoRepository.findPriceListByGroupRegionCode
-                (FindPriceListByGroupRegionCodeIn.builder()
+                (FindPriceListByGroupRegionCodeInDto.builder()
                         .regionGroupCodeId(criteria.getRegionGroupId())
                         .baseDate(latestBaseDate)
                         .rangeForLength(BaseRange.YEAR)

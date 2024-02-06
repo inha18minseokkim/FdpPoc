@@ -1,9 +1,9 @@
 package com.example.fdppoc.repository;
 
 import com.example.fdppoc.domain.entity.BaseProduct;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterInDto;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
-import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterIn;
-import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -31,24 +31,24 @@ class BaseProductRepositoryCustomTest {
     @Test
     @Transactional
     void 기본상품_카테고리코드_필터테스트() {
-        FindBaseProductWithFilterIn in = FindBaseProductWithFilterIn.builder().categoryCode("100").build();
-        List<FindBaseProductWithFilterOut> results = baseProductRepository.findBaseProductWithFilter(in);
+        FindBaseProductWithFilterInDto in = FindBaseProductWithFilterInDto.builder().categoryCode("100").build();
+        List<FindBaseProductWithFilterOutDto> results = baseProductRepository.findBaseProductWithFilter(in);
         log.info("실행 결과 : {}",results);
         Assertions.assertThat(results.get(0).getCategoryCode()).isEqualTo("100");
     }
     @Test
     @Transactional
     void 기본상품_상품코드_필터테스트() {
-        FindBaseProductWithFilterIn in = FindBaseProductWithFilterIn.builder().itemCode("111").build();
-        List<FindBaseProductWithFilterOut> results = baseProductRepository.findBaseProductWithFilter(in);
+        FindBaseProductWithFilterInDto in = FindBaseProductWithFilterInDto.builder().itemCode("111").build();
+        List<FindBaseProductWithFilterOutDto> results = baseProductRepository.findBaseProductWithFilter(in);
         log.info("실행 결과 : {}",results);
         Assertions.assertThat(results.get(0).getItemCode()).isEqualTo("111");
     }
     @Test
     @Transactional
     void 기본상품_필터_and조건테스트() {
-        FindBaseProductWithFilterIn in = FindBaseProductWithFilterIn.builder().itemCode("111").categoryCode("200").build();
-        List<FindBaseProductWithFilterOut> results = baseProductRepository.findBaseProductWithFilter(in);
+        FindBaseProductWithFilterInDto in = FindBaseProductWithFilterInDto.builder().itemCode("111").categoryCode("200").build();
+        List<FindBaseProductWithFilterOutDto> results = baseProductRepository.findBaseProductWithFilter(in);
         log.info("실행 결과 : {}",results);
         Assertions.assertThat(results.size()).isEqualTo(0);
     }

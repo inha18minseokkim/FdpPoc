@@ -4,8 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Builder
 @Data
+@Builder
 @ToString
-public class GetAllProductIn {
+public class FindBaseProductWithFilterInDto {
+    private String categoryCode;
+    private String itemCode;
 }

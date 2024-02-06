@@ -2,9 +2,9 @@ package com.example.fdppoc.domain.mapper;
 
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.entity.InnerProduct;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductListIn;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOut;
-import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterIn;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListInDto;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterInDto;
 import org.mapstruct.*;
 
 @Mapper(
@@ -13,10 +13,10 @@ import org.mapstruct.*;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface InnerProductServiceMapper {
-    FindInnerProductsWithFilterIn from(GetInnerProductsWithFilterCriteria in);
+    FindInnerProductsWithFilterInDto from(GetInnerProductsWithFilterCriteria in);
 
-    @Mapping(target="baseProductIds",expression = "java(element.getBaseProducts().stream().map(ele->ele.getId()).collect(java.util.stream.Collectors.toList()))")
-    GetInnerProductsWithFilterResult from(FindInnerProductWithFilterOut element);
+    //@Mapping(target="baseProductIds",expression = "java(element.getBaseProductIds().stream().mapToLong(ele->ele.getId()).toList())")
+    GetInnerProductsWithFilterResult from(FindInnerProductWithFilterOutDto element);
 
     @Mappings({
             @Mapping(target = "baseProducts", ignore = true),
@@ -25,7 +25,7 @@ public interface InnerProductServiceMapper {
     )
     InnerProduct toEntity(SetInnerProductsCriteria element);
 
-    FindInnerProductListIn from(GetInnerProductsCriteria in);
+    FindInnerProductListInDto from(GetInnerProductsCriteria in);
     @Mappings({
         //@Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())"),
         @Mapping(target="baseProductIds", expression = "java(element.getBaseProducts().stream().map(elem -> elem.getId()).collect(java.util.stream.Collectors.toList()))"),

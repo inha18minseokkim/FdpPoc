@@ -1,7 +1,7 @@
 package com.example.fdppoc.infrastructure.impl;
 
-import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductIn;
-import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOut;
+import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductInDto;
+import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOutDto;
 import com.example.fdppoc.infrastructure.interfaces.CustomerSearchHistoryRepositoryCustom;
 import com.querydsl.core.Tuple;
 import com.example.fdppoc.domain.entity.*;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class CustomerSearchHistoryRepositoryImpl implements CustomerSearchHistoryRepositoryCustom {
     private final EntityManager entityManager;
 
-    public List<GetTopViewedInnerProductOut> getTopViewedInnerProduct(GetTopViewedInnerProductIn in){
+    public List<GetTopViewedInnerProductOutDto> getTopViewedInnerProduct(GetTopViewedInnerProductInDto in){
         LocalDateTime startTime = in.getCurrentTime().minusHours(in.getRangeHour());
 
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
@@ -38,9 +38,9 @@ public class CustomerSearchHistoryRepositoryImpl implements CustomerSearchHistor
                 .groupBy(innerProduct)
                 .orderBy(innerProduct.count().desc())
                 .fetch();
-        return results.stream().map(element -> GetTopViewedInnerProductOut
+        return results.stream().map(element -> GetTopViewedInnerProductOutDto
                 .builder()
                 .count(element.get(innerProduct.count()))
-                .innerProduct(element.get(innerProduct)).build()).collect(Collectors.toList());
+                .innerProductId(element.get(innerProduct).getId()).build()).collect(Collectors.toList());
     }
 }

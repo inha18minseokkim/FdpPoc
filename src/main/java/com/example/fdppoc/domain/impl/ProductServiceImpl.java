@@ -37,15 +37,15 @@ public class ProductServiceImpl implements ProductService {
     //인기상품리스트조회
     @Override
     public List<GetPopularProductResult> getPopularProduct(GetPopularProductCriteria criteria){
-        List<GetTopViewedInnerProductOut> results = customerSearchHistoryRepository.getTopViewedInnerProduct(mapper.from(criteria));
+        List<GetTopViewedInnerProductOutDto> results = customerSearchHistoryRepository.getTopViewedInnerProduct(mapper.from(criteria));
         Optional<UserGroupCode> targetRegionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd")).minusDays(BaseRange.WEEK.getGapDay()).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         return results.stream().map(element -> {
-                    GetPriceDiffOut priceDiff = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(GetPriceDiffIn.builder()
-                            .regionGroup(targetRegionGroup.get()).targetProduct(element.getInnerProduct()).startDate(startDate).endDate(criteria.getBaseDate()).build());
+                    GetPriceDiffOutDto priceDiff = processedPriceInfoRepository.getTodayAndWeeklyMeanPrice(GetPriceDiffInDto.builder()
+                            .regionGroupCodeId(criteria.getRegionGroupId()).targetInnerProductId(element.getInnerProductId()).startDate(startDate).endDate(criteria.getBaseDate()).build());
                     log.debug("쿼리결과 : {}",priceDiff);
                     return GetPopularProductResult.builder()
-                            .innerProductId(element.getInnerProduct().getId())
+                            .innerProductId(element.getInnerProductId())
                             .count(element.getCount())
                             .gapPrice(priceDiff.getBasePrice()-priceDiff.getMeanPrice())
                             .gapRatio(((double)(priceDiff.getBasePrice()-priceDiff.getMeanPrice())/ priceDiff.getBasePrice()))
@@ -57,25 +57,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public List<GetAllProductResult> getAllProduct(GetAllProductCriteria criteria){
-        //모든 상품 맵 가져옴
+    //모든 상품 맵 가져옴
         List<InnerProduct> allProduct = innerProductRepository.findAllByIsAvailable(true);
-        //가장 많이 조회한 상품 리스트 가져옴
-        List<GetTopViewedInnerProductOut> topViewedInnerProducts = customerSearchHistoryRepository.getTopViewedInnerProduct(GetTopViewedInnerProductIn.builder()
+    //가장 많이 조회한 상품 리스트 가져옴
+        List<GetTopViewedInnerProductOutDto> topViewedInnerProducts = customerSearchHistoryRepository.getTopViewedInnerProduct(GetTopViewedInnerProductInDto.builder()
                 .currentTime(LocalDateTime.now()).rangeHour(12)
                 .build());
 
-        //가격 가져올 범위 에서 startDate는 baseDate에서 일주일 전
+    //가격 가져올 범위 에서 startDate는 baseDate에서 일주일 전
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
                 .minusDays(6)
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        //일주일간 가격 통계정보 가져옴
+    //일주일간 가격 통계정보 가져옴
     //Cacheable
         List<GetInnerProductPricesResult> innerProductPriceList = productDetailService.getInnerProductPriceList(GetInnerProductPricesCriteria.builder()
                 .regionGroupId(criteria.getRegionGroupId()).endDate(criteria.getBaseDate()).startDate(startDate).build());
-        //고객 관심상품정보 가져옴
+    //고객 관심상품정보 가져옴
         List<GetMemberInterestProductsResult> memberInterestProducts = memberService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId(criteria.getCustomerId()).build());
 
-        //각각 정보 적재를 위한 맵
+    //각각 정보 적재를 위한 맵
         Map<String,GetAllProductResult> resultMap = allProduct.stream().collect(Collectors.toMap(InnerProduct::getId
                 ,element -> {
                     return GetAllProductResult.builder()
@@ -101,7 +101,7 @@ public class ProductServiceImpl implements ProductService {
         log.debug("시작 : {}",resultMap);
         topViewedInnerProducts.forEach(element -> {
             log.debug("중간 {}",element);
-            GetAllProductResult clickProduct = resultMap.get(element.getInnerProduct().getId());
+            GetAllProductResult clickProduct = resultMap.get(element.getInnerProductId());
             clickProduct.setClickCount(element.getCount());
         });
         //가격정보
@@ -164,12 +164,13 @@ public class ProductServiceImpl implements ProductService {
     public GetDetailPriceLegacyResult getDetailPriceLegacy(GetDetailPriceCriteria criteria) {
         GetLatestBaseDateResult latestBaseDate = getLatestBaseDate(GetLatestBaseDate
                                                                 .builder().baseDate(criteria.getBaseDate()).build());
-
         Optional<UserGroupCode> regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
         Optional<InnerProduct> innerProduct = innerProductRepository.findById(criteria.getInnerProductId());
         GetMemberResult member = memberService.getMember(GetMemberCriteria.builder()
                                                         .customerId(criteria.getCustomerId())
                                                         .businessCode("001").build());
+
+
         //멤버 조회 이력 insert
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                                         .innerProductId(criteria.getInnerProductId())

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Builder
 @ToString
 @Data
-public class GetPriceDiffOut {
+public class GetPriceDiffOutDto {
     private Long basePrice;
     private String baseDate;
     private Long meanPrice;

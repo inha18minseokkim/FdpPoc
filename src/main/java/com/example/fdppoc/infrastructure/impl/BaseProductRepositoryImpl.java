@@ -2,8 +2,8 @@ package com.example.fdppoc.infrastructure.impl;
 
 import com.example.fdppoc.domain.entity.*;
 import com.example.fdppoc.infrastructure.interfaces.BaseProductRepositoryCustom;
-import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterIn;
-import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOut;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterInDto;
+import com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.mapper.BaseProductRepositoryMapper;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,7 +20,7 @@ public class BaseProductRepositoryImpl implements BaseProductRepositoryCustom {
     private final EntityManager em;
     private final BaseProductRepositoryMapper mapper;
     @Override
-    public List<FindBaseProductWithFilterOut> findBaseProductWithFilter(FindBaseProductWithFilterIn in) {
+    public List<FindBaseProductWithFilterOutDto> findBaseProductWithFilter(FindBaseProductWithFilterInDto in) {
         JPAQueryFactory query = new JPAQueryFactory(em);
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
 

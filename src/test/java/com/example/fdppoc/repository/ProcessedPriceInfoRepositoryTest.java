@@ -3,10 +3,10 @@ package com.example.fdppoc.repository;
 import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeInDto;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
-import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeIn;
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ class ProcessedPriceInfoRepositoryTest {
         log.info("해당 품목 조회 : {} ",rice.get());
         Optional<UserGroupCode> gyeongki = userGroupCodeRepository.findById("FDPREGN3100");
         log.info("다음 지역 조회 : {}",gyeongki.get());
-        FindPriceListByGroupRegionCodeIn in = FindPriceListByGroupRegionCodeIn.builder()
+        FindPriceListByGroupRegionCodeInDto in = FindPriceListByGroupRegionCodeInDto.builder()
                 .baseDate("20240119")
                 .rangeForLength(BaseRange.YEAR)
                 .rangeForTag(BaseRange.DAY)

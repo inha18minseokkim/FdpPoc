@@ -4,8 +4,9 @@ import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.entity.*;
 import com.example.fdppoc.infrastructure.dto.*;
 import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoRepositoryCustom;
+import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
+import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepositoryCustom {
     private final EntityManager entityManager;
-
+    private final UserGroupCodeRepository userGroupCodeRepository;
+    private final InnerProductRepository innerProductRepository;
     @Override
-    public List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(FindPriceListByGroupRegionCodeIn in){
+    public List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(FindPriceListByGroupRegionCodeInDto in){
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
@@ -58,18 +60,21 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
         return results.stream().map((element) -> FindPriceListByGroupRegionCodeOut.builder()
                 .baseDate(in.getBaseDate())
                 .price(element.get(processedPriceInfo.price.avg()).longValue())
-                .regionGroupInfo(element.get(userGroupCode))
-                .innerProduct(element.get(innerProduct))
+                .regionGroupCodeId(element.get(userGroupCode).getId())
+                .innerProductId(element.get(innerProduct).getId())
                 .baseRange(in.getRangeForLength())
                 .build()
         ).collect(Collectors.toList());
     }
     @Override
-    public GetPriceDiffOut getTodayAndWeeklyMeanPrice(GetPriceDiffIn in){
+    public GetPriceDiffOutDto getTodayAndWeeklyMeanPrice(GetPriceDiffInDto in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
         QUserCode userCode = QUserCode.userCode;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
+
+        UserGroupCode targetRegionGroup = userGroupCodeRepository.findById(in.getRegionGroupCodeId()).orElseThrow();
+        InnerProduct targetInnerProduct = innerProductRepository.findById(in.getTargetInnerProductId()).orElseThrow();
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         List<Tuple> result = query.select(
                         processedPriceInfo.price.avg()
@@ -80,17 +85,17 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
                         processedPriceInfo.baseDate.between(in.getStartDate(), in.getEndDate())
                                 .and(processedPriceInfo.baseRange.eq(BaseRange.DAY))
                                 .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName))
-                                .and(userGroupCode.eq(in.getRegionGroup()))
-                                .and(userCode.userGroupCode.eq(in.getRegionGroup()))
+                                .and(userGroupCode.eq(targetRegionGroup))
+                                .and(userCode.userGroupCode.eq(targetRegionGroup))
                                 .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
-                                .and(innerProduct.eq(in.getTargetProduct()))
+                                .and(innerProduct.eq(targetInnerProduct))
                 ).groupBy(
                         processedPriceInfo.baseDate
                 ).orderBy(
                         processedPriceInfo.baseDate.asc()
                 )
                 .fetch();
-        return GetPriceDiffOut.builder()
+        return GetPriceDiffOutDto.builder()
                 .basePrice(result.get(result.size()-1).get(processedPriceInfo.price.avg()).longValue())
                 .baseDate(result.get(result.size()-1).get(processedPriceInfo.baseDate))
                 .meanPrice(result.stream()
@@ -102,9 +107,12 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
     }
 
     @Override
-    public List<GetPriceDiffListOut> getPriceDiffList(GetPriceDiffListIn in){
+    public List<GetPriceDiffListOutDto> getPriceDiffList(GetPriceDiffListInDto in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
+
+        UserGroupCode targetRegionGroupCode = userGroupCodeRepository.findById(in.getRegionGroupCodeId()).orElseThrow();
+
         QUserCode userCode = QUserCode.userCode;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
@@ -134,15 +142,15 @@ public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoRepos
                                 ,(processedPriceInfo.regionInfo.eq(userCode)
                                         .or(processedPriceInfo.regionInfo.isNull())
                                 )
-                                ,(userCode.userGroupCode.eq(in.getRegionGroup()))
+                                ,(userCode.userGroupCode.eq(targetRegionGroupCode))
                 ).groupBy(
                         innerProduct,
                         processedPriceInfo.baseDate
                 )
                 .fetch();
         return result.stream().map(element ->
-                GetPriceDiffListOut.builder()
-                    .innerProduct(element.get(innerProduct))
+                GetPriceDiffListOutDto.builder()
+                    .innerProductId(element.get(innerProduct).getId())
                     .price(Optional.ofNullable(element.get(processedPriceInfo.price.avg())))
                     .baseDate(Optional.ofNullable(element.get(processedPriceInfo.baseDate)))
                     .build())

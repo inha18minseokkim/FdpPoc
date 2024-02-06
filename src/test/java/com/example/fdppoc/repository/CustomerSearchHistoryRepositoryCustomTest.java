@@ -1,8 +1,8 @@
 package com.example.fdppoc.repository;
 
 import com.example.fdppoc.infrastructure.impl.CustomerSearchHistoryRepositoryImpl;
-import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductIn;
-import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOut;
+import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductInDto;
+import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOutDto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class CustomerSearchHistoryRepositoryCustomTest {
 
     @Test
     void 범위시간내조회수출력() {
-        List<GetTopViewedInnerProductOut> topViewedInnerProduct = customerSearchHistoryRepositoryCustom.getTopViewedInnerProduct(GetTopViewedInnerProductIn.builder()
+        List<GetTopViewedInnerProductOutDto> topViewedInnerProduct = customerSearchHistoryRepositoryCustom.getTopViewedInnerProduct(GetTopViewedInnerProductInDto.builder()
                         .rangeHour(1)
                         .currentTime(LocalDateTime.now())
                 .build());
