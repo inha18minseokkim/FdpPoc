@@ -1,6 +1,6 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.infrastructure.impl.CustomerSearchHistoryRepositoryImpl;
+import com.example.fdppoc.infrastructure.impl.CustomerSearchHistoryReaderImpl;
 import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductInDto;
 import com.example.fdppoc.infrastructure.dto.GetTopViewedInnerProductOutDto;
 import jakarta.transaction.Transactional;
@@ -17,7 +17,7 @@ import java.util.List;
 @Transactional
 class CustomerSearchHistoryReaderTest {
     @Autowired
-    CustomerSearchHistoryRepositoryImpl customerSearchHistoryRepositoryCustom;
+    CustomerSearchHistoryReaderImpl customerSearchHistoryRepositoryCustom;
 
     @Test
     void 범위시간내조회수출력() {

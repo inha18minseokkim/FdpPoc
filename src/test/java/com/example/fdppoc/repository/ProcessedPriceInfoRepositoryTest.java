@@ -5,7 +5,7 @@ import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeInDto;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoRepositoryImpl;
+import com.example.fdppoc.infrastructure.impl.ProcessedPriceInfoReaderImpl;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
 import jakarta.transaction.Transactional;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 class ProcessedPriceInfoRepositoryTest {
     @Autowired
-    ProcessedPriceInfoRepositoryImpl processedPriceInfoRepositoryCustom;
+    ProcessedPriceInfoReaderImpl processedPriceInfoRepositoryCustom;
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired

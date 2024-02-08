@@ -13,6 +13,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.ERROR
 )
 public interface BaseProductRepositoryMapper {
-    @Mapping(target = "innerProductId",expression = "java(baseProduct.getInnerProduct().getId())")
+    @Mapping(target = "innerProductId",expression = "java(baseProduct.getInnerProduct() == null ? null : baseProduct.getInnerProduct().getId())")
     FindBaseProductWithFilterOutDto from(BaseProduct baseProduct);
 }

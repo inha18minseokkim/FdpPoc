@@ -7,7 +7,7 @@ import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
+import com.example.fdppoc.infrastructure.impl.InnerProductReaderImpl;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductListInDto;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterInDto;
 import jakarta.transaction.Transactional;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 class InnerProductReaderTest {
     @Autowired
-    InnerProductRepositoryImpl innerProductRepositoryCustom;
+    InnerProductReaderImpl innerProductRepositoryCustom;
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired

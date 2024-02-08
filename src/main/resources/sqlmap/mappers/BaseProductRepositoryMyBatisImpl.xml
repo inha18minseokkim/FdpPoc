@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.fdppoc.infrastructure.impl.BaseProductReaderMyBatisImpl">
+    <select id="findBaseProductWithFilter" resultType="com.example.fdppoc.infrastructure.dto.FindBaseProductWithFilterOutDto">
+        select
+            id
+             ,category_code
+             ,item_code
+             ,kind_code
+             ,class_code
+             ,grade_code
+             ,unit_name
+             ,unit_value
+             ,is_available
+             ,category_name
+             ,item_name
+             ,kind_name
+             ,grade_name
+             ,inner_product_id
+        from base_product
+        where 1 = 1
+        <if test="categoryCode != null and categoryCode != 'all' ">
+            and category_code = #{categoryCode}
+        </if>
+        <if test="itemCode != null and itemCode != 'all' ">
+            and item_code = #{itemCode}
+        </if>
+    </select>
+</mapper>

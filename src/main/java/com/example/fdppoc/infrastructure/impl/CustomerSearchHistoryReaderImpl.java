@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Repository
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerSearchHistoryRepositoryImpl implements CustomerSearchHistoryReader {
+public class CustomerSearchHistoryReaderImpl implements CustomerSearchHistoryReader {
     private final EntityManager entityManager;
 
     public List<GetTopViewedInnerProductOutDto> getTopViewedInnerProduct(GetTopViewedInnerProductInDto in){

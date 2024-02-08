@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class InnerProductRepositoryImpl implements InnerProductReader {
+public class InnerProductReaderImpl implements InnerProductReader {
     private final EntityManager em;
     private final InnerProductRepositoryMapper mapper;
     @Override

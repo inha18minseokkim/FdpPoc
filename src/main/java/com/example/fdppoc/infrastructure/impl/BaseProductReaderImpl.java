@@ -9,14 +9,16 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Primary
 @RequiredArgsConstructor
-public class BaseProductRepositoryImpl implements BaseProductReader {
+public class BaseProductReaderImpl implements BaseProductReader {
     private final EntityManager em;
     private final BaseProductRepositoryMapper mapper;
     @Override

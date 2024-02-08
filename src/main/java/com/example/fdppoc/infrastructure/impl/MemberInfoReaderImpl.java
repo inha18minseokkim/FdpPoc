@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MemberInfoRepositoryImpl implements MemberInfoReader {
+public class MemberInfoReaderImpl implements MemberInfoReader {
 }

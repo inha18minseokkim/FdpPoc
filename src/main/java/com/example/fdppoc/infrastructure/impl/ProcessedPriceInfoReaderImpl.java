@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class ProcessedPriceInfoRepositoryImpl implements ProcessedPriceInfoReader {
+public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
     private final EntityManager entityManager;
     private final UserGroupCodeRepository userGroupCodeRepository;
     private final InnerProductRepository innerProductRepository;

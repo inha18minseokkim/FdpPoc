@@ -2,7 +2,7 @@ package com.example.fdppoc.repository;
 
 import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoReader;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
-import com.example.fdppoc.infrastructure.impl.InnerProductRepositoryImpl;
+import com.example.fdppoc.infrastructure.impl.InnerProductReaderImpl;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffInDto;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListInDto;
@@ -32,7 +32,7 @@ class ProcessedPriceInfoReaderTest {
     @Autowired
     InnerProductRepository innerProductRepository;
     @Autowired
-    InnerProductRepositoryImpl innerProductRepositoryCustom;
+    InnerProductReaderImpl innerProductRepositoryCustom;
     @Test
     void 범위내최대최소가격탐색() {
         GetPriceDiffOutDto minMaxPrice = priceInfoReader.getTodayAndWeeklyMeanPrice(
