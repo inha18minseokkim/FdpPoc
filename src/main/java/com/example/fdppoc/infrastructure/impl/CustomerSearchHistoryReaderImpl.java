@@ -22,6 +22,7 @@ public class CustomerSearchHistoryReaderImpl implements CustomerSearchHistoryRea
     private final EntityManager entityManager;
 
     public List<GetTopViewedInnerProductOutDto> getTopViewedInnerProduct(GetTopViewedInnerProductInDto in){
+        //rangeHour 동안 가장 많이 조회된 내부상품 조회
         LocalDateTime startTime = in.getCurrentTime().minusHours(in.getRangeHour());
 
         QInnerProduct innerProduct = QInnerProduct.innerProduct;

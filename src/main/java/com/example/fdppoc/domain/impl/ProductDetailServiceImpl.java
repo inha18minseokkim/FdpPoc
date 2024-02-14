@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class ProductDetailServiceImpl implements ProductDetailService {
     private final UserGroupCodeRepository userGroupCodeRepository;
     private final ProcessedPriceInfoReader processedPriceInfoReader;
-    private final InnerProductRepository innerProductRepository;
     private final ProductDetailServiceMapper mapper;
     @Override
     @Cacheable(value = "ProductDetailServiceImpl.getDetailPriceList", key="#criteria")
@@ -67,6 +66,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Transactional
     @Cacheable(value = "ProductDetailServiceImpl.getDetailPriceList", key="#criteria")
     public List<GetDetailPriceLegacyResultElement> getDetailPriceList(GetDetilPriceListCriteria criteria) {
+        //특정 상품의 특정 기준일자, 특정 지역의 그래프 조회
 
         String latestBaseDate = criteria.getBaseDate();
         // 1년치 가격 뽑아옴

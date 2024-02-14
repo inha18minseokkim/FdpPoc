@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MemberService {
     GetMemberPushInfoResult getMemberPushInfo(GetMemberPushInfoCriteria in);
-    void setMemberPushInfo(SetMemberPushInfoCriteria in);
+    SetMemberPushInfoResult setMemberPushInfo(SetMemberPushInfoCriteria in);
 
     GetProductInterestResult getProductInterest(GetProductInterestCriteria in);
     void setProductInterest(SetProductInterestCriteria in);

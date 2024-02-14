@@ -8,6 +8,5 @@ import java.util.List;
 @Builder
 @Data
 public class GetBaseCodesResponse {
-    private String responseCode;
     private List<GetBaseCodesResponseElement> list;
 }

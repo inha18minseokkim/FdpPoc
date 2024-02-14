@@ -3,6 +3,7 @@ package com.example.fdppoc.domain.mapper;
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductListInDto;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListOutDto;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductsWithFilterInDto;
 import org.mapstruct.*;
@@ -26,10 +27,6 @@ public interface InnerProductServiceMapper {
     InnerProduct toEntity(SetInnerProductsCriteria element);
 
     FindInnerProductListInDto from(GetInnerProductsCriteria in);
-    @Mappings({
-        //@Mapping(target="baseProductId",expression = "java(element.getBaseProduct().getId())"),
-        @Mapping(target="baseProductIds", expression = "java(element.getBaseProducts().stream().map(elem -> elem.getId()).collect(java.util.stream.Collectors.toList()))"),
-        @Mapping(target="innerCategoryId",expression = "java(element.getInnerCategory().getId())")
-    })
-    GetInnerProductsResult from(InnerProduct element);
+
+    GetInnerProductsResult from(FindInnerProductListOutDto element);
 }

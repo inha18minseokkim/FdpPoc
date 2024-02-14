@@ -11,6 +11,5 @@ import java.util.List;
 @Builder
 @Getter
 public class GetInnerProductsResponse {
-    private String responseCode;
     List<GetInnerProductsResponseElement> lists;
 }

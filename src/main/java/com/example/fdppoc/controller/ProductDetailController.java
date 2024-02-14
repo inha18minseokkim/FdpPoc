@@ -10,6 +10,7 @@ import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.domain.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,10 +21,10 @@ public class ProductDetailController {
     private final ProductService productService;
     private final MemberService memberService;
     private final ProductDetailControllerMapper mapper;
-    @GetMapping("/getProductDetail/{targetProductId}/{regionGroupId}") //그냥 React 기반으로 간다면 생각하고 짠것(통 응답에서 3개로 쪼갠 것 중 하나)
-    public GetProductDetailResponse getProductDetail(@PathVariable("targetProductId") InnerProduct innerProduct,
-                                                     @PathVariable("regionGroupId") UserGroupCode userGroupCode,
-                                                     GetProductDetailRequest in
+    @GetMapping("/v1/getProductDetail/{targetProductId}/{regionGroupId}") //그냥 React 기반으로 간다면 생각하고 짠것(통 응답에서 3개로 쪼갠 것 중 하나)
+    public ResponseEntity<GetProductDetailResponse> getProductDetail(@PathVariable("targetProductId") InnerProduct innerProduct,
+                                                                    @PathVariable("regionGroupId") UserGroupCode userGroupCode,
+                                                                    GetProductDetailRequest in
                                                 ){
         GetProductPriceResult productPrice = productService.getProductPrice(
                 GetProductPriceCriteria.builder()
@@ -35,10 +36,10 @@ public class ProductDetailController {
                         .customerId(in.getCustomerId())
                         .build()
         );
-        return mapper.from(productPrice);
+        return ResponseEntity.ok().body(mapper.from(productPrice));
     }
-    @GetMapping("/getProductDetailLegacy/{targetProductId}/{regionGroupId}") //CKBFP01000009 상품상세정보조회
-    public GetProductDetailLegacyResponse getProductDetailLegacy(@PathVariable("targetProductId") InnerProduct innerProduct,
+    @GetMapping("/v1/getProductDetailLegacy/{targetProductId}/{regionGroupId}") //CKBFP01000009 상품상세정보조회
+    public ResponseEntity<GetProductDetailLegacyResponse> getProductDetailLegacy(@PathVariable("targetProductId") InnerProduct innerProduct,
                                                                  @PathVariable("regionGroupId") UserGroupCode userGroupCode
                                                                 ,GetProductDetailLegacyRequest request){
         GetDetailPriceLegacyResult result = productService.getDetailPriceLegacy(GetDetailPriceCriteria.builder()
@@ -48,19 +49,22 @@ public class ProductDetailController {
                         .regionGroupId(userGroupCode.getId())
                 .build());
 
-        return mapper.from(result);
+        return ResponseEntity.ok().body(mapper.from(result));
     }
 
-    @GetMapping("/getProductInterestInfo/{targetProductId}") //CKBFP01000011 관심식품여부조회
-    public GetProductInterestInfoResponse getProductInterestInfo(
+    @GetMapping("/v1/getProductInterestInfo/{targetProductId}") //CKBFP01000011 관심식품여부조회
+    public ResponseEntity<GetProductInterestInfoResponse> getProductInterestInfo(
             @PathVariable("targetProductId")InnerProduct targetProduct,
             GetProductInterestInfoRequest in){
         GetProductInterestResult result = memberService.getProductInterest(
                 GetProductInterestCriteria.builder().targetInnerProductId(targetProduct.getId()).customerId(in.getCustomerId()).build());
-        return GetProductInterestInfoResponse.builder().isAvailable(result.getIsAvailable()).innerProductId(targetProduct.getId()).build();
+        return ResponseEntity.ok().body(
+                GetProductInterestInfoResponse.builder()
+                        .isAvailable(result.getIsAvailable())
+                        .innerProductId(targetProduct.getId()).build());
     }
-    @PostMapping("/setProductInterestInfo/{targetProductId}") //CKBFP01000012 관심식품등록
-    public SetProductInterestResponse setProductInterest(
+    @PostMapping("/v1/setProductInterestInfo/{targetProductId}") //CKBFP01000012 관심식품등록
+    public ResponseEntity<SetProductInterestResponse> setProductInterest(
             @PathVariable("targetProductId")InnerProduct targetProduct
             ,@RequestBody SetProductInterestRequest in){
 
@@ -69,7 +73,9 @@ public class ProductDetailController {
                         .targetInnerProductId(targetProduct.getId())
                         .isAvailable(in.getIsAvailable())
                 .build());
-        return SetProductInterestResponse.builder().innerProductId(targetProduct.getId()).isAvailable(in.getIsAvailable()).build();
+        return ResponseEntity.ok().body(SetProductInterestResponse.builder()
+                .innerProductId(targetProduct.getId())
+                .isAvailable(in.getIsAvailable()).build());
     }
 
 }

@@ -5,6 +5,7 @@ import com.example.fdppoc.domain.entity.BaseProduct;
 import com.example.fdppoc.domain.entity.InnerCategory;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.interfaces.InnerProductService;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListOutDto;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.interfaces.InnerProductReader;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
@@ -34,12 +35,14 @@ public class InnerProductServiceImpl implements InnerProductService {
 
     @Override
     public List<GetInnerProductsWithFilterResult> getInnerProductsWithFilter(GetInnerProductsWithFilterCriteria in){
+        //웹스퀘어 관리자화면용 필터 내부상품목록 조회
         List<FindInnerProductWithFilterOutDto> results = innerProductReader.findInnerProductWithFilter(mapper.from(in));
         return results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList());
     }
     @Override
     @Transactional
     public void setInnerProducts(List<SetInnerProductsCriteria> in){
+        //웹스퀘어 관리자화면용 필터 내부상품목록 수정
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .forEach((element) -> {
                     log.info("다음 저장 : {}",element);
@@ -68,8 +71,9 @@ public class InnerProductServiceImpl implements InnerProductService {
     @Override
     @Cacheable(value="InnerProductServiceImpl.getInnerProductList",key = "#in")
     public List<GetInnerProductsResult> getInnerProductList(GetInnerProductsCriteria in){
+        //현재 노출 가능한 내부상품 리스트 리턴
         FindInnerProductListInDto input = mapper.from(in);
-        List<InnerProduct> innerProductList = innerProductReader.findInnerProductList(input);
+        List<FindInnerProductListOutDto> innerProductList = innerProductReader.findInnerProductList(input);
         return innerProductList.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }
 }

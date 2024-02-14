@@ -25,6 +25,7 @@ public class BaseProductServiceImpl implements BaseProductService {
     private final BaseProductDomainMapper mapper;
     @Override
     public List<GetBaseCodesResult> getBaseCodes(GetBaseCodesCriteria in){
+        //웹스퀘어 관리자용 모든 기본상품 조회
         List<FindBaseProductWithFilterOutDto> results = baseProductReader
                 .findBaseProductWithFilter(mapper.from(in));
         return results.stream()
@@ -33,6 +34,7 @@ public class BaseProductServiceImpl implements BaseProductService {
     @Override
     @Transactional
     public void setBaseCodes(List<SetBaseCodesCriteria> in){
+        //웹스퀘어 관리자용 기본상품 수정
         in.stream().filter((element) -> !element.getRowStatus().equals("R"))
                 .map((element) -> mapper.toEntity(element))
                 .forEach((element) -> {

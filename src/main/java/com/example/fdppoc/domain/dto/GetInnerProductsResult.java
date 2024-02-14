@@ -10,15 +10,10 @@ import java.util.List;
 @Builder
 @ToString
 public class GetInnerProductsResult {
-    private String id;
-    private List<Long> baseProductIds;
-    private Boolean isMainMaterial;
-    private Boolean isAvailable;
-    private Long innerCategoryId;
     private Long orderSequence;
+    private String id;
     private String productName;
     private String additionalDescription;
     private Boolean isSeasonal;
-    private String seasonStartDate;
-    private String seasonEndDate;
+    private Boolean isMainMaterial;
 }

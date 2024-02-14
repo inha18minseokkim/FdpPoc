@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
                 }
         ).collect(Collectors.toList());
     }
-    //Legacy View 용 API
+    //기존 뷰 용 짬통 서비스
     @Override
     @Transactional
     public List<GetAllProductResult> getAllProduct(GetAllProductCriteria criteria){
@@ -70,30 +70,29 @@ public class ProductServiceImpl implements ProductService {
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
                 .minusDays(6)
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    //일주일간 가격 통계정보 가져옴
-    //Cacheable
+
+    //일주일간 가격 통계정보 가져옴 startDat - baseDate 까지 + Cacheable
         List<GetInnerProductPricesResult> innerProductPriceList = productDetailService.getInnerProductPriceList(GetInnerProductPricesCriteria.builder()
                 .regionGroupId(criteria.getRegionGroupId()).endDate(criteria.getBaseDate()).startDate(startDate).build());
+
     //고객 관심상품정보 가져옴
         List<GetMemberInterestProductsResult> memberInterestProducts = memberService.getMemberInterestProducts(GetMemberInterestProductsCriteria.builder().customerId(criteria.getCustomerId()).build());
 
-    //각각 정보 적재를 위한 맵
+    //각각 정보 적재를 위한 맵. 해당주 상품 가격정보가 없어도 표시는 필요함
         Map<String,GetAllProductResult> resultMap = allProduct.stream().collect(Collectors.toMap(InnerProduct::getId
-                ,element -> {
-                    return GetAllProductResult.builder()
-                            .innerProductId(element.getId())
-                            .currentPrice(0L)
-                            .innerCategoryId(element.getInnerCategory().getId())
-                            .gapPrice(0L)
-                            .gapPriceRatio(0.0)
-                            .clickCount(0L)
-                            .isRiseOrDecline(false)
-                            .isCustomerInterest(false)
-                            .unitValueName(element.getBaseProducts().get(0).getUnitValue() + element.getBaseProducts().get(0).getUnitName())
-                            .innerProductName(element.getProductName())
-                            .innerCategoryName(element.getInnerCategory().getInnerCategoryName())
-                            .build();
-                }));
+                ,element -> GetAllProductResult.builder()
+                        .innerProductId(element.getId())
+                        .currentPrice(0L)
+                        .innerCategoryId(element.getInnerCategory().getId())
+                        .gapPrice(0L)
+                        .gapPriceRatio(0.0)
+                        .clickCount(0L)
+                        .isRiseOrDecline(false)
+                        .isCustomerInterest(false)
+                        .unitValueName(element.getBaseProducts().get(0).getUnitValue() + element.getBaseProducts().get(0).getUnitName())
+                        .innerProductName(element.getProductName())
+                        .innerCategoryName(element.getInnerCategory().getInnerCategoryName())
+                        .build()));
         //관심상품
         memberInterestProducts.stream().forEach(element -> {
             GetAllProductResult interestProduct = resultMap.get(element.getInnerProductId());
@@ -106,17 +105,19 @@ public class ProductServiceImpl implements ProductService {
             GetAllProductResult clickProduct = resultMap.get(element.getInnerProductId());
             clickProduct.setClickCount(element.getCount());
         });
-        //가격정보
+        //가격정보 하위 5개 마킹
         for(int i = 0; i < Math.min(innerProductPriceList.size(),5); i++){
-            if(innerProductPriceList.get(i).getGapRatio() >= 0) break;
+            if(innerProductPriceList.get(i).getGapRatio() >= 0) break; //모든 상품이 다 오른 경우 스킵
             String minusInnerProduct = innerProductPriceList.get(i).getInnerProductId();
             resultMap.get(minusInnerProduct).setIsRiseOrDecline(true);
         }
+        //가격정보 상위 5개 마킹
         for(int i = innerProductPriceList.size()-1; i >= 0; i--){
-            if(innerProductPriceList.get(i).getGapRatio() <= 0) break;
+            if(innerProductPriceList.get(i).getGapRatio() <= 0) break; //모든 상품이 다 내린 경우 스킵
             String minusInnerProduct = innerProductPriceList.get(i).getInnerProductId();
             resultMap.get(minusInnerProduct).setIsRiseOrDecline(true);
         }
+        //내부상품별로 현재가,등락률,등락가격 세팅
         innerProductPriceList.forEach(element -> {
             GetAllProductResult targetProduct = resultMap.get(element.getInnerProductId());
             targetProduct.setCurrentPrice(Math.round(element.getCurrentPrice()));
@@ -157,6 +158,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable(value = "ProductServiceImpl.getLatestBaseDate",key = "#criteria")
     public GetLatestBaseDateResult getLatestBaseDate(GetLatestBaseDate criteria) {
+        //가격 수신 일자 기준으로 유효한 최근 일자 구함
         String maxBaseDate = processedPriceInfoReader.getMaxBaseDate(criteria.getBaseDate());
         return GetLatestBaseDateResult.builder().baseDate(maxBaseDate).build();
     }
@@ -164,6 +166,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public GetDetailPriceLegacyResult getDetailPriceLegacy(GetDetailPriceCriteria criteria) {
+        //특정 지역그룹 특정 내부상품의 특정 날짜 가격 리스트(그래프)
         GetLatestBaseDateResult latestBaseDate = getLatestBaseDate(GetLatestBaseDate
                                                                 .builder().baseDate(criteria.getBaseDate()).build());
         Optional<UserGroupCode> regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());

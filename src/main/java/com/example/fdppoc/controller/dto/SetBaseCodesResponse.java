@@ -1,6 +1,5 @@
 package com.example.fdppoc.controller.dto;
 
-import com.example.fdppoc.code.ControllerResponse;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -9,5 +8,5 @@ import lombok.ToString;
 @ToString
 @Data
 public class SetBaseCodesResponse {
-    private ControllerResponse responseCode;
+    private String processCount;
 }

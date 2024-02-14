@@ -25,6 +25,7 @@ public class InnerCategoryServiceImpl implements InnerCategoryService {
     @Transactional
     @Cacheable(value = "InnerCategoryServiceImpl.getAllInnerProducts", key="#in")
     public List<GetAllInnerProductsResult> getAllInnerProducts(GetAllInnerProductsCriteria in){
+        //카테고리별로 모든 내부상품코드 조회
         List<InnerCategory> all = innerCategoryRepository.findAll();
         List<GetAllInnerProductsResult> result = all.stream().filter(categoryElement -> categoryElement.getIsAvailable() == true)
                 .map(categoryElement -> {
@@ -45,11 +46,13 @@ public class InnerCategoryServiceImpl implements InnerCategoryService {
     }
     @Override
     public List<GetAllInnerCategoryResult> getAllInnerCategory(GetAllInnerCategoryCriteria in){
+        //웹스퀘어 관리자용 모든 카테고리 조회
         List<InnerCategory> all = innerCategoryRepository.findAll();
         return all.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }
     @Override
     public void setInnerCategory(List<SetInnerCategoryCriteria> in){
+        //웹스퀘어 관리자용 카테고리 수정
         in.stream().filter(element -> !element.getRowStatus().equals("R")).forEach(
                 element -> {
                     if(element.getId() == null || innerCategoryRepository.findById(element.getId()).isEmpty())

@@ -36,9 +36,10 @@ public class MemberServiceImpl implements MemberService {
     }
     @Override
     @Transactional
-    public void setMemberPushInfo(SetMemberPushInfoCriteria in){
+    public SetMemberPushInfoResult setMemberPushInfo(SetMemberPushInfoCriteria in){
         MemberInfo member = getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
         member.setIsAgree(in.getIsAgree());
+        return SetMemberPushInfoResult.builder().isAgree(in.getIsAgree()).build();
     }
 
 
@@ -71,6 +72,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public GetProductInterestResult getProductInterest(GetProductInterestCriteria in){
+        //특정 고객이 특정 상품 관심 마킹 했는지 여부 리턴
         MemberInfo member = getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
         InnerProduct innerProduct = innerProductRepository.findById(in.getTargetInnerProductId()).orElseThrow();
         Optional<CustomerInterestProduct> result = customerInterestProductRepository.getCustomerInterestProductByInnerProductAndMemberInfo(innerProduct, member);
@@ -81,6 +83,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void setProductInterest(SetProductInterestCriteria in){
+        //특정 고객이 특정 상품 관심 YN 마킹
         MemberInfo member = getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
         InnerProduct targetProduct = innerProductRepository.findById(in.getTargetInnerProductId()).orElseThrow();
         Optional<CustomerInterestProduct> result = customerInterestProductRepository
@@ -100,6 +103,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public List<GetMemberInterestProductsResult> getMemberInterestProducts(GetMemberInterestProductsCriteria in) {
+        //고객의 관심 내부상품 리스트 리턴
         MemberInfo member = getMember(GetMemberCriteria.builder().customerId(in.getCustomerId()).businessCode("001").build()).getMemberInfo();
         List<CustomerInterestProduct> allProduct = customerInterestProductRepository.findAllByMemberInfoAndIsAvailable(member, true);
         return allProduct.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
