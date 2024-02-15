@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+/*
+*
+*       관리자화면 컨트롤러는 관리자화면 만들고나서 다시 뜯어고쳐야함(웹스퀘어 스펙으로 안갈예정)
+* */
 @RestController
 @RequestMapping("/productCodeAdmin")
 @RequiredArgsConstructor
@@ -28,7 +31,6 @@ public class ProductCodeAdminController {
         List<GetBaseCodesResult> baseCodes = baseProductService.getBaseCodes(mapper.from(request));
         return ResponseEntity.ok().body(
                 GetBaseCodesResponse.builder()
-                .responseCode("001")
                 .list(baseCodes.stream().map((element) -> mapper.from(element)).collect(Collectors.toList()))
                 .build());
     }
@@ -37,14 +39,13 @@ public class ProductCodeAdminController {
         baseProductService.setBaseCodes(request.getLists().stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList()));
         return ResponseEntity.ok().body(
-                SetBaseCodesResponse.builder().responseCode(ControllerResponse.OK).build());
+                SetBaseCodesResponse.builder().processCount("1").build());
     }
     @GetMapping("/v1/getInnerProducts")
     public ResponseEntity<GetInnerProductsResponse> getInnerProducts(GetInnerProductsRequest request){
         List<GetInnerProductsWithFilterResult> results = innerProductService.getInnerProductsWithFilter(mapper.from(request));
         return ResponseEntity.ok().body(
                 GetInnerProductsResponse.builder()
-                .responseCode("001")
                 .lists(results.stream().map((element) -> mapper.from(element)).collect(Collectors.toList()))
                 .build());
     }
@@ -53,7 +54,7 @@ public class ProductCodeAdminController {
         innerProductService.setInnerProducts(request.getLists().stream()
                 .map((element) -> mapper.from(element)).collect(Collectors.toList()));
         return ResponseEntity.ok().body(
-                SetInnerProductsResponse.builder().responseCode(ControllerResponse.OK).build());
+                SetInnerProductsResponse.builder().processCount("1").build());
     }
     @GetMapping("/v1/getInnerCategory")
     public ResponseEntity<GetInnerCategoryResponse> getInnerCategory(GetInnerCategoryRequest request){
