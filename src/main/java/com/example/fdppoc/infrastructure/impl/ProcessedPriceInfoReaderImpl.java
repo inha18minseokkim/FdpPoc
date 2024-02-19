@@ -30,8 +30,8 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
     public List<FindPriceListByGroupRegionCodeOut> findPriceListByGroupRegionCode(FindPriceListByGroupRegionCodeInDto in){
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
-        QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
-        QUserCode userCode = QUserCode.userCode;
+        QRegionGroup regionGroup = QRegionGroup.regionGroup;
+        QRegion region = QRegion.region;
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
         String startDate = LocalDate.parse(in.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd"))
@@ -40,29 +40,29 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
         List<Tuple> results = query.select(
                 processedPriceInfo.baseDate,
                 processedPriceInfo.price.avg(),
-                userGroupCode,
+                regionGroup,
                 innerProduct
                 )
-                .from(processedPriceInfo, userGroupCode,innerProduct,userCode)
+                .from(processedPriceInfo, regionGroup,innerProduct,region)
                 .where(
                         processedPriceInfo.baseRange.eq(in.getRangeForTag())
                                 .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
-                                .and(userGroupCode.id.eq(in.getRegionGroupId()))
-                                .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName))
-                                .and(userGroupCode.id.eq(userCode.userGroupCode.id)
+                                .and(regionGroup.id.eq(in.getRegionGroupId()))
+                                .and(processedPriceInfo.region.id.eq(region.regionDetailName))
+                                .and(regionGroup.id.eq(region.regionGroup.id)
                                 .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
                                                 .and(innerProduct.id.eq(in.getTargetInnerProductId()))
                                 )
                 ).groupBy(
                         processedPriceInfo.baseDate,
-                        userGroupCode,
+                        regionGroup,
                         innerProduct
                 )
                 .fetch();
         return results.stream().map((element) -> FindPriceListByGroupRegionCodeOut.builder()
                 .baseDate(in.getBaseDate())
                 .price(element.get(processedPriceInfo.price.avg()).longValue())
-                .regionGroupId(element.get(userGroupCode).getId())
+                .regionGroupId(element.get(regionGroup).getId())
                 .innerProductId(element.get(innerProduct).getId())
                 .baseRange(in.getRangeForLength())
                 .build()
@@ -71,8 +71,8 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
     @Override
     public GetPriceDiffOutDto getTodayAndWeeklyMeanPrice(GetPriceDiffInDto in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
-        QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
-        QUserCode userCode = QUserCode.userCode;
+        QRegionGroup regionGroup = QRegionGroup.regionGroup;
+        QRegion region = QRegion.region;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
 
         RegionGroup targetRegionGroup = userGroupCodeRepository.findById(in.getRegionGroupId()).orElseThrow();
@@ -82,13 +82,13 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
                         processedPriceInfo.price.avg()
                         ,processedPriceInfo.baseDate
                 )
-                .from(processedPriceInfo, userGroupCode, innerProduct, userCode)
+                .from(processedPriceInfo, regionGroup, innerProduct, region)
                 .where(
                         processedPriceInfo.baseDate.between(in.getStartDate(), in.getEndDate())
                                 .and(processedPriceInfo.baseRange.eq(BaseRange.DAY))
-                                .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName))
-                                .and(userGroupCode.eq(targetRegionGroup))
-                                .and(userCode.userGroupCode.eq(targetRegionGroup))
+                                .and(processedPriceInfo.region.id.eq(region.regionDetailName))
+                                .and(regionGroup.eq(targetRegionGroup))
+                                .and(region.regionGroup.eq(targetRegionGroup))
                                 .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
                                 .and(innerProduct.eq(targetInnerProduct))
                 ).groupBy(
@@ -111,11 +111,9 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
     @Override
     public List<GetPriceDiffListOutDto> getPriceDiffList(GetPriceDiffListInDto in){
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
-        QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
-
         RegionGroup targetRegionGroupCode = userGroupCodeRepository.findById(in.getRegionGroupId()).orElseThrow();
 
-        QUserCode userCode = QUserCode.userCode;
+        QRegion region = QRegion.region;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
         QBaseProduct baseProduct = QBaseProduct.baseProduct;
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
@@ -131,8 +129,8 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
                     .on(baseProduct.innerProduct.id.eq(innerProduct.id))
                 .leftJoin(processedPriceInfo)
                     .on(processedPriceInfo.baseProduct.id.eq(baseProduct.id))
-                .join(userCode)
-                    .on(processedPriceInfo.regionInfo.eq(userCode))
+                .join(region)
+                    .on(processedPriceInfo.region.eq(region))
                 .where(
                         innerProduct.isAvailable.eq(true)
                                 ,(processedPriceInfo.baseDate.between(in.getStartDate(), in.getEndDate())
@@ -141,10 +139,10 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
                                 ,(processedPriceInfo.baseRange.eq(BaseRange.DAY)
                                         .or(processedPriceInfo.baseRange.isNull())
                                 )
-                                ,(processedPriceInfo.regionInfo.eq(userCode)
-                                        .or(processedPriceInfo.regionInfo.isNull())
+                                ,(processedPriceInfo.region.eq(region)
+                                        .or(processedPriceInfo.region.isNull())
                                 )
-                                ,(userCode.userGroupCode.eq(targetRegionGroupCode))
+                                ,(region.regionGroup.eq(targetRegionGroupCode))
                 ).groupBy(
                         innerProduct,
                         processedPriceInfo.baseDate

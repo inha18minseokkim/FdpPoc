@@ -18,5 +18,6 @@ public interface InnerProductRepositoryMapper {
     })
     FindInnerProductWithFilterOutDto from(InnerProduct element);
 
+    @Mapping(target="innerProductId",expression = "java(element.getId())")
     FindInnerProductListOutDto from2(InnerProduct element);
 }

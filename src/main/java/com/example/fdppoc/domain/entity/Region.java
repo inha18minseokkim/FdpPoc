@@ -12,7 +12,7 @@ import lombok.*;
 public class Region {
     @Id
     private String id;
-    private String codeDetailName;
+    private String regionDetailName;
     private String description;
     private Long orderSequence;
     private Boolean useInfo;

@@ -32,7 +32,7 @@ public class ProductDetailController {
                         .targetInnerProductId(innerProduct.getId())
                         .rangeForLength(in.getRangeForLength())
                         .rangeForTag(BaseRange.DAY)
-                        .reginoGroupId(regionGroup.getId())
+                        .regionGroupId(regionGroup.getId())
                         .customerId(in.getCustomerId())
                         .build()
         );

@@ -28,5 +28,5 @@ public interface InnerProductServiceMapper {
 
     FindInnerProductListInDto from(GetInnerProductsCriteria in);
 
-    GetInnerProductsResult from(FindInnerProductListOutDto element);
+    GetInnerProductsResult from(InnerProduct element);
 }

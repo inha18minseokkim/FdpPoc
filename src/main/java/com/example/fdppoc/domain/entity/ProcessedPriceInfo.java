@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(uniqueConstraints = {@UniqueConstraint(name="ProcessedPriceUnique",columnNames = {"baseDate","regionInfoId","baseProductId","baseRange"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name="ProcessedPriceUnique",columnNames = {"baseDate","regionId","baseProductId","baseRange"})})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

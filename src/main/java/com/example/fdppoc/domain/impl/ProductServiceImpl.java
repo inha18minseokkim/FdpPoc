@@ -144,7 +144,7 @@ public class ProductServiceImpl implements ProductService {
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                 .innerProductId(in.getTargetInnerProductId())
                 .memberInfoId(member.getId())
-                .regionGroupId(in.getReginoGroupId())
+                .regionGroupId(in.getRegionGroupId())
                 .build());
 
         return GetProductPriceResult.builder()

@@ -26,44 +26,17 @@ class RegionRepositoryTest {
     @Transactional
     @Rollback(value = false)
     void usercode_insertionTest() {
-//        UserGroupCode kamisApiRegion = UserGroupCode.builder()
-//                .codeDetailName("KamisApiRegionCode")
-//                .description("Kamis Api용 지역코드")
-//                .orderSequence(1L)
-//                .userCodes(new ArrayList<>())
-//                .useInfo(true)
-//                .build();
         RegionGroup kamisApiRegion = groupCodeRepository.findById("FDPREGN1101").get();
-//        UserCode seoul = UserCode.builder()
-//                .codeDetailName("1101")
-//                .description("서울지역 식별자")
-//                .orderSequence(1L)
-//                .useInfo(true)
-//                .userGroupCode(kamisApiRegion)
-//                .build();
-//        UserCode daegu = UserCode.builder()
-//                .codeDetailName("2200")
-//                .description("대구지역 식별자")
-//                .orderSequence(1L)
-//                .useInfo(true)
-//                .userGroupCode(kamisApiRegion)
-//                .build();
-//        UserCode busan = UserCode.builder()
-//                .codeDetailName("2100")
-//                .description("부산지역 식별자")
-//                .orderSequence(1L)
-//                .useInfo(true)
-//                .userGroupCode(kamisApiRegion)
-//                .build();
+
         Region suwon = Region.builder()
-                .codeDetailName("3111")
+                .regionDetailName("3111")
                 .description("수원지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
                 .regionGroup(kamisApiRegion)
                 .build();
         Region yongin = Region.builder()
-                .codeDetailName("3145")
+                .regionDetailName("3145")
                 .description("용인지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
@@ -85,7 +58,7 @@ class RegionRepositoryTest {
     @Rollback(value = true)
     void 서울지역_삽입() {
         RegionGroup seoulGroup = RegionGroup.builder()
-                .codeDetailName("KbankRegionCode")
+                .groupDetailName("KbankRegionCode")
                 .description("서울지역코드")
                 .orderSequence(1L)
                 .regions(new ArrayList<>())
@@ -95,7 +68,7 @@ class RegionRepositoryTest {
         RegionGroup savedSeoulGroup = groupCodeRepository.save(seoulGroup);
 
         Region seoul = Region.builder()
-                .codeDetailName("1101")
+                .regionDetailName("1101")
                 .description("서울지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
@@ -107,33 +80,13 @@ class RegionRepositoryTest {
 
         savedSeoulGroup = groupCodeRepository.save(savedSeoulGroup);
         Assertions.assertThat(savedSeoulGroup.getRegions()).contains(savedSeoul);
-
-//        UserCode daegu = UserCode.builder()
-//                .codeDetailName("2200")
-//                .description("대구지역 식별자")
-//                .orderSequence(1L)
-//                .useInfo(true)
-//                .userGroupCode(kamisApiRegion)
-//                .build();
-//        UserCode busan = UserCode.builder()
-//                .codeDetailName("2100")
-//                .description("부산지역 식별자")
-//                .orderSequence(1L)
-//                .useInfo(true)
-//                .userGroupCode(kamisApiRegion)
-//                .build();
-
-//        kamisApiRegion.getUserCodes().add(busan);
-//        userCodeRepository.save(daegu);
-//        userCodeRepository.save(busan);
-
     }
     @Test
     @Transactional
     @Rollback(value = true)
     void 경기지역_삽입() {
         RegionGroup gyeongki = RegionGroup.builder()
-                .codeDetailName("KbankRegionCode")
+                .groupDetailName("KbankRegionCode")
                 .description("경기지역코드")
                 .orderSequence(1L)
                 .regions(new ArrayList<>())
@@ -143,14 +96,14 @@ class RegionRepositoryTest {
         RegionGroup savedGyonkiGroup = groupCodeRepository.save(gyeongki);
 
         Region yongin = Region.builder()
-                .codeDetailName("3145")
+                .regionDetailName("3145")
                 .description("용인지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
                 .regionGroup(savedGyonkiGroup)
                 .build();
         Region suwon = Region.builder()
-                .codeDetailName("3111")
+                .regionDetailName("3111")
                 .description("수원지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)

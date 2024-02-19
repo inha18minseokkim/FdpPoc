@@ -74,6 +74,8 @@ public class InnerProductServiceImpl implements InnerProductService {
         //현재 노출 가능한 내부상품 리스트 리턴
         FindInnerProductListInDto input = mapper.from(in);
         List<FindInnerProductListOutDto> innerProductList = innerProductReader.findInnerProductList(input);
-        return innerProductList.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
+        List<InnerProduct> targetInnerProducts = innerProductList.stream().map(element -> innerProductRepository.findById(element.getInnerProductId()).orElseThrow())
+                .collect(Collectors.toList());
+        return targetInnerProducts.stream().map(element -> mapper.from(element)).collect(Collectors.toList());
     }
 }

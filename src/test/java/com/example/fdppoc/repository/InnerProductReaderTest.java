@@ -3,6 +3,7 @@ package com.example.fdppoc.repository;
 import com.example.fdppoc.domain.entity.BaseProduct;
 import com.example.fdppoc.domain.entity.InnerCategory;
 import com.example.fdppoc.domain.entity.InnerProduct;
+import com.example.fdppoc.infrastructure.dto.FindInnerProductListOutDto;
 import com.example.fdppoc.infrastructure.dto.FindInnerProductWithFilterOutDto;
 import com.example.fdppoc.infrastructure.repository.BaseProductRepository;
 import com.example.fdppoc.infrastructure.repository.InnerCategoryRepository;
@@ -83,9 +84,9 @@ class InnerProductReaderTest {
     @Test
     @Transactional
     void 내부상품대고객리스트조회() {
-        List<InnerProduct> singleList = innerProductRepositoryCustom.findInnerProductList(
+        List<FindInnerProductListOutDto> singleList = innerProductRepositoryCustom.findInnerProductList(
                 FindInnerProductListInDto.builder().searchKeyword("구").isAvailable(true).build());
         log.info("출력 : {}",singleList);
-        Assertions.assertThat(singleList.get(0).getProductName()).isEqualTo("고구마");
+        Assertions.assertThat(singleList.get(0)).isEqualTo("52");
     }
 }

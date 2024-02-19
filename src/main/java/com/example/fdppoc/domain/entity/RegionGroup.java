@@ -18,7 +18,7 @@ import java.util.List;
 public class RegionGroup {
     @Id
     private String id;
-    private String codeDetailName;
+    private String groupDetailName;
     private String description;
     private Long orderSequence;
     private Boolean useInfo;

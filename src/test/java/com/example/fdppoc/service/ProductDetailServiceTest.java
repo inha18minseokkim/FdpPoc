@@ -30,7 +30,7 @@ class ProductDetailServiceTest {
                 .targetInnerProductId("1004")
                 .rangeForLength(BaseRange.MONTH)
                 .rangeForTag(BaseRange.DAY)
-                .reginoGroupId("FDPREGN3100")
+                .regionGroupId("FDPREGN3100")
                 .customerId("20170860")
                 .build();
         GetProductPriceResult result = productService.getProductPrice(input);

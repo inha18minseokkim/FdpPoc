@@ -13,6 +13,6 @@ public class GetProductPriceCriteria {
     private String targetInnerProductId;
     private BaseRange rangeForLength;
     private BaseRange rangeForTag;
-    private String reginoGroupId;
+    private String regionGroupId;
     private String customerId;
 }

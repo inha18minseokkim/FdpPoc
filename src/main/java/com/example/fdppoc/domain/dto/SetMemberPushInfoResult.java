@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SetMemberPushInfoResult {
-    private boolean isAgree;
+    private Boolean isAgree;
 }

@@ -1,12 +1,12 @@
 package com.example.fdppoc.controller.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 @Builder
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class SetMemberPushInfoResponse {
-    private boolean isAgree;
+    private Boolean isAgree;
 }
