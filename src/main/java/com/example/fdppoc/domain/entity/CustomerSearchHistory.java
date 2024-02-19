@@ -26,7 +26,7 @@ public class CustomerSearchHistory {
     private InnerProduct innerProduct;            //조회한상품
     @ManyToOne
     @JoinColumn(referencedColumnName = "id",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserGroupCode regionGroup;                //조회한지역
+    private RegionGroup regionGroup;                //조회한지역
     @ManyToOne
     @JoinColumn(name = "customerId", referencedColumnName = "customerId",foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private MemberInfo memberInfo;            //조회한고객

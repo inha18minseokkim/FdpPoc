@@ -19,7 +19,7 @@ public class OriginalPriceInfo {
     private String baseDate;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserCode regionInfo;
+    private Region region;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private BaseProduct baseProduct;

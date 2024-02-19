@@ -1,7 +1,6 @@
 package com.example.fdppoc.domain.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserGroupCode {
+public class RegionGroup {
     @Id
     private String id;
     private String codeDetailName;
@@ -24,5 +23,5 @@ public class UserGroupCode {
     private Long orderSequence;
     private Boolean useInfo;
     @OneToMany
-    private List<UserCode> userCodes;
+    private List<Region> regions;
 }

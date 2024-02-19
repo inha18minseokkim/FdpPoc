@@ -39,7 +39,7 @@ class ProcessedPriceInfoReaderTest {
                 GetPriceDiffInDto.builder()
                         .startDate("20240101")
                         .endDate("20240119")
-                        .regionGroupCodeId("FDPREGN1101")
+                        .regionGroupId("FDPREGN1101")
                         .targetInnerProductId("1004")
                         .build()
         );
@@ -49,7 +49,7 @@ class ProcessedPriceInfoReaderTest {
     @Test
     void  모든상품가격() {
         List<GetPriceDiffListOutDto> priceDiffList = priceInfoReader.getPriceDiffList(
-                GetPriceDiffListInDto.builder().regionGroupCodeId("FDPREGN3100")
+                GetPriceDiffListInDto.builder().regionGroupId("FDPREGN3100")
                         .startDate("20230112").endDate("20240119")
                         .build());
         log.info("중간결과 : {}",priceDiffList);

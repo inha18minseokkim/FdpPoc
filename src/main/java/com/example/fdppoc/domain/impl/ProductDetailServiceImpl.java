@@ -2,7 +2,7 @@ package com.example.fdppoc.domain.impl;
 
 import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.dto.*;
-import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.domain.entity.RegionGroup;
 import com.example.fdppoc.domain.interfaces.ProductDetailService;
 import com.example.fdppoc.domain.mapper.ProductDetailServiceMapper;
 import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeInDto;
@@ -10,7 +10,6 @@ import com.example.fdppoc.infrastructure.dto.FindPriceListByGroupRegionCodeOut;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListInDto;
 import com.example.fdppoc.infrastructure.dto.GetPriceDiffListOutDto;
 import com.example.fdppoc.infrastructure.interfaces.ProcessedPriceInfoReader;
-import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +31,9 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     @Cacheable(value = "ProductDetailServiceImpl.getDetailPriceList", key="#criteria")
     @Transactional
     public List<GetInnerProductPricesResult> getInnerProductPriceList(GetInnerProductPricesCriteria criteria) {
-        UserGroupCode regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
+        RegionGroup regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId()).orElseThrow();
         List<GetPriceDiffListOutDto> priceDiffList = processedPriceInfoReader.getPriceDiffList(
-                GetPriceDiffListInDto.builder().regionGroupCodeId(criteria.getRegionGroupId())
+                GetPriceDiffListInDto.builder().regionGroupId(criteria.getRegionGroupId())
                         .startDate(criteria.getStartDate()).endDate(criteria.getEndDate())
                         .build());
         Map<String, List<GetPriceDiffListOutDto>> collect = priceDiffList.parallelStream().collect(Collectors.groupingBy(element -> element.getInnerProductId()));
@@ -73,7 +72,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         List<FindPriceListByGroupRegionCodeOut> priceList
                 = processedPriceInfoReader.findPriceListByGroupRegionCode
                 (FindPriceListByGroupRegionCodeInDto.builder()
-                        .regionGroupCodeId(criteria.getRegionGroupId())
+                        .regionGroupId(criteria.getRegionGroupId())
                         .baseDate(latestBaseDate)
                         .rangeForLength(BaseRange.YEAR)
                         .rangeForTag(BaseRange.DAY)

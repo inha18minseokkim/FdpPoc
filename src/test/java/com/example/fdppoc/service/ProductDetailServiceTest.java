@@ -1,7 +1,6 @@
 package com.example.fdppoc.service;
 
 import com.example.fdppoc.code.BaseRange;
-import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.domain.interfaces.ProductService;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.domain.dto.GetProductPriceCriteria;
@@ -31,7 +30,7 @@ class ProductDetailServiceTest {
                 .targetInnerProductId("1004")
                 .rangeForLength(BaseRange.MONTH)
                 .rangeForTag(BaseRange.DAY)
-                .regionGroupCodeId("FDPREGN3100")
+                .reginoGroupId("FDPREGN3100")
                 .customerId("20170860")
                 .build();
         GetProductPriceResult result = productService.getProductPrice(input);

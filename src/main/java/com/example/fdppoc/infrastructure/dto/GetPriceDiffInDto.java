@@ -1,7 +1,5 @@
 package com.example.fdppoc.infrastructure.dto;
 
-import com.example.fdppoc.domain.entity.InnerProduct;
-import com.example.fdppoc.domain.entity.UserGroupCode;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -10,7 +8,7 @@ import lombok.ToString;
 @ToString
 @Data
 public class GetPriceDiffInDto {
-    private String regionGroupCodeId;
+    private String regionGroupId;
     private String targetInnerProductId;
     private String startDate;
     private String endDate;

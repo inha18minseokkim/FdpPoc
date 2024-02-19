@@ -4,7 +4,7 @@ import com.example.fdppoc.code.BaseRange;
 import com.example.fdppoc.domain.dto.*;
 import com.example.fdppoc.domain.entity.InnerProduct;
 import com.example.fdppoc.domain.entity.MemberInfo;
-import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.domain.entity.RegionGroup;
 import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.domain.interfaces.ProductDetailService;
 import com.example.fdppoc.domain.interfaces.ProductService;
@@ -40,11 +40,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<GetPopularProductResult> getPopularProduct(GetPopularProductCriteria criteria){
         List<GetTopViewedInnerProductOutDto> results = customerSearchHistoryReader.getTopViewedInnerProduct(mapper.from(criteria));
-        Optional<UserGroupCode> targetRegionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
+        Optional<RegionGroup> targetRegionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
         String startDate = LocalDate.parse(criteria.getBaseDate(), DateTimeFormatter.ofPattern("yyyyMMdd")).minusDays(BaseRange.WEEK.getGapDay()).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         return results.stream().map(element -> {
                     GetPriceDiffOutDto priceDiff = processedPriceInfoReader.getTodayAndWeeklyMeanPrice(GetPriceDiffInDto.builder()
-                            .regionGroupCodeId(criteria.getRegionGroupId()).targetInnerProductId(element.getInnerProductId()).startDate(startDate).endDate(criteria.getBaseDate()).build());
+                            .regionGroupId(criteria.getRegionGroupId()).targetInnerProductId(element.getInnerProductId()).startDate(startDate).endDate(criteria.getBaseDate()).build());
                     log.debug("쿼리결과 : {}",priceDiff);
                     return GetPopularProductResult.builder()
                             .innerProductId(element.getInnerProductId())
@@ -144,7 +144,7 @@ public class ProductServiceImpl implements ProductService {
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                 .innerProductId(in.getTargetInnerProductId())
                 .memberInfoId(member.getId())
-                .regionGroupCodeId(in.getRegionGroupCodeId())
+                .regionGroupId(in.getReginoGroupId())
                 .build());
 
         return GetProductPriceResult.builder()
@@ -169,7 +169,7 @@ public class ProductServiceImpl implements ProductService {
         //특정 지역그룹 특정 내부상품의 특정 날짜 가격 리스트(그래프)
         GetLatestBaseDateResult latestBaseDate = getLatestBaseDate(GetLatestBaseDate
                                                                 .builder().baseDate(criteria.getBaseDate()).build());
-        Optional<UserGroupCode> regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
+        Optional<RegionGroup> regionGroup = userGroupCodeRepository.findById(criteria.getRegionGroupId());
         Optional<InnerProduct> innerProduct = innerProductRepository.findById(criteria.getInnerProductId());
         GetMemberResult member = memberService.getMember(GetMemberCriteria.builder()
                                                         .customerId(criteria.getCustomerId())
@@ -179,7 +179,7 @@ public class ProductServiceImpl implements ProductService {
         //멤버 조회 이력 insert
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                                         .innerProductId(criteria.getInnerProductId())
-                                        .regionGroupCodeId(criteria.getRegionGroupId())
+                                        .regionGroupId(criteria.getRegionGroupId())
                                         .memberInfoId(member.getMemberInfo().getId())
                                         .build());
         //가격정보 기간별로 가져옴

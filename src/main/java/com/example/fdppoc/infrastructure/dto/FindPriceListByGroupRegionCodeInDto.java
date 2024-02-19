@@ -13,5 +13,5 @@ public class FindPriceListByGroupRegionCodeInDto {
     private String targetInnerProductId;
     private BaseRange rangeForLength;
     private BaseRange rangeForTag;
-    private String regionGroupCodeId;
+    private String regionGroupId;
 }

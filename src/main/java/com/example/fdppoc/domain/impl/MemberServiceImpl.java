@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
                 .builder()
                 .innerProduct(innerProductRepository.findById(in.getInnerProductId()).orElseThrow())
                 .memberInfo(memberInfoRepository.findById(in.getMemberInfoId()).orElseThrow())
-                .regionGroup(userGroupCodeRepository.findById(in.getRegionGroupCodeId()).orElseThrow())
+                .regionGroup(userGroupCodeRepository.findById(in.getRegionGroupId()).orElseThrow())
                 .submitTime(LocalDateTime.now())
                 .build());
     }

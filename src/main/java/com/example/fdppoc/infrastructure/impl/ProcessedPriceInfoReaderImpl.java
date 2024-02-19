@@ -47,7 +47,7 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
                 .where(
                         processedPriceInfo.baseRange.eq(in.getRangeForTag())
                                 .and(processedPriceInfo.baseDate.between(startDate, in.getBaseDate()))
-                                .and(userGroupCode.id.eq(in.getRegionGroupCodeId()))
+                                .and(userGroupCode.id.eq(in.getRegionGroupId()))
                                 .and(processedPriceInfo.regionInfo.id.eq(userCode.codeDetailName))
                                 .and(userGroupCode.id.eq(userCode.userGroupCode.id)
                                 .and(processedPriceInfo.baseProduct.in(innerProduct.baseProducts))
@@ -62,7 +62,7 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
         return results.stream().map((element) -> FindPriceListByGroupRegionCodeOut.builder()
                 .baseDate(in.getBaseDate())
                 .price(element.get(processedPriceInfo.price.avg()).longValue())
-                .regionGroupCodeId(element.get(userGroupCode).getId())
+                .regionGroupId(element.get(userGroupCode).getId())
                 .innerProductId(element.get(innerProduct).getId())
                 .baseRange(in.getRangeForLength())
                 .build()
@@ -75,7 +75,7 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
         QUserCode userCode = QUserCode.userCode;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;
 
-        UserGroupCode targetRegionGroup = userGroupCodeRepository.findById(in.getRegionGroupCodeId()).orElseThrow();
+        RegionGroup targetRegionGroup = userGroupCodeRepository.findById(in.getRegionGroupId()).orElseThrow();
         InnerProduct targetInnerProduct = innerProductRepository.findById(in.getTargetInnerProductId()).orElseThrow();
         JPAQueryFactory query = new JPAQueryFactory(entityManager);
         List<Tuple> result = query.select(
@@ -113,7 +113,7 @@ public class ProcessedPriceInfoReaderImpl implements ProcessedPriceInfoReader {
         QProcessedPriceInfo processedPriceInfo = QProcessedPriceInfo.processedPriceInfo;
         QUserGroupCode userGroupCode = QUserGroupCode.userGroupCode;
 
-        UserGroupCode targetRegionGroupCode = userGroupCodeRepository.findById(in.getRegionGroupCodeId()).orElseThrow();
+        RegionGroup targetRegionGroupCode = userGroupCodeRepository.findById(in.getRegionGroupId()).orElseThrow();
 
         QUserCode userCode = QUserCode.userCode;
         QInnerProduct innerProduct = QInnerProduct.innerProduct;

@@ -1,7 +1,7 @@
 package com.example.fdppoc.repository;
 
-import com.example.fdppoc.domain.entity.UserCode;
-import com.example.fdppoc.domain.entity.UserGroupCode;
+import com.example.fdppoc.domain.entity.Region;
+import com.example.fdppoc.domain.entity.RegionGroup;
 import com.example.fdppoc.infrastructure.repository.UserCodeRepository;
 import com.example.fdppoc.infrastructure.repository.UserGroupCodeRepository;
 import jakarta.transaction.Transactional;
@@ -13,11 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
-class UserCodeRepositoryTest {
+class RegionRepositoryTest {
     @Autowired
     UserCodeRepository userCodeRepository;
     @Autowired
@@ -34,7 +33,7 @@ class UserCodeRepositoryTest {
 //                .userCodes(new ArrayList<>())
 //                .useInfo(true)
 //                .build();
-        UserGroupCode kamisApiRegion = groupCodeRepository.findById("FDPREGN1101").get();
+        RegionGroup kamisApiRegion = groupCodeRepository.findById("FDPREGN1101").get();
 //        UserCode seoul = UserCode.builder()
 //                .codeDetailName("1101")
 //                .description("서울지역 식별자")
@@ -56,24 +55,24 @@ class UserCodeRepositoryTest {
 //                .useInfo(true)
 //                .userGroupCode(kamisApiRegion)
 //                .build();
-        UserCode suwon = UserCode.builder()
+        Region suwon = Region.builder()
                 .codeDetailName("3111")
                 .description("수원지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
-                .userGroupCode(kamisApiRegion)
+                .regionGroup(kamisApiRegion)
                 .build();
-        UserCode yongin = UserCode.builder()
+        Region yongin = Region.builder()
                 .codeDetailName("3145")
                 .description("용인지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
-                .userGroupCode(kamisApiRegion)
+                .regionGroup(kamisApiRegion)
                 .build();
         userCodeRepository.save(suwon);
         userCodeRepository.save(yongin);
-        kamisApiRegion.getUserCodes().add(yongin);
-        kamisApiRegion.getUserCodes().add(suwon);
+        kamisApiRegion.getRegions().add(yongin);
+        kamisApiRegion.getRegions().add(suwon);
 //        kamisApiRegion.getUserCodes().add(busan);
 //        userCodeRepository.save(seoul);
 //        userCodeRepository.save(daegu);
@@ -85,29 +84,29 @@ class UserCodeRepositoryTest {
     @Transactional
     @Rollback(value = true)
     void 서울지역_삽입() {
-        UserGroupCode seoulGroup = UserGroupCode.builder()
+        RegionGroup seoulGroup = RegionGroup.builder()
                 .codeDetailName("KbankRegionCode")
                 .description("서울지역코드")
                 .orderSequence(1L)
-                .userCodes(new ArrayList<>())
+                .regions(new ArrayList<>())
                 .useInfo(true)
                 .build();
 
-        UserGroupCode savedSeoulGroup = groupCodeRepository.save(seoulGroup);
+        RegionGroup savedSeoulGroup = groupCodeRepository.save(seoulGroup);
 
-        UserCode seoul = UserCode.builder()
+        Region seoul = Region.builder()
                 .codeDetailName("1101")
                 .description("서울지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
-                .userGroupCode(savedSeoulGroup)
+                .regionGroup(savedSeoulGroup)
                 .build();
 
-        savedSeoulGroup.getUserCodes().add(seoul);
-        UserCode savedSeoul = userCodeRepository.save(seoul);
+        savedSeoulGroup.getRegions().add(seoul);
+        Region savedSeoul = userCodeRepository.save(seoul);
 
         savedSeoulGroup = groupCodeRepository.save(savedSeoulGroup);
-        Assertions.assertThat(savedSeoulGroup.getUserCodes()).contains(savedSeoul);
+        Assertions.assertThat(savedSeoulGroup.getRegions()).contains(savedSeoul);
 
 //        UserCode daegu = UserCode.builder()
 //                .codeDetailName("2200")
@@ -133,44 +132,44 @@ class UserCodeRepositoryTest {
     @Transactional
     @Rollback(value = true)
     void 경기지역_삽입() {
-        UserGroupCode gyeongki = UserGroupCode.builder()
+        RegionGroup gyeongki = RegionGroup.builder()
                 .codeDetailName("KbankRegionCode")
                 .description("경기지역코드")
                 .orderSequence(1L)
-                .userCodes(new ArrayList<>())
+                .regions(new ArrayList<>())
                 .useInfo(true)
                 .build();
 
-        UserGroupCode savedGyonkiGroup = groupCodeRepository.save(gyeongki);
+        RegionGroup savedGyonkiGroup = groupCodeRepository.save(gyeongki);
 
-        UserCode yongin = UserCode.builder()
+        Region yongin = Region.builder()
                 .codeDetailName("3145")
                 .description("용인지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
-                .userGroupCode(savedGyonkiGroup)
+                .regionGroup(savedGyonkiGroup)
                 .build();
-        UserCode suwon = UserCode.builder()
+        Region suwon = Region.builder()
                 .codeDetailName("3111")
                 .description("수원지역 식별자")
                 .orderSequence(1L)
                 .useInfo(true)
-                .userGroupCode(savedGyonkiGroup)
+                .regionGroup(savedGyonkiGroup)
                 .build();
-        savedGyonkiGroup.getUserCodes().add(yongin);
-        savedGyonkiGroup.getUserCodes().add(suwon);
-        UserCode savedyongin = userCodeRepository.save(yongin);
-        UserCode savedSuwon = userCodeRepository.save(suwon);
+        savedGyonkiGroup.getRegions().add(yongin);
+        savedGyonkiGroup.getRegions().add(suwon);
+        Region savedyongin = userCodeRepository.save(yongin);
+        Region savedSuwon = userCodeRepository.save(suwon);
 
         savedGyonkiGroup = groupCodeRepository.save(savedGyonkiGroup);
-        Assertions.assertThat(savedGyonkiGroup.getUserCodes()).contains(savedyongin);
-        Assertions.assertThat(savedGyonkiGroup.getUserCodes()).contains(savedSuwon);
+        Assertions.assertThat(savedGyonkiGroup.getRegions()).contains(savedyongin);
+        Assertions.assertThat(savedGyonkiGroup.getRegions()).contains(savedSuwon);
     }
     @Test
     @Transactional
     void Kamis전국조회() {
-        UserGroupCode kamis = groupCodeRepository.findById("FDPREGN3100").get();
-        log.info("결과 : {}",kamis.getUserCodes());
-        Assertions.assertThat(kamis.getUserCodes().get(0).getUserGroupCode()).isEqualTo(kamis);
+        RegionGroup kamis = groupCodeRepository.findById("FDPREGN3100").get();
+        log.info("결과 : {}",kamis.getRegions());
+        Assertions.assertThat(kamis.getRegions().get(0).getRegionGroup()).isEqualTo(kamis);
     }
 }

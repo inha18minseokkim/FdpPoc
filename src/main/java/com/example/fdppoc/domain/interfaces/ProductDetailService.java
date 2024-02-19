@@ -4,8 +4,6 @@ import com.example.fdppoc.domain.dto.GetDetailPriceLegacyResultElement;
 import com.example.fdppoc.domain.dto.GetDetilPriceListCriteria;
 import com.example.fdppoc.domain.dto.GetInnerProductPricesCriteria;
 import com.example.fdppoc.domain.dto.GetInnerProductPricesResult;
-import com.example.fdppoc.domain.entity.InnerProduct;
-import com.example.fdppoc.domain.entity.UserGroupCode;
 
 import java.util.List;
 

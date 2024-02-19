@@ -8,7 +8,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class GetPriceDiffListInDto {
-    private String regionGroupCodeId;
+    private String regionGroupId;
     private String startDate;
     private String endDate;
 }

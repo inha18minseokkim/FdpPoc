@@ -1,7 +1,6 @@
 package com.example.fdppoc.service;
 
 import com.example.fdppoc.domain.entity.MemberInfo;
-import com.example.fdppoc.domain.entity.UserGroupCode;
 import com.example.fdppoc.domain.interfaces.MemberService;
 import com.example.fdppoc.infrastructure.repository.InnerProductRepository;
 import com.example.fdppoc.infrastructure.repository.MemberInfoRepository;
@@ -32,7 +31,7 @@ class CustomerSearchHistoryServiceTest {
         Optional<MemberInfo> tempMember = memberInfoRepository.findMemberInfoByCustomerIdAndBusinessCode("20160860", "001");
         memberService.insertProductHistory(InsertProductHistoryCriteria.builder()
                         .innerProductId("1004")
-                        .regionGroupCodeId("FDPREGN3100")
+                        .regionGroupId("FDPREGN3100")
                         .memberInfoId(tempMember.get().getId())
                 .build());
 

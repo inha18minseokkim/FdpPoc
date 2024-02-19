@@ -8,8 +8,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "userGroupCode")
-public class UserCode {
+@ToString(exclude = "regionGroup")
+public class Region {
     @Id
     private String id;
     private String codeDetailName;
@@ -18,5 +18,5 @@ public class UserCode {
     private Boolean useInfo;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private UserGroupCode userGroupCode;
+    private RegionGroup regionGroup;
 }
